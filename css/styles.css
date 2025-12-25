@@ -1,0 +1,859 @@
+/**
+ * Radar Tecnológico - Área de Telecomunicaciones
+ * Estilos CSS
+ * 
+ * Estructura:
+ * 1. Variables CSS (Custom Properties)
+ * 2. Reset y Base
+ * 3. Layout Principal
+ * 4. Header
+ * 5. Sidebar
+ * 6. Radar Area
+ * 7. Controles de Zoom
+ * 8. Elementos SVG del Radar
+ * 9. Tooltip
+ * 10. Modal
+ * 11. Responsive Design
+ * 12. Scrollbar Personalizado
+ */
+
+/* ==========================================================================
+   1. VARIABLES CSS (Custom Properties)
+   ========================================================================== */
+:root {
+  /* Colores de fondo */
+  --bg-primary: #0a0e27;
+  --bg-secondary: #1a1f3a;
+  --bg-card: rgba(26, 31, 58, 0.98);
+  
+  /* Colores de texto */
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  /* Colores de acento */
+  --accent-blue: #38bdf8;
+  --accent-purple: #a78bfa;
+  
+  /* Bordes */
+  --border-color: #334155;
+  
+  /* Transiciones */
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.3s ease;
+}
+
+/* ==========================================================================
+   2. RESET Y BASE
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+  color: var(--text-primary);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ==========================================================================
+   3. LAYOUT PRINCIPAL
+   ========================================================================== */
+.main-container {
+  display: flex;
+  height: calc(100vh - 70px);
+  position: relative;
+}
+
+/* ==========================================================================
+   4. HEADER
+   ========================================================================== */
+.header {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  position: relative;
+}
+
+.header-content h1 {
+  font-size: clamp(0.95rem, 2.5vw, 1.3rem);
+  color: var(--accent-blue);
+  font-weight: 700;
+}
+
+.header-content p {
+  font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+  color: var(--text-secondary);
+}
+
+/* Controles del header */
+.controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--accent-blue);
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn:hover {
+  background: var(--accent-blue);
+  color: var(--bg-primary);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: rgba(167, 139, 250, 0.1);
+  border-color: rgba(167, 139, 250, 0.3);
+  color: var(--accent-purple);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-purple);
+  color: white;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+/* ==========================================================================
+   5. SIDEBAR
+   ========================================================================== */
+.sidebar-toggle {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  padding: 12px 8px;
+  cursor: pointer;
+  color: var(--accent-blue);
+  font-size: 1.1rem;
+  transition: all var(--transition-fast);
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-toggle:hover {
+  background: var(--accent-blue);
+  color: var(--bg-primary);
+  padding-right: 12px;
+}
+
+.sidebar-toggle.hidden {
+  display: none;
+}
+
+.sidebar {
+  width: 340px;
+  min-width: 340px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-medium);
+  z-index: 150;
+}
+
+.sidebar.collapsed {
+  margin-left: -340px;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-header h2 {
+  font-size: 0.95rem;
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.sidebar-close {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all var(--transition-fast);
+}
+
+.sidebar-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+/* Driver Cards */
+.driver-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.driver-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.driver-card.active {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+}
+
+.driver-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.driver-header:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.driver-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.driver-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.driver-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+.driver-meta {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.driver-expand {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  transition: transform var(--transition-fast);
+}
+
+.driver-card.expanded .driver-expand {
+  transform: rotate(180deg);
+}
+
+/* Area List */
+.area-list {
+  display: none;
+  padding: 0 12px 12px;
+}
+
+.driver-card.expanded .area-list {
+  display: block;
+}
+
+.area-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  margin-bottom: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-left: 3px solid transparent;
+}
+
+.area-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.area-item.active {
+  background: rgba(56, 189, 248, 0.1);
+  border-left-color: var(--accent-blue);
+}
+
+.area-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.area-name {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  flex: 1;
+  line-height: 1.3;
+}
+
+.area-item:hover .area-name,
+.area-item.active .area-name {
+  color: var(--text-primary);
+}
+
+.area-count {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+/* Sidebar Actions */
+.sidebar-actions {
+  padding: 12px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 8px;
+}
+
+.sidebar-actions .btn {
+  flex: 1;
+  justify-content: center;
+  padding: 10px;
+  font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   6. RADAR AREA
+   ========================================================================== */
+.radar-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+#chart-container {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+#chart-container:active {
+  cursor: grabbing;
+}
+
+/* ==========================================================================
+   7. CONTROLES DE ZOOM
+   ========================================================================== */
+.zoom-controls {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+.zoom-btn {
+  width: 42px;
+  height: 42px;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--accent-blue);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.3rem;
+  font-weight: 300;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zoom-btn:hover {
+  background: var(--accent-blue);
+  color: var(--bg-primary);
+  transform: scale(1.05);
+}
+
+.zoom-btn:active {
+  transform: scale(0.95);
+}
+
+.zoom-level {
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  padding: 6px 0;
+  border-top: 1px solid var(--border-color);
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   8. ELEMENTOS SVG DEL RADAR
+   ========================================================================== */
+.sector-path {
+  transition: opacity 0.3s, filter 0.3s;
+  cursor: pointer;
+}
+
+.sector-path.dimmed {
+  opacity: 0.08 !important;
+  filter: grayscale(0.8);
+}
+
+.sector-path.highlighted {
+  opacity: 0.7 !important;
+  filter: brightness(1.2);
+}
+
+.tech-node {
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.tech-node circle {
+  transition: transform 0.2s, filter 0.2s;
+}
+
+.tech-node:hover circle {
+  transform: scale(1.6);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
+}
+
+.tech-node text {
+  pointer-events: none;
+}
+
+.tech-node.dimmed {
+  opacity: 0.12;
+}
+
+.ring-guide {
+  fill: none;
+  stroke: var(--border-color);
+  stroke-dasharray: 4 4;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.ring-label {
+  font-size: 7px;
+  fill: var(--text-muted);
+  opacity: 0.6;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.label-driver,
+.label-area {
+  pointer-events: none;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.9);
+}
+
+.label-driver.dimmed,
+.label-area.dimmed {
+  opacity: 0.15;
+}
+
+/* ==========================================================================
+   9. TOOLTIP
+   ========================================================================== */
+.tooltip {
+  position: fixed;
+  background: var(--bg-card);
+  border: 1px solid var(--accent-blue);
+  border-radius: 10px;
+  padding: 14px 18px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  max-width: 340px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.tooltip.visible {
+  opacity: 1;
+}
+
+.tooltip-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color: var(--accent-blue);
+  line-height: 1.3;
+}
+
+.tooltip-category {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tooltip-hint {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+}
+
+.tooltip-badge {
+  display: inline-block;
+  background: rgba(56, 189, 248, 0.2);
+  color: var(--accent-blue);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* ==========================================================================
+   10. MODAL
+   ========================================================================== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--accent-blue);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 85vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+  animation: modalSlideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalSlideUp {
+  from {
+    transform: translateY(60px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.modal-header-content {
+  flex: 1;
+}
+
+.modal-breadcrumb {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.modal-breadcrumb-link {
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.modal-breadcrumb-link:hover {
+  color: var(--accent-blue);
+  text-decoration: underline;
+}
+
+.modal-breadcrumb-sep {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.modal-breadcrumb-current {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.modal-header h3 {
+  font-size: 1.15rem;
+  color: var(--accent-blue);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  margin-bottom: 16px;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 8px;
+  color: var(--accent-blue);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.modal-back:hover {
+  background: rgba(56, 189, 248, 0.2);
+}
+
+.modal-section-title {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.modal-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-item {
+  background: rgba(56, 189, 248, 0.05);
+  border: 1px solid rgba(56, 189, 248, 0.1);
+  border-left: 4px solid var(--accent-blue);
+  padding: 14px 16px;
+  border-radius: 8px;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  position: relative;
+}
+
+.modal-item:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.3);
+  transform: translateX(4px);
+}
+
+.modal-item--clickable::after {
+  content: "→";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  opacity: 0;
+  transition: all var(--transition-fast);
+}
+
+.modal-item--clickable:hover::after {
+  opacity: 1;
+  right: 12px;
+}
+
+.modal-item-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
+  padding-right: 24px;
+}
+
+.modal-item-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.modal-item--subline {
+  cursor: default;
+}
+
+.modal-item--subline:hover {
+  transform: none;
+}
+
+.modal-item--subline::after {
+  display: none;
+}
+
+/* ==========================================================================
+   11. RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 70px;
+    height: calc(100vh - 70px);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+
+  .controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn {
+    flex: 1;
+    min-width: 80px;
+    padding: 8px 10px;
+    font-size: 0.75rem;
+  }
+
+  .sidebar {
+    width: 300px;
+    min-width: 300px;
+  }
+
+  .sidebar.collapsed {
+    margin-left: -300px;
+  }
+
+  .main-container {
+    height: calc(100vh - 100px);
+  }
+
+  .zoom-controls {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .zoom-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+}
+
+/* ==========================================================================
+   12. SCROLLBAR PERSONALIZADO
+   ========================================================================== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-blue);
+}
