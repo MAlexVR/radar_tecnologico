@@ -29,6 +29,13 @@ Aplicación web interactiva de vigilancia científico-tecnológica para el área
 | D4  | Modelo de Negocio          | 4           |
 | D5  | Confianza y Sostenibilidad | 5           |
 
+## 📱 Características Móviles
+
+- **Diseño Responsivo**: Interfaz optimizada para dispositivos móviles y tabletas.
+- **Gestos Táctiles**: Navegación intuitiva mediante gestos (pan y pinch-to-zoom) en el gráfico de radar.
+- **Leyenda Completa**: Visualización detallada de anillos, sectores y niveles TRL en formato adaptado.
+- **Exportación Fácil**: Botones dedicados para guardar el radar como imagen PNG o documento PDF.
+
 ## 🎨 Paleta Institucional SENA
 
 | Color           | Hex       | Uso             |

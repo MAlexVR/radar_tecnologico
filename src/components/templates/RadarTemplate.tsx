@@ -164,6 +164,7 @@ export function RadarTemplate() {
   panRef.current = pan;
   const zoomRef = useRef(zoomLevel);
   zoomRef.current = zoomLevel;
+  const lastTouchDistanceRef = useRef(0);
 
   // ── Fixed wheel zoom + drag-to-pan: useEffect with passive: false ──
   useEffect(() => {
@@ -216,16 +217,76 @@ export function RadarTemplate() {
       }
     };
 
+    // Touch events
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        isDraggingRef.current = true;
+        dragStartRef.current = {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY,
+        };
+      } else if (e.touches.length === 2) {
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY,
+        );
+        lastTouchDistanceRef.current = dist;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.cancelable) e.preventDefault(); // prevent scrolling
+
+      if (e.touches.length === 1 && isDraggingRef.current) {
+        const dx =
+          (e.touches[0].clientX - dragStartRef.current.x) / zoomRef.current;
+        const dy =
+          (e.touches[0].clientY - dragStartRef.current.y) / zoomRef.current;
+        setPan({
+          x: panRef.current.x + dx,
+          y: panRef.current.y + dy,
+        });
+        dragStartRef.current = {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY,
+        };
+      } else if (e.touches.length === 2 && lastTouchDistanceRef.current > 0) {
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY,
+        );
+        const scale = dist / lastTouchDistanceRef.current;
+        setZoomLevel((prev) => Math.min(Math.max(prev * scale, 0.5), 4));
+        lastTouchDistanceRef.current = dist;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      isDraggingRef.current = false;
+      lastTouchDistanceRef.current = 0;
+    };
+
     container.style.cursor = "grab";
     container.addEventListener("wheel", handleWheel, { passive: false });
     container.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
+    container.addEventListener("touchstart", handleTouchStart, {
+      passive: false,
+    });
+    container.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
+    container.addEventListener("touchend", handleTouchEnd);
+
     return () => {
       container.removeEventListener("wheel", handleWheel);
       container.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("touchend", handleTouchEnd);
     };
   }, []);
 
@@ -286,6 +347,25 @@ export function RadarTemplate() {
           </TabsList>
 
           <TabsContent value="radar">
+            {/* Mobile Info Block */}
+            <div className="mb-3 bg-card border rounded-lg p-3 text-xs text-muted-foreground shadow-sm">
+              <p className="font-semibold text-foreground mb-1">
+                Radar Tecnológico — Guía Rápida
+              </p>
+              <ul className="list-disc list-inside space-y-0.5 opacity-90">
+                <li>
+                  Usa{" "}
+                  <strong className="text-foreground">
+                    dos dedos para zoom
+                  </strong>{" "}
+                  o los botones (+/-).
+                </li>
+                <li>Arrastra para mover el mapa.</li>
+                <li>Toca un punto para ver detalles.</li>
+                <li>Usa "Filtros" y "Leyenda" para explorar.</li>
+              </ul>
+            </div>
+
             <Card>
               <CardContent className="p-2">
                 <div className="relative overflow-hidden aspect-square flex items-center justify-center bg-white/5 rounded-lg border">
@@ -294,23 +374,23 @@ export function RadarTemplate() {
                     <Button
                       size="icon-sm"
                       onClick={handleZoomIn}
-                      className="h-7 w-7 bg-background/80 backdrop-blur border shadow-sm hover:bg-background"
+                      className="h-8 w-8 bg-sena-green/20 text-sena-green border border-sena-green/30 hover:bg-sena-green/30 backdrop-blur shadow-sm"
                     >
-                      <ZoomIn className="w-3.5 h-3.5" />
+                      <ZoomIn className="w-4 h-4" />
                     </Button>
                     <Button
                       size="icon-sm"
                       onClick={handleZoomOut}
-                      className="h-7 w-7 bg-background/80 backdrop-blur border shadow-sm hover:bg-background"
+                      className="h-8 w-8 bg-sena-green/20 text-sena-green border border-sena-green/30 hover:bg-sena-green/30 backdrop-blur shadow-sm"
                     >
-                      <ZoomOut className="w-3.5 h-3.5" />
+                      <ZoomOut className="w-4 h-4" />
                     </Button>
                     <Button
                       size="icon-sm"
                       onClick={handleResetZoom}
-                      className="h-7 w-7 bg-background/80 backdrop-blur border shadow-sm hover:bg-background"
+                      className="h-8 w-8 bg-sena-green/20 text-sena-green border border-sena-green/30 hover:bg-sena-green/30 backdrop-blur shadow-sm"
                     >
-                      <Maximize className="w-3.5 h-3.5" />
+                      <Maximize className="w-4 h-4" />
                     </Button>
                   </div>
 
@@ -345,16 +425,18 @@ export function RadarTemplate() {
                     size="sm"
                     onClick={handleExportPNG}
                     disabled={exporting}
+                    className="text-xs"
                   >
-                    <FileImage className="w-3.5 h-3.5 mr-1" /> PNG
+                    <FileImage className="w-3.5 h-3.5 mr-1.5" /> Exportar PNG
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={handleExportPDF}
                     disabled={exporting}
+                    className="text-xs"
                   >
-                    <FileText className="w-3.5 h-3.5 mr-1" /> PDF
+                    <FileText className="w-3.5 h-3.5 mr-1.5" /> Exportar PDF
                   </Button>
                 </div>
               </CardContent>
@@ -406,6 +488,27 @@ export function RadarTemplate() {
       <main className="hidden md:flex flex-1 min-h-0 overflow-hidden">
         {/* LEFT SIDEBAR — Filters */}
         <aside className="w-[220px] flex-shrink-0 border-r bg-card/50 p-3 space-y-4 overflow-y-auto">
+          {/* Desktop Info Block */}
+          <div className="text-[11px] text-muted-foreground bg-accent/20 p-2.5 rounded-md border border-accent/30 leading-snug">
+            <p className="font-bold text-foreground mb-1.5 text-xs">
+              Guía de Navegación
+            </p>
+            <ul className="list-disc list-inside space-y-1 opacity-85">
+              <li>
+                <span className="font-medium">Zoom:</span> Rueda del mouse
+              </li>
+              <li>
+                <span className="font-medium">Mover:</span> Arrastra el lienzo
+              </li>
+              <li>
+                <span className="font-medium">Detalles:</span> Clic en los
+                puntos
+              </li>
+            </ul>
+          </div>
+
+          <Separator />
+
           {/* Sector filters */}
           <div>
             <div className="flex items-center gap-1.5 mb-2">
@@ -434,7 +537,7 @@ export function RadarTemplate() {
                 >
                   <span className="text-xs">{s.icon}</span>
                   <span className="text-[11px] font-medium flex-1 leading-tight">
-                    {s.label}
+                    {s.id}: {s.label}
                   </span>
                   <span className="text-[9px] font-mono opacity-60">
                     {count}
@@ -633,18 +736,17 @@ export function RadarTemplate() {
         </aside>
       </main>
 
-      {/* Compact footer with logos */}
       {/* Footer with logos */}
-      <footer className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 border-t bg-card/50 px-4 py-4 md:py-2">
+      <footer className="flex flex-row items-center justify-center gap-6 border-t bg-card/50 px-4 py-4 md:py-2">
         <img
           src="/logo-centro-formacion.svg"
           alt="Centro de Electricidad, Electrónica y Telecomunicaciones"
-          className="h-8 md:h-10 w-auto opacity-80"
+          className="h-9 w-auto opacity-80"
         />
         <img
           src="/logo-grupo-investigacion.svg"
           alt="Grupo de Investigación GICS"
-          className="h-8 md:h-10 w-auto opacity-80"
+          className="h-9 w-auto opacity-80"
         />
       </footer>
     </div>
@@ -664,60 +766,99 @@ function MobileFilters({
   filteredCount: number;
 }) {
   return (
-    <div className="mt-3 space-y-2">
+    <div className="mt-4 space-y-4">
       {/* Sector chips */}
-      <div className="flex flex-wrap gap-1.5">
-        {SECTORS.map((s, i) => {
-          const isOn = filters.sectors.has(i);
-          return (
-            <button
-              key={s.id}
-              onClick={() => toggleSector(i)}
-              className={`
-                inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-semibold
-                transition-all border
-                ${
-                  isOn
-                    ? "border-current bg-accent/30"
-                    : "border-transparent bg-muted opacity-40"
-                }
-              `}
-              style={{ color: isOn ? s.color : undefined }}
-            >
-              <span>{s.icon}</span>
-              {s.id}
-            </button>
-          );
-        })}
-      </div>
-      {/* Ring chips */}
-      <div className="flex flex-wrap gap-1.5">
-        {RINGS.map((r, i) => {
-          const isOn = filters.rings.has(i);
-          return (
-            <button
-              key={r.id}
-              onClick={() => toggleRing(i)}
-              className={`
-                inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium
-                transition-all border
-                ${isOn ? "border-border bg-muted" : "border-transparent bg-muted/50 opacity-40"}
-              `}
-            >
-              <span
-                className="w-3 h-2 rounded-sm border"
+      <div className="space-y-2">
+        <div className="flex items-center gap-1.5">
+          <Filter className="w-3 h-3 text-muted-foreground" />
+          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+            Direccionadores
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {SECTORS.map((s, i) => {
+            const isOn = filters.sectors.has(i);
+            return (
+              <button
+                key={s.id}
+                onClick={() => toggleSector(i)}
+                className={`
+                  inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-bold
+                  transition-all border shadow-sm
+                  ${
+                    isOn
+                      ? "border-current bg-background"
+                      : "border-transparent bg-muted opacity-50"
+                  }
+                `}
                 style={{
-                  backgroundColor: r.fillColor,
-                  borderColor: r.borderColor,
+                  color: s.color,
+                  borderColor: isOn ? s.color : undefined,
                 }}
-              />
-              {r.label}
-            </button>
-          );
-        })}
-        <span className="text-[10px] text-muted-foreground self-center ml-auto">
-          {filteredCount} tecn.
+              >
+                <span>{s.icon}</span>
+                {s.id}: {s.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <Separator className="bg-border/50" />
+
+      {/* Ring chips */}
+      <div className="space-y-2">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block">
+          Fase de Adopción
         </span>
+        <div className="flex flex-wrap gap-1.5">
+          {RINGS.map((r, i) => {
+            const isOn = filters.rings.has(i);
+            return (
+              <button
+                key={r.id}
+                onClick={() => toggleRing(i)}
+                className={`
+                  inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-medium
+                  transition-all border shadow-sm
+                  ${isOn ? "border-border bg-background" : "border-transparent bg-muted/50 opacity-50"}
+                `}
+              >
+                <span
+                  className="w-3 h-2 rounded-sm border"
+                  style={{
+                    backgroundColor: r.fillColor,
+                    borderColor: r.borderColor,
+                  }}
+                />
+                {r.label}
+                <span className="text-[9px] text-muted-foreground ml-1">
+                  ({r.trl})
+                </span>
+              </button>
+            );
+          })}
+          <span className="text-[10px] text-muted-foreground self-center ml-auto">
+            {filteredCount} / {TECHNOLOGIES.length}
+          </span>
+        </div>
+      </div>
+
+      <Separator className="bg-border/50" />
+
+      {/* TRL Bar (Temperature) */}
+      <div className="rounded-lg bg-muted/40 p-3 border">
+        <div className="flex items-center gap-1.5 mb-2">
+          <Gauge className="w-3 h-3 text-muted-foreground" />
+          <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
+            Nivel de TRL
+          </span>
+        </div>
+        <div className="h-2 rounded-full bg-gradient-to-r from-[#4FC3F7] via-[#FDC300] via-[#E65100] to-[#C62828] mb-1.5" />
+        <div className="flex justify-between text-[9px] text-muted-foreground font-medium">
+          <span>Inicial (1-2)</span>
+          <span>Alto (7-9)</span>
+        </div>
       </div>
     </div>
   );

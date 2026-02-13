@@ -51,10 +51,10 @@ export function Header() {
 
       {menuOpen && (
         <div className="md:hidden border-t bg-background/95 backdrop-blur-xl">
-          <div className="container px-4 py-3 space-y-2">
+          <div className="container px-4 py-3 flex flex-col items-start gap-4">
             <HelpModal />
             <AboutModal />
-            <div className="flex items-center justify-between pt-2 border-t">
+            <div className="flex items-center justify-between pt-2 border-t w-full">
               <span className="text-xs text-muted-foreground">SENA — CEET</span>
               <Badge className="text-xs bg-sena-green/20 text-sena-green border-sena-green/30">
                 v1.0
