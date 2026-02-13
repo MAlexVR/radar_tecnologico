@@ -26,7 +26,7 @@ export function Header() {
               Telecomunicaciones CEET • SENA • 2025-2035
             </p>
           </div>
-          <h1 className="sm:hidden text-sm font-bold">Radar Tech</h1>
+          <h1 className="sm:hidden text-sm font-bold">Radar Tecnológico</h1>
         </div>
 
         {/* Desktop */}

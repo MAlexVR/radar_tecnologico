@@ -288,20 +288,55 @@ export function RadarTemplate() {
           <TabsContent value="radar">
             <Card>
               <CardContent className="p-2">
-                <div className="flex items-center justify-center">
-                  <RadarChart
-                    ref={svgRef}
-                    filteredTechs={filteredTechs}
-                    selectedTech={selectedTech}
-                    hoveredTech={hoveredTech}
-                    activeSectors={filters.sectors}
-                    activeRings={filters.rings}
-                    onSelect={(t) => {
-                      handleSelect(t);
-                      if (t) setMobileTab("detail");
+                <div className="relative overflow-hidden aspect-square flex items-center justify-center bg-white/5 rounded-lg border">
+                  {/* Mobile Zoom Controls */}
+                  <div className="absolute top-2 right-2 flex flex-col gap-1.5 z-10">
+                    <Button
+                      size="icon-sm"
+                      onClick={handleZoomIn}
+                      className="h-7 w-7 bg-background/80 backdrop-blur border shadow-sm hover:bg-background"
+                    >
+                      <ZoomIn className="w-3.5 h-3.5" />
+                    </Button>
+                    <Button
+                      size="icon-sm"
+                      onClick={handleZoomOut}
+                      className="h-7 w-7 bg-background/80 backdrop-blur border shadow-sm hover:bg-background"
+                    >
+                      <ZoomOut className="w-3.5 h-3.5" />
+                    </Button>
+                    <Button
+                      size="icon-sm"
+                      onClick={handleResetZoom}
+                      className="h-7 w-7 bg-background/80 backdrop-blur border shadow-sm hover:bg-background"
+                    >
+                      <Maximize className="w-3.5 h-3.5" />
+                    </Button>
+                  </div>
+
+                  <div
+                    style={{
+                      transform: `scale(${zoomLevel}) translate(${pan.x}px, ${pan.y}px)`,
+                      transition: "transform 0.1s ease-out",
                     }}
-                    onHover={setHoveredTech}
-                  />
+                    className="w-full h-full flex items-center justify-center"
+                    // Touch handlers for panning could be added here if needed,
+                    // but browser native zoom is now enabled too.
+                  >
+                    <RadarChart
+                      ref={svgRef}
+                      filteredTechs={filteredTechs}
+                      selectedTech={selectedTech}
+                      hoveredTech={hoveredTech}
+                      activeSectors={filters.sectors}
+                      activeRings={filters.rings}
+                      onSelect={(t) => {
+                        handleSelect(t);
+                        if (t) setMobileTab("detail");
+                      }}
+                      onHover={setHoveredTech}
+                    />
+                  </div>
                 </div>
                 {/* Mobile export */}
                 <div className="flex gap-2 mt-2 justify-center">
@@ -599,16 +634,17 @@ export function RadarTemplate() {
       </main>
 
       {/* Compact footer with logos */}
-      <footer className="hidden md:flex items-center justify-center gap-8 border-t bg-card/50 px-4 py-2">
+      {/* Footer with logos */}
+      <footer className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 border-t bg-card/50 px-4 py-4 md:py-2">
         <img
           src="/logo-centro-formacion.svg"
           alt="Centro de Electricidad, Electrónica y Telecomunicaciones"
-          className="h-10 w-auto opacity-80"
+          className="h-8 md:h-10 w-auto opacity-80"
         />
         <img
           src="/logo-grupo-investigacion.svg"
           alt="Grupo de Investigación GICS"
-          className="h-10 w-auto opacity-80"
+          className="h-8 md:h-10 w-auto opacity-80"
         />
       </footer>
     </div>

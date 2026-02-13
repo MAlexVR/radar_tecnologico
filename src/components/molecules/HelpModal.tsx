@@ -20,7 +20,7 @@ export function HelpModal() {
       <DialogTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-1">
           <HelpCircle className="w-4 h-4" />
-          <span className="hidden sm:inline">Ayuda</span>
+          <span>Ayuda</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[85vh] p-0 flex flex-col">
@@ -52,18 +52,52 @@ export function HelpModal() {
 
               <div className="grid gap-2 text-sm border rounded-lg p-3 bg-muted/30">
                 {[
-                  { range: "TRL 1-2", title: "Investigación Básica (Inicial)", desc: "Principios observados y formulación del concepto tecnológico.", color: "#4FC3F7" },
-                  { range: "TRL 3-4", title: "Prueba de Concepto (Bajo)", desc: "Validación analítica y experimental en laboratorio.", color: "#FDC300" },
-                  { range: "TRL 5-6", title: "Validación de Prototipo (Medio)", desc: "Componentes validados en entorno relevante y simulación de alta fidelidad.", color: "#E65100" },
-                  { range: "TRL 7-9", title: "Sistema Probado (Alto)", desc: "Sistema completo cualificado y probado en entorno operativo real.", color: "#C62828" },
+                  {
+                    range: "TRL 1-2",
+                    title: "Investigación Básica (Inicial)",
+                    desc: "Principios observados y formulación del concepto tecnológico.",
+                    color: "#4FC3F7",
+                  },
+                  {
+                    range: "TRL 3-4",
+                    title: "Prueba de Concepto (Bajo)",
+                    desc: "Validación analítica y experimental en laboratorio.",
+                    color: "#FDC300",
+                  },
+                  {
+                    range: "TRL 5-6",
+                    title: "Validación de Prototipo (Medio)",
+                    desc: "Componentes validados en entorno relevante y simulación de alta fidelidad.",
+                    color: "#E65100",
+                  },
+                  {
+                    range: "TRL 7-9",
+                    title: "Sistema Probado (Alto)",
+                    desc: "Sistema completo cualificado y probado en entorno operativo real.",
+                    color: "#C62828",
+                  },
                 ].map((item) => (
-                  <div key={item.range} className="grid grid-cols-[80px_1fr] gap-2 items-start">
-                    <Badge variant="outline" className="justify-center" style={{ borderColor: item.color, color: item.color }}>
+                  <div
+                    key={item.range}
+                    className="grid grid-cols-[80px_1fr] gap-2 items-start"
+                  >
+                    <Badge
+                      variant="outline"
+                      className="justify-center"
+                      style={{ borderColor: item.color, color: item.color }}
+                    >
                       {item.range}
                     </Badge>
                     <div>
-                      <span className="font-semibold block" style={{ color: item.color }}>{item.title}</span>
-                      <span className="text-xs text-muted-foreground">{item.desc}</span>
+                      <span
+                        className="font-semibold block"
+                        style={{ color: item.color }}
+                      >
+                        {item.title}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {item.desc}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -86,9 +120,15 @@ export function HelpModal() {
                     <div className="flex items-center gap-2">
                       <div
                         className="w-5 h-3.5 rounded-sm border"
-                        style={{ backgroundColor: ring.fillColor, borderColor: ring.borderColor }}
+                        style={{
+                          backgroundColor: ring.fillColor,
+                          borderColor: ring.borderColor,
+                        }}
                       />
-                      <span className="font-bold text-sm" style={{ color: ring.labelColor }}>
+                      <span
+                        className="font-bold text-sm"
+                        style={{ color: ring.labelColor }}
+                      >
                         {ring.label}
                       </span>
                     </div>

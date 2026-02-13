@@ -1,6 +1,7 @@
 "use client";
 
 import { RINGS, SECTORS } from "@/lib/radar-data";
+import { Gauge } from "lucide-react";
 
 export function RadarLegend() {
   return (
@@ -47,6 +48,21 @@ export function RadarLegend() {
               </span>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* TRL Bar (Temperature) */}
+      <div className="border-t pt-3">
+        <div className="flex items-center gap-1.5 mb-2">
+          <Gauge className="w-3 h-3 text-muted-foreground" />
+          <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
+            Nivel de TRL
+          </span>
+        </div>
+        <div className="h-1.5 rounded-full bg-gradient-to-r from-[#4FC3F7] via-[#FDC300] via-[#E65100] to-[#C62828] mb-1.5" />
+        <div className="flex justify-between text-[8px] text-muted-foreground">
+          <span>Inicial (1-2)</span>
+          <span>Alto (7-9)</span>
         </div>
       </div>
     </div>
