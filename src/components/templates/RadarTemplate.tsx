@@ -117,6 +117,15 @@ export function RadarTemplate() {
   const mobileRadarContainerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
+  // Reset zoom/pan when switching back to radar tab on mobile
+  useEffect(() => {
+    if (mobileTab === "radar") {
+      // Optional: Reset zoom when returning to radar view
+      // setZoomLevel(1);
+      // setPan({ x: 0, y: 0 });
+    }
+  }, [mobileTab]);
+
   const filteredTechs = TECHNOLOGIES.filter(
     (t) => filters.sectors.has(t.sector) && filters.rings.has(t.ring),
   );
@@ -168,169 +177,174 @@ export function RadarTemplate() {
   zoomRef.current = zoomLevel;
   const lastTouchDistanceRef = useRef(0);
 
-  // ── Fixed wheel zoom + drag-to-pan: useEffect with passive: false ──
-  useEffect(() => {
-    const desktopContainer = radarContainerRef.current;
-    const mobileContainer = mobileRadarContainerRef.current;
+  // ── Event Handlers (Memoized) ──
+  const handleWheel = useCallback((e: WheelEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const target = e.currentTarget as HTMLElement;
+    if (!target) return;
+    const rect = target.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left - rect.width / 2;
+    const mouseY = e.clientY - rect.top - rect.height / 2;
+    const delta = -e.deltaY * 0.0015;
 
-    const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
+    setZoomLevel((prevZoom) => {
+      const newZoom = Math.min(Math.max(prevZoom + delta, 0.5), 4);
+      const scaleRatio = newZoom / prevZoom;
+      setPan((prevPan) => ({
+        x: mouseX - (mouseX - prevPan.x) * scaleRatio,
+        y: mouseY - (mouseY - prevPan.y) * scaleRatio,
+      }));
+      return newZoom;
+    });
+  }, []);
 
-      // Use the target container for bounding rect
-      const target = e.currentTarget as HTMLElement;
-      if (!target) return;
+  const handleMouseDown = useCallback((e: MouseEvent) => {
+    if (e.button !== 0) return;
+    const target = e.currentTarget as HTMLElement;
+    isDraggingRef.current = true;
+    dragStartRef.current = { x: e.clientX, y: e.clientY };
+    target.style.cursor = "grabbing";
+    e.preventDefault();
+  }, []);
 
-      const rect = target.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left - rect.width / 2;
-      const mouseY = e.clientY - rect.top - rect.height / 2;
-      const delta = -e.deltaY * 0.0015;
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDraggingRef.current) return;
+    const dx = (e.clientX - dragStartRef.current.x) / zoomRef.current;
+    const dy = (e.clientY - dragStartRef.current.y) / zoomRef.current;
+    setPan({
+      x: panRef.current.x + dx,
+      y: panRef.current.y + dy,
+    });
+    dragStartRef.current = { x: e.clientX, y: e.clientY };
+  }, []);
 
-      setZoomLevel((prevZoom) => {
-        const newZoom = Math.min(Math.max(prevZoom + delta, 0.5), 4);
-        const scaleRatio = newZoom / prevZoom;
-        setPan((prevPan) => ({
-          x: mouseX - (mouseX - prevPan.x) * scaleRatio,
-          y: mouseY - (mouseY - prevPan.y) * scaleRatio,
-        }));
-        return newZoom;
-      });
-    };
+  const handleMouseUp = useCallback(() => {
+    if (isDraggingRef.current) {
+      isDraggingRef.current = false;
+      if (radarContainerRef.current)
+        radarContainerRef.current.style.cursor = "grab";
+      if (mobileRadarContainerRef.current)
+        mobileRadarContainerRef.current.style.cursor = "grab";
+    }
+  }, []);
 
-    const handleMouseDown = (e: MouseEvent) => {
-      if (e.button !== 0) return; // only left click
-      const target = e.currentTarget as HTMLElement;
+  const handleTouchStart = useCallback((e: TouchEvent) => {
+    if (e.touches.length === 1) {
       isDraggingRef.current = true;
-      dragStartRef.current = { x: e.clientX, y: e.clientY };
-      target.style.cursor = "grabbing";
-      e.preventDefault();
-    };
+      dragStartRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    } else if (e.touches.length === 2) {
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY,
+      );
+      lastTouchDistanceRef.current = dist;
+    }
+  }, []);
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isDraggingRef.current) return;
-      const dx = (e.clientX - dragStartRef.current.x) / zoomRef.current;
-      const dy = (e.clientY - dragStartRef.current.y) / zoomRef.current;
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    if (e.cancelable) e.preventDefault();
+    if (e.touches.length === 1 && isDraggingRef.current) {
+      const dx =
+        (e.touches[0].clientX - dragStartRef.current.x) / zoomRef.current;
+      const dy =
+        (e.touches[0].clientY - dragStartRef.current.y) / zoomRef.current;
       setPan({
         x: panRef.current.x + dx,
         y: panRef.current.y + dy,
       });
-      dragStartRef.current = { x: e.clientX, y: e.clientY };
-    };
-
-    const handleMouseUp = () => {
-      if (isDraggingRef.current) {
-        isDraggingRef.current = false;
-        if (desktopContainer) desktopContainer.style.cursor = "grab";
-        if (mobileContainer) mobileContainer.style.cursor = "grab";
-      }
-    };
-
-    // Touch events
-    const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches.length === 1) {
-        isDraggingRef.current = true;
-        dragStartRef.current = {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY,
-        };
-      } else if (e.touches.length === 2) {
-        const dist = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY,
-        );
-        lastTouchDistanceRef.current = dist;
-      }
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      // Critical: prevent default to stop whole page scrolling/zooming
-      if (e.cancelable) e.preventDefault();
-
-      if (e.touches.length === 1 && isDraggingRef.current) {
-        const dx =
-          (e.touches[0].clientX - dragStartRef.current.x) / zoomRef.current;
-        const dy =
-          (e.touches[0].clientY - dragStartRef.current.y) / zoomRef.current;
-        setPan({
-          x: panRef.current.x + dx,
-          y: panRef.current.y + dy,
-        });
-        dragStartRef.current = {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY,
-        };
-      } else if (e.touches.length === 2 && lastTouchDistanceRef.current > 0) {
-        const dist = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY,
-        );
-        const scale = dist / lastTouchDistanceRef.current;
-        setZoomLevel((prev) => Math.min(Math.max(prev * scale, 0.5), 4));
-        lastTouchDistanceRef.current = dist;
-      }
-    };
-
-    const handleTouchEnd = () => {
-      isDraggingRef.current = false;
-      lastTouchDistanceRef.current = 0;
-    };
-
-    // Attach listeners to DESKTOP container
-    if (desktopContainer) {
-      desktopContainer.style.cursor = "grab";
-      desktopContainer.addEventListener("wheel", handleWheel, {
-        passive: false,
-      });
-      desktopContainer.addEventListener("mousedown", handleMouseDown);
-      desktopContainer.addEventListener("touchstart", handleTouchStart, {
-        passive: false,
-      });
-      desktopContainer.addEventListener("touchmove", handleTouchMove, {
-        passive: false,
-      });
-      desktopContainer.addEventListener("touchend", handleTouchEnd);
+      dragStartRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    } else if (e.touches.length === 2 && lastTouchDistanceRef.current > 0) {
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY,
+      );
+      const scale = dist / lastTouchDistanceRef.current;
+      setZoomLevel((prev) => Math.min(Math.max(prev * scale, 0.5), 4));
+      lastTouchDistanceRef.current = dist;
     }
+  }, []);
 
-    // Attach listeners to MOBILE container
-    if (mobileContainer) {
-      mobileContainer.style.cursor = "grab";
-      // Mobile usually doesn't have wheel/mousedown interaction as primary, but good to have consistency
-      mobileContainer.addEventListener("wheel", handleWheel, {
-        passive: false,
-      });
-      mobileContainer.addEventListener("mousedown", handleMouseDown);
-      mobileContainer.addEventListener("touchstart", handleTouchStart, {
-        passive: false,
-      });
-      mobileContainer.addEventListener("touchmove", handleTouchMove, {
-        passive: false,
-      });
-      mobileContainer.addEventListener("touchend", handleTouchEnd);
-    }
+  const handleTouchEnd = useCallback(() => {
+    isDraggingRef.current = false;
+    lastTouchDistanceRef.current = 0;
+  }, []);
 
-    // Global listeners
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+  // ── Desktop Effect ──
+  useEffect(() => {
+    const el = radarContainerRef.current;
+    if (!el) return;
+    el.style.cursor = "grab";
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    el.addEventListener("mousedown", handleMouseDown);
+    el.addEventListener("touchstart", handleTouchStart, { passive: false });
+    el.addEventListener("touchmove", handleTouchMove, { passive: false });
+    el.addEventListener("touchend", handleTouchEnd);
 
     return () => {
-      if (desktopContainer) {
-        desktopContainer.removeEventListener("wheel", handleWheel);
-        desktopContainer.removeEventListener("mousedown", handleMouseDown);
-        desktopContainer.removeEventListener("touchstart", handleTouchStart);
-        desktopContainer.removeEventListener("touchmove", handleTouchMove);
-        desktopContainer.removeEventListener("touchend", handleTouchEnd);
-      }
-      if (mobileContainer) {
-        mobileContainer.removeEventListener("wheel", handleWheel);
-        mobileContainer.removeEventListener("mousedown", handleMouseDown);
-        mobileContainer.removeEventListener("touchstart", handleTouchStart);
-        mobileContainer.removeEventListener("touchmove", handleTouchMove);
-        mobileContainer.removeEventListener("touchend", handleTouchEnd);
-      }
+      el.removeEventListener("wheel", handleWheel);
+      el.removeEventListener("mousedown", handleMouseDown);
+      el.removeEventListener("touchstart", handleTouchStart);
+      el.removeEventListener("touchmove", handleTouchMove);
+      el.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [
+    handleWheel,
+    handleMouseDown,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+  ]);
+
+  // ── Global Window Listeners ──
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [mobileTab]);
+  }, [handleMouseMove, handleMouseUp]);
+
+  // ── Mobile Ref Callback ──
+  const setMobileRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (mobileRadarContainerRef.current) {
+        const old = mobileRadarContainerRef.current;
+        old.removeEventListener("wheel", handleWheel);
+        old.removeEventListener("mousedown", handleMouseDown);
+        old.removeEventListener("touchstart", handleTouchStart);
+        old.removeEventListener("touchmove", handleTouchMove);
+        old.removeEventListener("touchend", handleTouchEnd);
+      }
+
+      mobileRadarContainerRef.current = node;
+
+      if (node) {
+        node.style.cursor = "grab";
+        node.addEventListener("wheel", handleWheel, { passive: false });
+        node.addEventListener("mousedown", handleMouseDown);
+        node.addEventListener("touchstart", handleTouchStart, {
+          passive: false,
+        });
+        node.addEventListener("touchmove", handleTouchMove, { passive: false });
+        node.addEventListener("touchend", handleTouchEnd);
+      }
+    },
+    [
+      handleWheel,
+      handleMouseDown,
+      handleTouchStart,
+      handleTouchMove,
+      handleTouchEnd,
+    ],
+  );
 
   // ── Export handlers ──
   const handleExportPNG = async () => {
@@ -411,7 +425,7 @@ export function RadarTemplate() {
             <Card>
               <CardContent className="p-2">
                 <div
-                  ref={mobileRadarContainerRef}
+                  ref={setMobileRef}
                   className="relative overflow-hidden aspect-square flex items-center justify-center bg-white/5 rounded-lg border touch-none"
                 >
                   {/* Mobile Zoom Controls */}
