@@ -405,6 +405,12 @@ export function RadarTemplate() {
           <TabsContent value="radar">
             {/* Mobile Info Block */}
             <div className="mb-3 bg-card border rounded-lg p-3 text-xs text-muted-foreground shadow-sm">
+              <p className="mb-2 leading-relaxed text-foreground/90">
+                Aplicación web interactiva de vigilancia científico-tecnológica
+                para el área de telecomunicaciones del Centro de Electricidad,
+                Electrónica y Telecomunicaciones (CEET) — SENA.
+              </p>
+              <Separator className="my-2 opacity-50" />
               <p className="font-semibold text-foreground mb-1">
                 Radar Tecnológico — Guía Rápida
               </p>
@@ -547,6 +553,15 @@ export function RadarTemplate() {
       <main className="hidden md:flex flex-1 min-h-0 overflow-hidden">
         {/* LEFT SIDEBAR — Filters */}
         <aside className="w-[220px] flex-shrink-0 border-r bg-card/50 p-3 space-y-4 overflow-y-auto">
+          {/* App Description */}
+          <div className="text-[10px] text-muted-foreground leading-relaxed italic">
+            "Aplicación web interactiva de vigilancia científico-tecnológica
+            para el área de telecomunicaciones del Centro de Electricidad,
+            Electrónica y Telecomunicaciones (CEET) — SENA."
+          </div>
+
+          <Separator />
+
           {/* Desktop Info Block */}
           <div className="text-[11px] text-muted-foreground bg-accent/20 p-2.5 rounded-md border border-accent/30 leading-snug">
             <p className="font-bold text-foreground mb-1.5 text-xs">
