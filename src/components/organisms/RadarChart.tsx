@@ -202,6 +202,19 @@ export const RadarChart = forwardRef<SVGSVGElement, RadarChartProps>(
             </g>
           );
         })}
+
+        {/* Source Text Attribution */}
+        <text
+          x={CX}
+          y={SVG_H - 30}
+          textAnchor="middle"
+          fill="#8e8e8e"
+          fontSize={12}
+          fontWeight={500}
+        >
+          Fuente: Elaboración propia basada en ejercicio VCyT CEET-GICS (2025).
+          Metodología tipo Gartner Technology Radar.
+        </text>
       </svg>
     );
   },
