@@ -330,7 +330,7 @@ export function RadarTemplate() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, []);
+  }, [mobileTab]);
 
   // ── Export handlers ──
   const handleExportPNG = async () => {
