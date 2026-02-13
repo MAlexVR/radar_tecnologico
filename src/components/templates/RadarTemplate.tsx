@@ -114,6 +114,7 @@ export function RadarTemplate() {
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [exporting, setExporting] = useState(false);
   const radarContainerRef = useRef<HTMLDivElement>(null);
+  const mobileRadarContainerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
   const filteredTechs = TECHNOLOGIES.filter(
@@ -155,6 +156,7 @@ export function RadarTemplate() {
     setZoomLevel(1);
     setPan({ x: 0, y: 0 });
     setSelectedTech(null);
+    setHoveredTech(null);
   };
 
   // ── Drag-to-pan state (refs for use inside event handlers) ──
@@ -168,14 +170,18 @@ export function RadarTemplate() {
 
   // ── Fixed wheel zoom + drag-to-pan: useEffect with passive: false ──
   useEffect(() => {
-    const container = radarContainerRef.current;
-    if (!container) return;
+    const desktopContainer = radarContainerRef.current;
+    const mobileContainer = mobileRadarContainerRef.current;
 
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       e.stopPropagation();
 
-      const rect = container.getBoundingClientRect();
+      // Use the target container for bounding rect
+      const target = e.currentTarget as HTMLElement;
+      if (!target) return;
+
+      const rect = target.getBoundingClientRect();
       const mouseX = e.clientX - rect.left - rect.width / 2;
       const mouseY = e.clientY - rect.top - rect.height / 2;
       const delta = -e.deltaY * 0.0015;
@@ -193,9 +199,10 @@ export function RadarTemplate() {
 
     const handleMouseDown = (e: MouseEvent) => {
       if (e.button !== 0) return; // only left click
+      const target = e.currentTarget as HTMLElement;
       isDraggingRef.current = true;
       dragStartRef.current = { x: e.clientX, y: e.clientY };
-      container.style.cursor = "grabbing";
+      target.style.cursor = "grabbing";
       e.preventDefault();
     };
 
@@ -213,7 +220,8 @@ export function RadarTemplate() {
     const handleMouseUp = () => {
       if (isDraggingRef.current) {
         isDraggingRef.current = false;
-        container.style.cursor = "grab";
+        if (desktopContainer) desktopContainer.style.cursor = "grab";
+        if (mobileContainer) mobileContainer.style.cursor = "grab";
       }
     };
 
@@ -235,7 +243,8 @@ export function RadarTemplate() {
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (e.cancelable) e.preventDefault(); // prevent scrolling
+      // Critical: prevent default to stop whole page scrolling/zooming
+      if (e.cancelable) e.preventDefault();
 
       if (e.touches.length === 1 && isDraggingRef.current) {
         const dx =
@@ -266,27 +275,60 @@ export function RadarTemplate() {
       lastTouchDistanceRef.current = 0;
     };
 
-    container.style.cursor = "grab";
-    container.addEventListener("wheel", handleWheel, { passive: false });
-    container.addEventListener("mousedown", handleMouseDown);
+    // Attach listeners to DESKTOP container
+    if (desktopContainer) {
+      desktopContainer.style.cursor = "grab";
+      desktopContainer.addEventListener("wheel", handleWheel, {
+        passive: false,
+      });
+      desktopContainer.addEventListener("mousedown", handleMouseDown);
+      desktopContainer.addEventListener("touchstart", handleTouchStart, {
+        passive: false,
+      });
+      desktopContainer.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+      desktopContainer.addEventListener("touchend", handleTouchEnd);
+    }
+
+    // Attach listeners to MOBILE container
+    if (mobileContainer) {
+      mobileContainer.style.cursor = "grab";
+      // Mobile usually doesn't have wheel/mousedown interaction as primary, but good to have consistency
+      mobileContainer.addEventListener("wheel", handleWheel, {
+        passive: false,
+      });
+      mobileContainer.addEventListener("mousedown", handleMouseDown);
+      mobileContainer.addEventListener("touchstart", handleTouchStart, {
+        passive: false,
+      });
+      mobileContainer.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+      mobileContainer.addEventListener("touchend", handleTouchEnd);
+    }
+
+    // Global listeners
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
-    container.addEventListener("touchstart", handleTouchStart, {
-      passive: false,
-    });
-    container.addEventListener("touchmove", handleTouchMove, {
-      passive: false,
-    });
-    container.addEventListener("touchend", handleTouchEnd);
 
     return () => {
-      container.removeEventListener("wheel", handleWheel);
-      container.removeEventListener("mousedown", handleMouseDown);
+      if (desktopContainer) {
+        desktopContainer.removeEventListener("wheel", handleWheel);
+        desktopContainer.removeEventListener("mousedown", handleMouseDown);
+        desktopContainer.removeEventListener("touchstart", handleTouchStart);
+        desktopContainer.removeEventListener("touchmove", handleTouchMove);
+        desktopContainer.removeEventListener("touchend", handleTouchEnd);
+      }
+      if (mobileContainer) {
+        mobileContainer.removeEventListener("wheel", handleWheel);
+        mobileContainer.removeEventListener("mousedown", handleMouseDown);
+        mobileContainer.removeEventListener("touchstart", handleTouchStart);
+        mobileContainer.removeEventListener("touchmove", handleTouchMove);
+        mobileContainer.removeEventListener("touchend", handleTouchEnd);
+      }
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
-      container.removeEventListener("touchstart", handleTouchStart);
-      container.removeEventListener("touchmove", handleTouchMove);
-      container.removeEventListener("touchend", handleTouchEnd);
     };
   }, []);
 
@@ -368,7 +410,10 @@ export function RadarTemplate() {
 
             <Card>
               <CardContent className="p-2">
-                <div className="relative overflow-hidden aspect-square flex items-center justify-center bg-white/5 rounded-lg border">
+                <div
+                  ref={mobileRadarContainerRef}
+                  className="relative overflow-hidden aspect-square flex items-center justify-center bg-white/5 rounded-lg border touch-none"
+                >
                   {/* Mobile Zoom Controls */}
                   <div className="absolute top-2 right-2 flex flex-col gap-1.5 z-10">
                     <Button
