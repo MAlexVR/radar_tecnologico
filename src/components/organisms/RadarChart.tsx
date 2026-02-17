@@ -127,25 +127,40 @@ export const RadarChart = forwardRef<SVGSVGElement, RadarChartProps>(
           const labelR = RINGS[3].radius + 30;
           const pos = polarToXY(CX, CY, labelR, midAngle);
 
-          // Text anchor based on x-position relative to center
-          let anchor: "start" | "middle" | "end" = "middle";
-          if (pos.x > CX + 60) anchor = "start";
-          else if (pos.x < CX - 60) anchor = "end";
+          // Always center-align the lines relative to each other
+          const anchor = "middle";
+
+          // Adjust x-position to simulate the previous start/end anchoring
+          // so the text block stays roughly in the same place
+          let textX = pos.x;
+          const shift = 60; // Approximate half-width of labels
+
+          if (pos.x > CX + 60) {
+            textX += shift;
+          } else if (pos.x < CX - 60) {
+            textX -= shift;
+          }
 
           const isActive = activeSectors.has(si);
 
           return (
             <text
               key={`sl-${s.id}`}
-              x={pos.x}
+              x={textX}
               y={pos.y}
               textAnchor={anchor}
               fill={isActive ? s.color : "#9e9e9e"}
-              fontSize={13}
+              fontSize={12}
               fontWeight={800}
               opacity={isActive ? 1 : 0.3}
             >
-              {s.shortLabel}
+              {s.labelLines
+                ? s.labelLines.map((line, i) => (
+                    <tspan key={i} x={textX} dy={i === 0 ? 0 : "1.2em"}>
+                      {line}
+                    </tspan>
+                  ))
+                : s.shortLabel}
             </text>
           );
         })}

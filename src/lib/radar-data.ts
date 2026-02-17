@@ -59,9 +59,9 @@ export const SECTOR_ANGLE = 72;
 export const SECTORS: Sector[] = [
   {
     id: "D1",
-    label: "Inteligencia Nativa y IA",
-    shortLabel: "D1: Inteligencia Nativa y IA",
-    labelLines: ["Inteligencia", "Nativa y IA"],
+    label: "Inteligencia Nativa y Redes Autónomas",
+    shortLabel: "D1: Inteligencia Nativa y Redes Autónomas",
+    labelLines: ["D1: Inteligencia Nativa", "y Redes Autónomas"],
     startAngle: -18,
     color: "#1565C0",
     bgLight: "#E3F2FD",
@@ -70,9 +70,9 @@ export const SECTORS: Sector[] = [
   },
   {
     id: "D2",
-    label: "Conectividad Next-Gen",
-    shortLabel: "D2: Conectividad Next-Gen",
-    labelLines: ["Conectividad", "Next-Gen"],
+    label: "Conectividad Extrema y Convergente",
+    shortLabel: "D2: Conectividad Extrema y Convergente",
+    labelLines: ["D2: Conectividad Extrema", "y Convergente"],
     startAngle: 54,
     color: "#C62828",
     bgLight: "#FFEBEE",
@@ -81,9 +81,9 @@ export const SECTORS: Sector[] = [
   },
   {
     id: "D3",
-    label: "Arquitectura Abierta",
-    shortLabel: "D3: Arquitectura Abierta",
-    labelLines: ["Arquitectura", "Abierta"],
+    label: "Arquitectura de Red Desagregada y Plataformas",
+    shortLabel: "D3: Arquitectura de Red Desagregada y Plataformas",
+    labelLines: ["D3: Arquitectura de Red", "Desagregada y Plataformas"],
     startAngle: 126,
     color: "#F57F17",
     bgLight: "#FFF3E0",
@@ -92,9 +92,9 @@ export const SECTORS: Sector[] = [
   },
   {
     id: "D4",
-    label: "Modelo de Negocio",
-    shortLabel: "D4: Modelo de Negocio",
-    labelLines: ["Modelo de", "Negocio"],
+    label: "Monetización de Capacidades de Red",
+    shortLabel: "D4: Monetización de Capacidades de Red",
+    labelLines: ["D4: Monetización de", "Capacidades de Red"],
     startAngle: 198,
     color: "#6A1B9A",
     bgLight: "#F3E5F5",
@@ -103,9 +103,9 @@ export const SECTORS: Sector[] = [
   },
   {
     id: "D5",
-    label: "Confianza y Sostenibilidad",
-    shortLabel: "D5: Confianza y Sostenibilidad",
-    labelLines: ["Confianza y", "Sostenibilidad"],
+    label: "Seguridad, Resiliencia y Sostenibilidad",
+    shortLabel: "D5: Seguridad, Resiliencia y Sostenibilidad",
+    labelLines: ["D5: Seguridad, Resiliencia", "y Sostenibilidad"],
     startAngle: 270,
     color: "#00695C",
     bgLight: "#E0F2F1",
@@ -121,7 +121,7 @@ export const SECTORS: Sector[] = [
 // angleOff: offset from sector center in degrees
 // ═══════════════════════════════════════════════════════════════
 export const TECHNOLOGIES: Technology[] = [
-  // ── D1: Inteligencia Nativa y IA ──
+  // ── D1: Inteligencia Nativa y Redes Autónomas ──
   {
     id: "T01",
     name: "ML/DL Optimización de Red",
@@ -183,7 +183,7 @@ export const TECHNOLOGIES: Technology[] = [
     horizon: "Largo (5-10 años)",
   },
 
-  // ── D2: Conectividad Next-Gen ──
+  // ── D2: Conectividad Extrema y Convergente ──
   {
     id: "T06",
     name: "5G-Advanced",
@@ -245,7 +245,7 @@ export const TECHNOLOGIES: Technology[] = [
     horizon: "Largo (2030+)",
   },
 
-  // ── D3: Arquitectura Abierta ──
+  // ── D3: Arquitectura de Red Desagregada y Plataformas ──
   {
     id: "T11",
     name: "SDN/NFV Cloud Native",
@@ -307,7 +307,7 @@ export const TECHNOLOGIES: Technology[] = [
     horizon: "Largo (5-8 años)",
   },
 
-  // ── D4: Modelo de Negocio ──
+  // ── D4: Monetización de Capacidades de Red ──
   {
     id: "T16",
     name: "Servicios B2B",
@@ -357,7 +357,7 @@ export const TECHNOLOGIES: Technology[] = [
     horizon: "Largo (5-10 años)",
   },
 
-  // ── D5: Confianza y Sostenibilidad ──
+  // ── D5: Seguridad, Resiliencia y Sostenibilidad ──
   {
     id: "T20",
     name: "Ciberseguridad Next-Gen",
