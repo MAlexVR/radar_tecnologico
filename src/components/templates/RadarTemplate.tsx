@@ -773,7 +773,7 @@ export function RadarTemplate() {
         </div>
 
         {/* RIGHT SIDEBAR — Detail + Legend + Nomenclature */}
-        <aside className="w-[350px] max-w-[350px] flex-shrink-0 border-l bg-card/50 flex flex-col overflow-hidden">
+        <aside className="w-[350px] min-w-[350px] max-w-[350px] flex-shrink-0 border-l bg-card/50 flex flex-col overflow-hidden">
           <ScrollArea className="flex-1">
             <TechDetail tech={activeTech} />
 

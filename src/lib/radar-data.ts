@@ -124,11 +124,12 @@ export const TECHNOLOGIES: Technology[] = [
   // ── D1: Inteligencia Nativa y Redes Autónomas ──
   {
     id: "T01",
-    name: "ML/DL Optimización de Red",
+    name: "Machine Learning / Deep Learning para Optimización",
+    nameLines: ["Machine Learning / Deep Learning", "para Optimización"],
     code: "L04",
     sector: 0,
     ring: 0,
-    angleOff: -8,
+    angleOff: -0,
     trl: 8,
     desc: "Machine Learning y Deep Learning aplicado a optimización y gestión predictiva de redes de telecomunicaciones.",
     impact: "Alto",
@@ -136,7 +137,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T02",
-    name: "Redes Autónomas Zero-Touch",
+    name: "Redes Autónomas / Zero-Touch (Niveles L0-L5)",
+    nameLines: ["Redes Autónomas / Zero-Touch", "(Niveles L0-L5)"],
     code: "L02",
     sector: 0,
     ring: 1,
@@ -148,11 +150,12 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T03",
-    name: "IA Generativa / LLM",
+    name: "IA Generativa / LLM para Telecomunicaciones",
+    nameLines: ["IA Generativa / LLM", "para Telecomunicaciones"],
     code: "L01",
     sector: 0,
     ring: 1,
-    angleOff: -5,
+    angleOff: -24,
     trl: 4,
     desc: "Aplicación de modelos de lenguaje grandes y IA generativa para documentación, atención al cliente y optimización de redes.",
     impact: "Disruptivo",
@@ -160,7 +163,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T04",
-    name: "Gemelo Digital de Red",
+    name: "Gemelo Digital de Red (Network Digital Twin)",
+    nameLines: ["Gemelo Digital de Red", "(Network Digital Twin)"],
     code: "L03",
     sector: 0,
     ring: 2,
@@ -172,7 +176,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T05",
-    name: "ISAC",
+    name: "Sensado Integrado y Comunicaciones (ISAC)",
+    nameLines: ["Sensado Integrado y", "Comunicaciones (ISAC)"],
     code: "L05",
     sector: 0,
     ring: 3,
@@ -186,11 +191,12 @@ export const TECHNOLOGIES: Technology[] = [
   // ── D2: Conectividad Extrema y Convergente ──
   {
     id: "T06",
-    name: "5G-Advanced",
+    name: "5G-Advanced (3GPP Releases 18-19)",
+    nameLines: ["5G-Advanced", "(3GPP Releases 18-19)"],
     code: "L06",
     sector: 1,
     ring: 0,
-    angleOff: -22,
+    angleOff: -15,
     trl: 8,
     desc: "Evolución del estándar 5G (Rel. 18-19) con mejoras en eficiencia espectral, cobertura y latencia ultra-baja.",
     impact: "Alto",
@@ -198,7 +204,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T07",
-    name: "FWA 5G",
+    name: "Acceso Fijo Inalámbrico (FWA)",
+    nameLines: ["FWA", ""],
     code: "L09",
     sector: 1,
     ring: 0,
@@ -210,11 +217,12 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T08",
-    name: "Redes Ópticas F5G",
+    name: "Redes Ópticas Avanzadas (F5G/F6G)",
+    nameLines: ["Redes Ópticas Avanzadas", "(F5G/F6G)"],
     code: "L10",
     sector: 1,
     ring: 1,
-    angleOff: -8,
+    angleOff: -30,
     trl: 6,
     desc: "Evolución de redes de fibra óptica hacia capacidades 50G-PON y redes ópticas programables.",
     impact: "Alto",
@@ -222,7 +230,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T09",
-    name: "NTN / LEO",
+    name: "Redes No Terrestres (NTN) / Constelaciones LEO",
+    nameLines: ["Redes No Terrestres (NTN) /", "Constelaciones LEO"],
     code: "L08",
     sector: 1,
     ring: 1,
@@ -234,7 +243,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T10",
-    name: "6G / THz / RIS",
+    name: "Tecnologías Habilitadoras 6G (THz, RIS, MIMO Extremo)",
+    nameLines: ["Tecnologías Habilitadoras 6G", "(THz, RIS, MIMO Extremo)"],
     code: "L07",
     sector: 1,
     ring: 3,
@@ -248,11 +258,12 @@ export const TECHNOLOGIES: Technology[] = [
   // ── D3: Arquitectura de Red Desagregada y Plataformas ──
   {
     id: "T11",
-    name: "SDN/NFV Cloud Native",
+    name: "SDN/NFV y Redes Cloud-Native",
+    nameLines: ["SDN/NFV y", "Redes Cloud-Native"],
     code: "L12",
     sector: 2,
     ring: 0,
-    angleOff: -8,
+    angleOff: 18,
     trl: 8,
     desc: "Virtualización de funciones de red y redes definidas por software con arquitectura cloud-native.",
     impact: "Alto",
@@ -260,7 +271,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T12",
-    name: "Open RAN",
+    name: "Open RAN / Desagregación de la RAN",
+    nameLines: ["Open RAN /", "Desagregación de la RAN"],
     code: "L11",
     sector: 2,
     ring: 1,
@@ -272,7 +284,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T13",
-    name: "Edge / MEC",
+    name: "Edge Computing / MEC (Multi-Access Edge Computing)",
+    nameLines: ["Edge Computing / MEC", "(Multi-Access Edge Computing)"],
     code: "L13",
     sector: 2,
     ring: 1,
@@ -284,7 +297,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T14",
-    name: "Network Slicing",
+    name: "Network Slicing End-to-End",
+    nameLines: ["Network Slicing", "End-to-End"],
     code: "L14",
     sector: 2,
     ring: 2,
@@ -296,7 +310,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T15",
-    name: "Conv. Red-Cómputo",
+    name: "Convergencia Red-Cómputo (Computing-Network Convergence)",
+    nameLines: ["Convergencia Red-Cómputo", "(Computing-Network Convergence)"],
     code: "L15",
     sector: 2,
     ring: 3,
@@ -310,11 +325,12 @@ export const TECHNOLOGIES: Technology[] = [
   // ── D4: Monetización de Capacidades de Red ──
   {
     id: "T16",
-    name: "Servicios B2B",
+    name: "Transformación Techco / Servicios B2B",
+    nameLines: ["Transformación Techco /", "Servicios B2B"],
     code: "L17",
     sector: 3,
     ring: 1,
-    angleOff: -10,
+    angleOff: -15,
     trl: 6,
     desc: "Transformación de operadores en Technology Companies con servicios B2B verticales.",
     impact: "Alto",
@@ -322,7 +338,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T17",
-    name: "APIs Red / NaaS",
+    name: "APIs de Red / Network-as-a-Service (NaaS)",
+    nameLines: ["APIs de Red /", "Network-as-a-Service (NaaS)"],
     code: "L16",
     sector: 3,
     ring: 2,
@@ -334,11 +351,12 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T18",
-    name: "Inclusión Digital",
+    name: "Inclusión Digital y Conectividad Universal",
+    nameLines: ["Inclusión Digital y", "Conectividad Universal"],
     code: "L19",
     sector: 3,
     ring: 1,
-    angleOff: 10,
+    angleOff: 15,
     trl: 5,
     desc: "Estrategias para cerrar la brecha digital: conectividad rural, alfabetización digital y acceso universal.",
     impact: "Social Alto",
@@ -346,11 +364,12 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T19",
-    name: "XR / Holográfico",
+    name: "Comunicaciones Inmersivas (XR/Holográfico)",
+    nameLines: ["Comunicaciones Inmersivas", "(XR/Holográfico)"],
     code: "L20",
     sector: 3,
     ring: 3,
-    angleOff: -10,
+    angleOff: 0,
     trl: 2,
     desc: "Extended Reality y comunicaciones holográficas como nuevos paradigmas de interacción.",
     impact: "Disruptivo",
@@ -360,11 +379,12 @@ export const TECHNOLOGIES: Technology[] = [
   // ── D5: Seguridad, Resiliencia y Sostenibilidad ──
   {
     id: "T20",
-    name: "Ciberseguridad Next-Gen",
+    name: "Ciberseguridad de Redes de Próxima Generación",
+    nameLines: ["Ciberseguridad de Redes", "de Próxima Generación"],
     code: "L21",
     sector: 4,
     ring: 1,
-    angleOff: -4,
+    angleOff: -13,
     trl: 6,
     desc: "Seguridad basada en IA, Zero Trust Architecture y detección proactiva de amenazas.",
     impact: "Crítico",
@@ -372,11 +392,12 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T21",
-    name: "Redes Verdes",
+    name: "Redes Verdes / Eficiencia Energética",
+    nameLines: ["Redes Verdes /", "Eficiencia Energética"],
     code: "L23",
     sector: 4,
     ring: 1,
-    angleOff: 12,
+    angleOff: 18,
     trl: 4,
     desc: "Diseño de redes energéticamente eficientes y sostenibles (Green-Native Networks).",
     impact: "Alto",
@@ -384,7 +405,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T22",
-    name: "Criptografía PQC",
+    name: "Criptografía Post-Cuántica (PQC)",
+    nameLines: ["Criptografía", "Post-Cuántica (PQC)"],
     code: "L22",
     sector: 4,
     ring: 2,
@@ -396,7 +418,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T23",
-    name: "Gobernanza IA",
+    name: "Gobernanza de Datos / IA Responsable",
+    nameLines: ["Gobernanza de Datos /", "IA Responsable"],
     code: "L25",
     sector: 4,
     ring: 2,
@@ -408,7 +431,8 @@ export const TECHNOLOGIES: Technology[] = [
   },
   {
     id: "T24",
-    name: "Blockchain Telecom",
+    name: "Blockchain para Telecomunicaciones",
+    nameLines: ["Blockchain para", "Telecomunicaciones"],
     code: "L24",
     sector: 4,
     ring: 3,
@@ -466,3 +490,19 @@ export function getTrlLabel(trl: number): string {
   if (trl >= 3) return "TRL 3-4 (Bajo)";
   return "TRL 1-2 (Inicial)";
 }
+
+// ═══════════════════════════════════════════════════════════════
+// EXCLUDED TECHNOLOGIES (Not mapped on radar)
+// ═══════════════════════════════════════════════════════════════
+export const EXCLUDED_TECHNOLOGIES = [
+  {
+    code: "L18",
+    name: "Consolidación Sectorial (M&A)",
+    sublines: [
+      "SL18a. M&A global: fusiones y adquisiciones entre operadores",
+      "SL18b. Regulación de concentración: políticas antimonopolio en telecomunicaciones",
+    ],
+    justification:
+      "ESTABLE. Tema regulatorio y empresarial, no tecnológico. Olas de consolidación en Europa (Vodafone/Three UK) y Latam. No genera patentes. No requiere formación técnica específica en el CEET. IMPLICACIÓN CEET: No aplica para formación técnica.",
+  },
+];

@@ -10,6 +10,7 @@ export interface Technology {
   desc: string;
   impact: string;
   horizon: string;
+  nameLines?: string[];
 }
 
 export interface Ring {

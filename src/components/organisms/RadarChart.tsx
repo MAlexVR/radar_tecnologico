@@ -212,7 +212,13 @@ export const RadarChart = forwardRef<SVGSVGElement, RadarChartProps>(
                 fontSize={isActive ? 11 : 9.5}
                 fontWeight={isActive ? 700 : 500}
               >
-                {tech.name}
+                {tech.nameLines
+                  ? tech.nameLines.map((line: string, i: number) => (
+                      <tspan key={i} x={pos.x} dy={i === 0 ? 0 : "1.2em"}>
+                        {line}
+                      </tspan>
+                    ))
+                  : tech.name}
               </text>
             </g>
           );
