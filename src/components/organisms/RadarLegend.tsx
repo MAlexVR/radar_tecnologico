@@ -4,7 +4,7 @@ import { RINGS, SECTORS } from "@/lib/radar-data";
 
 export function RadarLegend() {
   return (
-    <div className="border rounded-xl bg-white dark:bg-card p-4 space-y-4 text-sm">
+    <div className="border rounded-xl bg-card p-4 space-y-4 text-sm">
       {/* Anillos section */}
       <div>
         <h4 className="font-bold text-xs uppercase tracking-wider text-foreground/80 mb-2.5">

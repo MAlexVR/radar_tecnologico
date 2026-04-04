@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { Technology, ActiveFilters } from "@/types/radar";
 import { RINGS, SECTORS, TECHNOLOGIES } from "@/lib/radar-data";
 import { Header } from "@/components/organisms/Header";
+import { Footer } from "@/components/organisms/Footer";
 import { RadarChart } from "@/components/organisms/RadarChart";
 import { TechDetail } from "@/components/organisms/TechDetail";
 import { NomenclatureTable } from "@/components/organisms/NomenclatureTable";
@@ -116,15 +117,6 @@ export function RadarTemplate() {
   const radarContainerRef = useRef<HTMLDivElement>(null);
   const mobileRadarContainerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
-
-  // Reset zoom/pan when switching back to radar tab on mobile
-  useEffect(() => {
-    if (mobileTab === "radar") {
-      // Optional: Reset zoom when returning to radar view
-      // setZoomLevel(1);
-      // setPan({ x: 0, y: 0 });
-    }
-  }, [mobileTab]);
 
   const filteredTechs = TECHNOLOGIES.filter(
     (t) => filters.sectors.has(t.sector) && filters.rings.has(t.ring),
@@ -365,7 +357,7 @@ export function RadarTemplate() {
       await downloadPDF(svgRef.current);
     } catch (err) {
       console.error("PDF export failed:", err);
-      alert("Para exportar a PDF instala jspdf: npm install jspdf");
+      alert("Error al exportar a PDF. Por favor intente nuevamente.");
     }
     setExporting(false);
   };
@@ -377,7 +369,7 @@ export function RadarTemplate() {
       <Header />
 
       {/* ═══════ MOBILE LAYOUT ═══════ */}
-      <main className="flex-1 container px-3 py-3 md:hidden overflow-y-auto">
+      <main className="flex-1 container-sena py-3 md:hidden overflow-y-auto">
         <Tabs
           value={mobileTab}
           onValueChange={setMobileTab}
@@ -404,27 +396,17 @@ export function RadarTemplate() {
 
           <TabsContent value="radar">
             {/* Mobile Info Block */}
-            <div className="mb-3 bg-card border rounded-lg p-3 text-xs text-muted-foreground shadow-sm">
-              <p className="mb-2 leading-relaxed text-foreground/90">
-                Aplicación web interactiva de vigilancia científico-tecnológica
-                para el área de telecomunicaciones del Centro de Electricidad,
-                Electrónica y Telecomunicaciones (CEET) — SENA.
+            <div className="mb-3 bg-sena-gray-light/50 border border-sena-gray-light rounded-lg p-3 text-xs text-sena-gray-dark shadow-sm">
+              <p className="mb-2 leading-relaxed text-sena-blue font-medium text-[11px]">
+                Vigilancia científico-tecnológica — Telecomunicaciones CEET 2025-2035
               </p>
               <Separator className="my-2 opacity-50" />
-              <p className="font-semibold text-foreground mb-1">
-                Radar Tecnológico — Guía Rápida
-              </p>
-              <ul className="list-disc list-inside space-y-0.5 opacity-90">
-                <li>
-                  Usa{" "}
-                  <strong className="text-foreground">
-                    dos dedos para zoom
-                  </strong>{" "}
-                  o los botones (+/-).
-                </li>
+              <p className="font-semibold text-sena-blue mb-1">Guía Rápida</p>
+              <ul className="list-disc list-inside space-y-0.5">
+                <li>Usa <strong className="text-sena-green">dos dedos para zoom</strong> o los botones (+/-).</li>
                 <li>Arrastra para mover el mapa.</li>
                 <li>Toca un punto para ver detalles.</li>
-                <li>Usa "Filtros" y "Leyenda" para explorar.</li>
+                <li>Explora con "Filtros" y "Leyenda".</li>
               </ul>
             </div>
 
@@ -432,28 +414,28 @@ export function RadarTemplate() {
               <CardContent className="p-2">
                 <div
                   ref={setMobileRef}
-                  className="relative overflow-hidden aspect-square flex items-center justify-center bg-white/5 rounded-lg border touch-none"
+                  className="relative overflow-hidden aspect-square flex items-center justify-center bg-sena-gray-light/40 rounded-lg border touch-none"
                 >
                   {/* Mobile Zoom Controls */}
                   <div className="absolute top-2 right-2 flex flex-col gap-1.5 z-10">
                     <Button
                       size="icon-sm"
                       onClick={handleZoomIn}
-                      className="h-8 w-8 bg-sena-green/20 text-sena-green border border-sena-green/30 hover:bg-sena-green/30 backdrop-blur shadow-sm"
+                      className="h-8 w-8 bg-sena-green/80 text-white border border-sena-green/30 hover:bg-sena-green shadow-sm"
                     >
                       <ZoomIn className="w-4 h-4" />
                     </Button>
                     <Button
                       size="icon-sm"
                       onClick={handleZoomOut}
-                      className="h-8 w-8 bg-sena-green/20 text-sena-green border border-sena-green/30 hover:bg-sena-green/30 backdrop-blur shadow-sm"
+                      className="h-8 w-8 bg-sena-green/80 text-white border border-sena-green/30 hover:bg-sena-green shadow-sm"
                     >
                       <ZoomOut className="w-4 h-4" />
                     </Button>
                     <Button
                       size="icon-sm"
                       onClick={handleResetZoom}
-                      className="h-8 w-8 bg-sena-green/20 text-sena-green border border-sena-green/30 hover:bg-sena-green/30 backdrop-blur shadow-sm"
+                      className="h-8 w-8 bg-sena-green/80 text-white border border-sena-green/30 hover:bg-sena-green shadow-sm"
                     >
                       <Maximize className="w-4 h-4" />
                     </Button>
@@ -517,12 +499,12 @@ export function RadarTemplate() {
           <TabsContent value="table">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <List className="w-4 h-4 text-sena-cyan" />
+                <CardTitle className="text-sm flex items-center gap-2 text-sena-blue">
+                  <List className="w-4 h-4 text-sena-green" />
                   Nomenclaturas — {filteredTechs.length} tecnologías
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-3 pt-0 max-h-[60vh] overflow-y-auto">
+              <CardContent className="p-3 pt-0">
                 <NomenclatureTable
                   filteredTechs={filteredTechs}
                   selectedTech={selectedTech}
@@ -567,7 +549,7 @@ export function RadarTemplate() {
             <p className="font-bold text-foreground mb-1.5 text-xs">
               Guía de Navegación
             </p>
-            <ul className="list-disc list-inside space-y-1 opacity-85">
+            <ul className="list-disc list-inside space-y-1 opacity-80">
               <li>
                 <span className="font-medium">Zoom:</span> Rueda del mouse
               </li>
@@ -724,7 +706,7 @@ export function RadarTemplate() {
                 size="icon"
                 onClick={handleZoomIn}
                 title="Zoom In"
-                className="bg-sena-green/20 text-sena-green border border-sena-green/30 hover:bg-sena-green/30"
+                className="bg-sena-green/80 text-white border border-sena-green/30 hover:bg-sena-green"
               >
                 <ZoomIn className="w-4 h-4" />
               </Button>
@@ -732,7 +714,7 @@ export function RadarTemplate() {
                 size="icon"
                 onClick={handleZoomOut}
                 title="Zoom Out"
-                className="bg-sena-green/20 text-sena-green border border-sena-green/30 hover:bg-sena-green/30"
+                className="bg-sena-green/80 text-white border border-sena-green/30 hover:bg-sena-green"
               >
                 <ZoomOut className="w-4 h-4" />
               </Button>
@@ -740,7 +722,7 @@ export function RadarTemplate() {
                 size="icon"
                 onClick={handleResetZoom}
                 title="Reset View"
-                className="bg-sena-green/20 text-sena-green border border-sena-green/30 hover:bg-sena-green/30"
+                className="bg-sena-green/80 text-white border border-sena-green/30 hover:bg-sena-green"
               >
                 <Maximize className="w-4 h-4" />
               </Button>
@@ -789,14 +771,14 @@ export function RadarTemplate() {
             {/* Nomenclature — collapsible */}
             <details className="p-3 group">
               <summary className="flex items-center gap-2 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden">
-                <List className="w-3.5 h-3.5 text-sena-cyan" />
+                <List className="w-3.5 h-3.5 text-sena-green" />
                 <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                   Nomenclaturas
                 </span>
                 <Badge variant="outline" className="text-[9px] ml-auto mr-1">
                   {filteredTechs.length} tecn.
                 </Badge>
-                <ChevronDown className="w-3.5 h-3.5 text-muted-foreground transition-transform group-open:rotate-180" />
+                <ChevronDown className="w-3.5 h-3.5 text-muted-foreground transition-transform details-chevron" />
               </summary>
               <div className="mt-2">
                 <NomenclatureTable
@@ -810,19 +792,7 @@ export function RadarTemplate() {
         </aside>
       </main>
 
-      {/* Footer with logos */}
-      <footer className="flex flex-row items-center justify-center gap-6 border-t bg-card/50 px-4 py-4 md:py-2">
-        <img
-          src="/logo-centro-formacion.svg"
-          alt="Centro de Electricidad, Electrónica y Telecomunicaciones"
-          className="h-9 w-auto opacity-80"
-        />
-        <img
-          src="/logo-grupo-investigacion.svg"
-          alt="Grupo de Investigación GICS"
-          className="h-9 w-auto opacity-80"
-        />
-      </footer>
+      <Footer />
     </div>
   );
 }

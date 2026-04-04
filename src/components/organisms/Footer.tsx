@@ -1,77 +1,42 @@
-"use client";
-
-import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { forwardRef } from "react";
 
-export const Footer = forwardRef<HTMLElement>(function Footer(_props, ref) {
+export function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer ref={ref} className="border-t bg-card/50">
-      <div className="container-sena py-8">
-        {/* Logos row */}
-        <div className="flex items-center justify-center gap-6 md:gap-10 mb-6 flex-wrap">
+    <footer className="bg-sena-green text-white py-6 px-4 md:px-8 border-t-4 border-sena-blue mt-auto z-50 relative shrink-0">
+      <div className="max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-between gap-6">
+        {/* Left — Logos Institucionales */}
+        <div className="flex items-center gap-5 sm:gap-6 flex-shrink-0">
           <Image
-            src="/logo-centro-formacion.svg"
-            alt="Centro de Electricidad, Electrónica y Telecomunicaciones"
-            width={120}
-            height={64}
-            className="h-12 md:h-16 w-auto opacity-80"
+            src="/assets/logos/logo-centro-formacion-white.svg"
+            alt="CEET"
+            width={100}
+            height={50}
+            className="h-10 sm:h-12 md:h-14 w-auto drop-shadow-sm object-contain"
           />
+          <div className="w-px h-10 sm:h-12 bg-white/30" />
           <Image
-            src="/logo-grupo-investigacion.svg"
-            alt="Grupo de Investigación GICS"
-            width={120}
-            height={64}
-            className="h-12 md:h-16 w-auto opacity-80"
+            src="/assets/logos/logo-grupo-investigacion.svg"
+            alt="GICS"
+            width={100}
+            height={50}
+            className="h-10 sm:h-12 md:h-14 w-auto brightness-0 invert drop-shadow-sm object-contain"
+            style={{ width: "auto" }}
           />
         </div>
 
-        <Separator className="mb-6" />
-
-        <div className="text-center space-y-2">
-          <h3 className="font-bold text-sm">
-            Radar Tecnológico — Telecomunicaciones CEET 2025-2035
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            Vigilancia Científico-Tecnológica y Prospectiva del Área de
-            Telecomunicaciones
+        {/* Right — Texto institucional */}
+        <div className="text-center xl:text-right mt-2 md:mt-0 flex-1">
+          <p className="text-sm md:text-base font-semibold tracking-wide text-white">
+            &copy; {currentYear} Servicio Nacional de Aprendizaje - SENA
           </p>
-          <p className="text-xs text-muted-foreground">
-            <strong>Autor:</strong> Mauricio Alexander Vargas Rodríguez —
-            Instructor G14
-          </p>
-          <p className="text-[10px] text-muted-foreground">
-            Centro de Electricidad, Electrónica y Telecomunicaciones (CEET) —
-            SENA, Bogotá D.C.
-          </p>
-          <p className="text-[10px] text-muted-foreground">
-            Grupo de Investigación del CEET SENA — GICS
-          </p>
-
-          {/* SENA color bar */}
-          <div className="flex justify-center gap-1 pt-3">
-            {[
-              "#39a900",
-              "#007832",
-              "#00304d",
-              "#71277a",
-              "#50e5f9",
-              "#fdc300",
-            ].map((c) => (
-              <div
-                key={c}
-                className="w-8 h-1.5 rounded-full"
-                style={{ backgroundColor: c }}
-              />
-            ))}
-          </div>
-
-          <p className="text-[9px] text-muted-foreground/60 pt-2">
-            © 2025 SENA — Servicio Nacional de Aprendizaje. Todos los derechos
-            reservados.
+          <p className="text-xs md:text-sm text-white/90 mt-1 leading-snug">
+            Centro de Electricidad, Electrónica y Telecomunicaciones (CEET)
+            &middot; Regional Distrito Capital
           </p>
         </div>
       </div>
     </footer>
   );
-});
+}

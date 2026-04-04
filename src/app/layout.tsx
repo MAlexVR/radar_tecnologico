@@ -4,13 +4,13 @@ import "./globals.css";
 
 const workSans = Work_Sans({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-work-sans",
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains-mono",
   display: "swap",
 });
 
@@ -46,10 +46,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#020617" },
-  ],
+  themeColor: "#39a900",
 };
 
 export default function RootLayout({
@@ -58,9 +55,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className="dark">
+    <html lang="es" suppressHydrationWarning>
       <body
-        className={`${workSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        className={`${workSans.variable} ${jetbrainsMono.variable} font-work-sans antialiased`}
+        suppressHydrationWarning
       >
         {children}
       </body>
