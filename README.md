@@ -1,5 +1,12 @@
 # Radar Tecnológico — Telecomunicaciones CEET 2025-2035
 
+![SENA](https://img.shields.io/badge/SENA-CEET-39A900?style=flat-square)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?style=flat-square&logo=tailwindcss)
+![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Radix-000000?style=flat-square)
+
 Aplicación web interactiva de vigilancia científico-tecnológica para el área de telecomunicaciones del Centro de Electricidad, Electrónica y Telecomunicaciones (CEET) — SENA.
 
 Grupo de Investigación, Innovación y Producción Académica — **GICS**
