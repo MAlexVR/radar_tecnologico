@@ -27,7 +27,6 @@ import {
   FileText,
   ChevronDown,
 } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 // ═══════════════════════════════════════════════════════════════
 // SVG Export helpers (no external dependencies needed)
@@ -756,7 +755,7 @@ export function RadarTemplate() {
 
         {/* RIGHT SIDEBAR — Detail + Legend + Nomenclature */}
         <aside className="w-[350px] min-w-[350px] max-w-[350px] flex-shrink-0 border-l bg-card/50 flex flex-col overflow-hidden">
-          <ScrollArea className="flex-1">
+          <div className="flex-1 overflow-y-auto">
             <TechDetail tech={activeTech} />
 
             <Separator />
@@ -788,7 +787,7 @@ export function RadarTemplate() {
                 />
               </div>
             </details>
-          </ScrollArea>
+          </div>
         </aside>
       </main>
 

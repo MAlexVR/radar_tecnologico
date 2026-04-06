@@ -22,7 +22,6 @@ export function Footer() {
             width={100}
             height={50}
             className="h-10 sm:h-12 md:h-14 w-auto brightness-0 invert drop-shadow-sm object-contain"
-            style={{ width: "auto" }}
           />
         </div>
 
