@@ -42,3 +42,6 @@ nul
 
 # documentation source (generated/kept separately)
 /docs
+
+# SDD artifacts (local only)
+/.atl
