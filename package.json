@@ -14,7 +14,7 @@
     "test:e2e": "playwright test",
     "data:build": "tsx tools/ingest-xlsx/src/index.ts",
     "data:validate": "tsx scripts/validate-data.ts",
-    "api:extract": "tsc --declaration --emitDeclarationOnly --outDir dist-types && api-extractor run --local",
+    "api:extract": "tsc -p tsconfig.build.json && api-extractor run --local",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
