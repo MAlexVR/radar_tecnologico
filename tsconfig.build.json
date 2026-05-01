@@ -1,19 +1,25 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "target": "ES2017",
     "noEmit": false,
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "dist-types",
-    "jsx": "react-jsx"
+    "rootDir": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": [
-    "src/core/**/*.ts",
-    "src/core/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "src/core/**/*.test.ts",
-    "src/core/**/*.test.tsx"
-  ]
+  "include": ["src/core/**/*.ts", "src/core/**/*.tsx"],
+  "exclude": ["node_modules", "src/core/**/*.test.ts", "src/core/**/*.test.tsx"]
 }
