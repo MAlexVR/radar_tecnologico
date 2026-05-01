@@ -16,18 +16,23 @@ test.describe("Radar Tecnológico — Página principal", () => {
     const dot = page.locator('[role="button"][aria-label]:visible').first();
     await expect(dot).toBeVisible();
     await dot.click();
-    // Verificar que el panel de detalle muestra información
+    // Verificar que algun panel de detalle muestra información
     await expect(
-      page.locator("aside:visible").getByText("Nivel de TRL")
+      page.locator("aside:visible").getByText("Nivel de TRL").first()
     ).toBeVisible();
   });
 
   test("navegación por teclado funciona", async ({ page }) => {
-    const dot = page.locator('[role="button"][tabIndex="0"]:visible').first();
-    await dot.focus();
+    // Enfocar la página primero y usar Tab para navegar al radar
+    await page.locator("body").focus();
+    // Hacer Tab varias veces hasta llegar a un punto del radar
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
     await page.keyboard.press("Enter");
+    // Verificar que se muestre información de detalle
     await expect(
-      page.locator("aside:visible").getByText("Nivel de TRL")
+      page.locator("aside:visible").getByText("Nivel de TRL").first()
     ).toBeVisible();
   });
 

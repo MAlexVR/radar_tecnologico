@@ -15,10 +15,11 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "dist-types",
-    "rootDir": ".",
+    "rootDir": "src",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "baseUrl": "."
   },
   "include": ["src/core/**/*.ts", "src/core/**/*.tsx"],
   "exclude": ["node_modules", "src/core/**/*.test.ts", "src/core/**/*.test.tsx"]
