@@ -32,3 +32,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+*storybook.log
+storybook-static
+
+# local logs & artifacts
+*.log
+nul
+
+# documentation source (generated/kept separately)
+/docs

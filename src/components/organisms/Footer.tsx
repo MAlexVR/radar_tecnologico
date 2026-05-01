@@ -1,6 +1,10 @@
+"use client";
+
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const t = useTranslations("footer");
   const currentYear = new Date().getFullYear();
 
   return (
@@ -11,16 +15,16 @@ export function Footer() {
           <Image
             src="/assets/logos/logo-centro-formacion-white.svg"
             alt="CEET"
-            width={100}
-            height={50}
+            width={140}
+            height={56}
             className="h-10 sm:h-12 md:h-14 w-auto drop-shadow-sm object-contain"
           />
           <div className="w-px h-10 sm:h-12 bg-white/30" />
           <Image
             src="/assets/logos/logo-grupo-investigacion.svg"
             alt="GICS"
-            width={100}
-            height={50}
+            width={140}
+            height={56}
             className="h-10 sm:h-12 md:h-14 w-auto brightness-0 invert drop-shadow-sm object-contain"
           />
         </div>
@@ -28,11 +32,11 @@ export function Footer() {
         {/* Right — Texto institucional */}
         <div className="text-center xl:text-right mt-2 md:mt-0 flex-1">
           <p className="text-sm md:text-base font-semibold tracking-wide text-white">
-            &copy; {currentYear} Servicio Nacional de Aprendizaje - SENA
+            &copy; {currentYear} {t("copyright")}
           </p>
           <p className="text-xs md:text-sm text-white/90 mt-1 leading-snug">
-            Centro de Electricidad, Electrónica y Telecomunicaciones (CEET)
-            &middot; Regional Distrito Capital
+            {t("center")}
+            &middot; {t("region")}
           </p>
         </div>
       </div>

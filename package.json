@@ -1,13 +1,22 @@
 {
   "name": "radar-tecnologico-telecomunicaciones",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Radar Tecnológico Interactivo — Telecomunicaciones CEET 2025-2035 | SENA",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --webpack",
+    "dev:turbo": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "tsc --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
+    "data:build": "tsx tools/ingest-xlsx/src/index.ts",
+    "data:validate": "tsx scripts/validate-data.ts",
+    "api:extract": "tsc --declaration --emitDeclarationOnly --outDir dist-types && api-extractor run --local",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
@@ -20,19 +29,42 @@
     "clsx": "^2.1.1",
     "jspdf": "^4.2.0",
     "lucide-react": "^0.575.0",
-    "next": "^16.1.6",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "next": "^16.2.4",
+    "next-intl": "^4.11.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "tailwind-merge": "^2.5.4",
-    "tw-animate-css": "^1.2.5"
+    "tw-animate-css": "^1.2.5",
+    "zod": "^3.24.0",
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^5.1.2",
+    "@microsoft/api-extractor": "^7.58.7",
+    "@playwright/test": "^1.50.0",
+    "@storybook/addon-a11y": "^10.3.6",
+    "@storybook/addon-docs": "^10.3.6",
+    "@storybook/addon-onboarding": "^10.3.6",
+    "@storybook/addon-vitest": "^10.3.6",
+    "@storybook/nextjs-vite": "^10.3.6",
     "@tailwindcss/postcss": "^4.2.0",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.2.0",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitest/browser": "^3.0.0",
+    "@vitest/coverage-v8": "^3.0.0",
+    "@vitest/ui": "^3.0.0",
+    "exceljs": "^4.4.0",
+    "jsdom": "^26.0.0",
+    "playwright": "^1.59.1",
     "postcss": "^8.4.49",
+    "storybook": "^10.3.6",
     "tailwindcss": "^4.2.0",
-    "typescript": "^5.7.0"
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vite": "^8.0.10",
+    "vitest": "^3.0.0"
   }
 }

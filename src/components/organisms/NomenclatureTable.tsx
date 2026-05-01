@@ -1,5 +1,7 @@
 "use client";
 
+import { useContext } from "react";
+import { useStore } from "zustand/react";
 import { Technology } from "@/types/radar";
 import {
   RINGS,
@@ -8,25 +10,98 @@ import {
   EXCLUDED_TECHNOLOGIES,
   getTrlColor,
 } from "@/lib/radar-data";
+import { RadarStoreContext } from "@/core/store";
+import { useRadarSelection, useRadarFilters } from "@/core/hooks";
+import type { RadarRing, RadarSector, RadarItem } from "@/core";
+import type { Ring, Sector } from "@/types/radar";
 
-interface NomenclatureTableProps {
+/* ── Conversion helpers ─────────────────────────────────────── */
+
+function convertRing(r: RadarRing): Ring {
+  return {
+    id: r.id,
+    label: r.label as string,
+    radius: r.outerRadius,
+    color: r.color,
+    fillColor: r.fillColor,
+    borderColor: r.borderColor,
+    labelColor: r.labelColor,
+    desc: (r.description as string) ?? "",
+    trl: (r.maturityHint as string) ?? "",
+    recommendedAction: (r.recommendedAction as string) ?? "",
+  };
+}
+
+function convertSector(s: RadarSector): Sector {
+  return {
+    id: s.id,
+    label: s.label as string,
+    shortLabel: (s.shortLabel as string) ?? (s.label as string),
+    labelLines: s.labelLines as string[] | undefined,
+    startAngle: s.startAngle ?? 0,
+    color: s.color,
+    bgLight: s.bgLight ?? "",
+    bgDark: s.bgDark ?? "",
+    icon: s.icon ?? "",
+  };
+}
+
+function convertItem(
+  item: RadarItem,
+  rings: Ring[],
+  sectors: Sector[],
+): Technology {
+  const ringOrder = rings.map((r) => r.id);
+  const sectorOrder = sectors.map((s) => s.id);
+  return {
+    id: item.id,
+    name: item.name as string,
+    nameLines: item.nameLines as string[] | undefined,
+    code: item.code ?? "",
+    sector: sectorOrder.indexOf(item.sectorId),
+    ring: ringOrder.indexOf(item.ringId),
+    angleOff: item.angleOff,
+    labelDy: item.labelDy,
+    trl: item.maturity?.value ?? 0,
+    desc: (item.description as string) ?? "",
+    impact: (item.metadata?.impact as string) ?? "",
+    horizon: (item.metadata?.horizon as string) ?? "",
+  };
+}
+
+/* ── Shared render ──────────────────────────────────────────── */
+
+interface NomenclatureTableRenderProps {
   filteredTechs: Technology[];
   selectedTech: Technology | null;
   onSelect: (tech: Technology | null) => void;
+  rings: Ring[];
+  sectors: Sector[];
+  excludedTechnologies: Array<{
+    code: string;
+    name: string;
+    sublines?: string[];
+    justification?: string;
+  }>;
 }
 
-export function NomenclatureTable({
+function NomenclatureTableRender({
   filteredTechs,
   selectedTech,
   onSelect,
-}: NomenclatureTableProps) {
+  rings,
+  sectors,
+  excludedTechnologies,
+}: NomenclatureTableRenderProps) {
   // Group by sector
-  const grouped = SECTORS.map((sector, si) => ({
-    sector,
-    techs: filteredTechs
-      .filter((t) => t.sector === si)
-      .sort((a, b) => a.ring - b.ring),
-  })).filter((g) => g.techs.length > 0);
+  const grouped = sectors
+    .map((sector, si) => ({
+      sector,
+      techs: filteredTechs
+        .filter((t) => t.sector === si)
+        .sort((a, b) => a.ring - b.ring),
+    }))
+    .filter((g) => g.techs.length > 0);
 
   return (
     <div className="space-y-2">
@@ -89,7 +164,7 @@ export function NomenclatureTable({
 
                   {/* Ring badge — compact */}
                   <span className="text-[8px] font-semibold px-1 py-0.5 rounded bg-muted text-muted-foreground flex-shrink-0 hidden xl:inline self-start mt-0.5">
-                    {RINGS[tech.ring].label}
+                    {rings[tech.ring].label}
                   </span>
                 </button>
               );
@@ -99,7 +174,7 @@ export function NomenclatureTable({
       ))}
 
       {/* Excluded / Not Mapped Section */}
-      {EXCLUDED_TECHNOLOGIES && EXCLUDED_TECHNOLOGIES.length > 0 && (
+      {excludedTechnologies && excludedTechnologies.length > 0 && (
         <div className="mt-6 pt-4 border-t border-border">
           <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-md mb-1 bg-muted/50">
             <span className="text-xs">🚫</span>
@@ -108,7 +183,7 @@ export function NomenclatureTable({
             </span>
           </div>
           <div className="space-y-2 px-2">
-            {EXCLUDED_TECHNOLOGIES.map((item) => (
+            {excludedTechnologies.map((item) => (
               <div
                 key={item.code}
                 className="text-[10px] text-muted-foreground bg-muted/30 p-2 rounded border border-border/50"
@@ -121,18 +196,119 @@ export function NomenclatureTable({
                   {item.justification}
                 </div>
                 {/* Sublines */}
-                <ul className="list-disc list-inside space-y-0.5 opacity-70">
-                  {item.sublines.map((sub, i) => (
-                    <li key={i} className="text-[9px] pl-1 leading-tight">
-                      {sub}
-                    </li>
-                  ))}
-                </ul>
+                {item.sublines && (
+                  <ul className="list-disc list-inside space-y-0.5 opacity-70">
+                    {item.sublines.map((sub, i) => (
+                      <li key={i} className="text-[9px] pl-1 leading-tight">
+                        {sub}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             ))}
           </div>
         </div>
       )}
     </div>
+  );
+}
+
+/* ── Prop-based implementation ──────────────────────────────── */
+
+interface NomenclatureTableProps {
+  filteredTechs?: Technology[];
+  selectedTech?: Technology | null;
+  onSelect?: (tech: Technology | null) => void;
+}
+
+function NomenclatureTablePropsImpl({
+  filteredTechs,
+  selectedTech,
+  onSelect,
+}: Required<NomenclatureTableProps>) {
+  return (
+    <NomenclatureTableRender
+      filteredTechs={filteredTechs}
+      selectedTech={selectedTech}
+      onSelect={onSelect}
+      rings={RINGS}
+      sectors={SECTORS}
+      excludedTechnologies={EXCLUDED_TECHNOLOGIES}
+    />
+  );
+}
+
+/* ── Store-based implementation ─────────────────────────────── */
+
+function NomenclatureTableStoreImpl() {
+  const { selectedItem, selectItem } = useRadarSelection();
+  const { filteredItems } = useRadarFilters();
+  const store = useContext(RadarStoreContext);
+  const schema = useStore(store!, (state) => state.schema);
+
+  const rings = schema.rings
+    .sort((a, b) => a.order - b.order)
+    .map(convertRing);
+  const sectors = schema.sectors.map(convertSector);
+
+  const filteredTechs = filteredItems.map((item) =>
+    convertItem(item, rings, sectors),
+  );
+  const selectedTech = selectedItem
+    ? convertItem(selectedItem, rings, sectors)
+    : null;
+
+  const onSelect = (tech: Technology | null) => selectItem(tech?.id ?? null);
+
+  const excludedTechnologies =
+    schema.excludedItems?.map((e) => ({
+      code: e.code,
+      name: e.name as string,
+      sublines: e.sublines as string[] | undefined,
+      justification: (e.justification as string) ?? "",
+    })) ?? [];
+
+  return (
+    <NomenclatureTableRender
+      filteredTechs={filteredTechs}
+      selectedTech={selectedTech}
+      onSelect={onSelect}
+      rings={rings}
+      sectors={sectors}
+      excludedTechnologies={excludedTechnologies}
+    />
+  );
+}
+
+/* ── Public component ───────────────────────────────────────── */
+
+export function NomenclatureTable({
+  filteredTechs,
+  selectedTech,
+  onSelect,
+}: NomenclatureTableProps = {}) {
+  const store = useContext(RadarStoreContext);
+
+  if (filteredTechs !== undefined) {
+    return (
+      <NomenclatureTablePropsImpl
+        filteredTechs={filteredTechs}
+        selectedTech={selectedTech ?? null}
+        onSelect={onSelect ?? (() => {})}
+      />
+    );
+  }
+
+  if (store) {
+    return <NomenclatureTableStoreImpl />;
+  }
+
+  return (
+    <NomenclatureTablePropsImpl
+      filteredTechs={[]}
+      selectedTech={null}
+      onSelect={() => {}}
+    />
   );
 }

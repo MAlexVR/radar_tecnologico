@@ -4,11 +4,14 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { HelpCircle, Info, Menu, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { HelpModal } from "@/components/molecules/HelpModal";
 import { AboutModal } from "@/components/molecules/AboutModal";
+import { APP_VERSION_LABEL } from "@/lib/version";
 
 export function Header() {
+  const t = useTranslations("header");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
@@ -35,10 +38,10 @@ export function Header() {
 
           <div className="flex flex-col truncate min-w-0">
             <h1 className="text-sm md:text-lg font-bold leading-tight tracking-tight truncate" style={{ color: "white" }}>
-              Radar Tecnológico
+              {t("title")}
             </h1>
             <p className="text-[10px] sm:text-xs text-white/80 hidden md:block mt-0.5 font-medium truncate">
-              Telecomunicaciones CEET · SENA · 2025-2035
+              {t("subtitle")}
             </p>
           </div>
         </div>
@@ -46,7 +49,7 @@ export function Header() {
         {/* Acciones (derecha) — Desktop */}
         <div className="hidden md:flex items-center gap-2 shrink-0">
           <Badge className="bg-white/10 text-white/90 border-white/20 hover:bg-white/10 mr-1 select-none text-[10px]">
-            v2.0
+            {APP_VERSION_LABEL}
           </Badge>
 
           <button
@@ -54,7 +57,7 @@ export function Header() {
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-white/90 hover:text-white hover:bg-white/10 transition-colors font-medium"
           >
             <HelpCircle size={16} />
-            <span>Ayuda</span>
+            <span>{t("help")}</span>
           </button>
 
           <button
@@ -62,7 +65,7 @@ export function Header() {
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-white/90 hover:text-white hover:bg-white/10 transition-colors font-medium"
           >
             <Info size={16} />
-            <span>Acerca de</span>
+            <span>{t("about")}</span>
           </button>
         </div>
 
@@ -71,7 +74,7 @@ export function Header() {
           <button
             className="p-2 text-white/90 rounded-lg hover:bg-white/10 transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Menú"
+            aria-label={t("menu")}
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -86,20 +89,20 @@ export function Header() {
               onClick={() => { setShowHelp(true); setMobileMenuOpen(false); }}
               className="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-white/90 hover:bg-white/10 transition-colors"
             >
-              <HelpCircle size={18} className="text-white/70" /> Ayuda
+              <HelpCircle size={18} className="text-white/70" /> {t("help")}
             </button>
             <button
               onClick={() => { setShowAbout(true); setMobileMenuOpen(false); }}
               className="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-white/90 hover:bg-white/10 transition-colors"
             >
-              <Info size={18} className="text-white/70" /> Acerca de
+              <Info size={18} className="text-white/70" /> {t("about")}
             </button>
             <div className="flex items-center justify-between pt-3 pb-1 px-3 border-t border-white/20 mt-2">
               <span className="text-xs text-white/70 font-medium">
-                Radar Tecnológico
+                {t("title")}
               </span>
               <Badge className="bg-white/10 text-white/80 border-white/20 hover:bg-white/10 select-none text-[10px]">
-                v2.0
+                {APP_VERSION_LABEL}
               </Badge>
             </div>
           </div>

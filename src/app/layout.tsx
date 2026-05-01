@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Work_Sans, JetBrains_Mono } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 import "./globals.css";
 
 const workSans = Work_Sans({
@@ -49,18 +51,22 @@ export const viewport: Viewport = {
   themeColor: "#39a900",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const messages = await getMessages();
+
   return (
     <html lang="es" suppressHydrationWarning>
       <body
         className={`${workSans.variable} ${jetbrainsMono.variable} font-work-sans antialiased`}
         suppressHydrationWarning
       >
-        {children}
+        <NextIntlClientProvider messages={messages} locale="es">
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );

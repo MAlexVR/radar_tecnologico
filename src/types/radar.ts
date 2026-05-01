@@ -1,3 +1,7 @@
+/**
+ * @deprecated These types are maintained for backward compatibility.
+ * Prefer types from `@/core` for new code.
+ */
 export interface Technology {
   id: string;
   name: string;
@@ -23,6 +27,7 @@ export interface Ring {
   labelColor: string;
   desc: string;
   trl: string;
+  recommendedAction: string;
 }
 
 export interface Sector {

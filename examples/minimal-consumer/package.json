@@ -1,0 +1,10 @@
+{
+  "name": "minimal-radar-consumer",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

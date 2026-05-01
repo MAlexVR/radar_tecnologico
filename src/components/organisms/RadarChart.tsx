@@ -1,20 +1,18 @@
 "use client";
 
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState, useCallback, useRef, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { Technology } from "@/types/radar";
 import {
   RINGS,
   SECTORS,
   SECTOR_ANGLE,
+  RADAR_LAYOUT,
   polarToXY,
   getTechPosition,
 } from "@/lib/radar-data";
 
-// ── SVG geometry — wider viewBox for labels ──
-const SVG_W = 1200;
-const SVG_H = 1060;
-const CX = 600;
-const CY = 520;
+const { viewBoxWidth: SVG_W, viewBoxHeight: SVG_H, centerX: CX, centerY: CY } = RADAR_LAYOUT;
 
 interface RadarChartProps {
   filteredTechs: Technology[];
@@ -39,6 +37,89 @@ export const RadarChart = forwardRef<SVGSVGElement, RadarChartProps>(
     },
     ref,
   ) {
+    const t = useTranslations("radar");
+    const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+    const dotRefs = useRef<(SVGGElement | null)[]>([]);
+
+    const sortedTechs = [...filteredTechs].sort((a, b) => {
+      if (a.sector !== b.sector) return a.sector - b.sector;
+      return a.ring - b.ring;
+    });
+
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent<SVGGElement>, index: number) => {
+        const current = sortedTechs[index];
+        if (!current) return;
+
+        let nextIndex = index;
+
+        switch (e.key) {
+          case "Enter":
+          case " ":
+            e.preventDefault();
+            onSelect(selectedTech?.id === current.id ? null : current);
+            return;
+          case "ArrowRight":
+          case "ArrowDown": {
+            e.preventDefault();
+            const sameSector = sortedTechs.filter((tt) => tt.sector === current.sector);
+            const idxInSector = sameSector.findIndex((tt) => tt.id === current.id);
+            if (idxInSector < sameSector.length - 1) {
+              nextIndex = sortedTechs.findIndex((tt) => tt.id === sameSector[idxInSector + 1].id);
+            } else {
+              const nextSector = (current.sector + 1) % SECTORS.length;
+              const nextSectorTechs = sortedTechs.filter((tt) => tt.sector === nextSector);
+              if (nextSectorTechs.length > 0) {
+                nextIndex = sortedTechs.findIndex((tt) => tt.id === nextSectorTechs[0].id);
+              }
+            }
+            break;
+          }
+          case "ArrowLeft":
+          case "ArrowUp": {
+            e.preventDefault();
+            const sameSector = sortedTechs.filter((tt) => tt.sector === current.sector);
+            const idxInSector = sameSector.findIndex((tt) => tt.id === current.id);
+            if (idxInSector > 0) {
+              nextIndex = sortedTechs.findIndex((tt) => tt.id === sameSector[idxInSector - 1].id);
+            } else {
+              const prevSector = (current.sector - 1 + SECTORS.length) % SECTORS.length;
+              const prevSectorTechs = sortedTechs.filter((tt) => tt.sector === prevSector);
+              if (prevSectorTechs.length > 0) {
+                nextIndex = sortedTechs.findIndex(
+                  (tt) => tt.id === prevSectorTechs[prevSectorTechs.length - 1].id,
+                );
+              }
+            }
+            break;
+          }
+          case "Home":
+            e.preventDefault();
+            nextIndex = 0;
+            break;
+          case "End":
+            e.preventDefault();
+            nextIndex = sortedTechs.length - 1;
+            break;
+          default:
+            return;
+        }
+
+        if (nextIndex !== index && nextIndex >= 0 && nextIndex < sortedTechs.length) {
+          setFocusedIndex(nextIndex);
+          dotRefs.current[nextIndex]?.focus();
+        }
+      },
+      [sortedTechs, selectedTech, onSelect],
+    );
+
+    useEffect(() => {
+      if (selectedTech) {
+        const idx = sortedTechs.findIndex((tt) => tt.id === selectedTech.id);
+        if (idx !== -1) setFocusedIndex(idx);
+      }
+    }, [selectedTech, sortedTechs]);
+
     return (
       <svg
         ref={ref}
@@ -46,7 +127,7 @@ export const RadarChart = forwardRef<SVGSVGElement, RadarChartProps>(
         className="w-full h-full"
         style={{ fontFamily: "system-ui, sans-serif" }}
       >
-        {/* White background — covers full viewBox including label area */}
+        {/* White background */}
         <rect width={SVG_W} height={SVG_H} fill="#ffffff" rx="16" />
 
         {/* Title */}
@@ -59,7 +140,7 @@ export const RadarChart = forwardRef<SVGSVGElement, RadarChartProps>(
           fontWeight={700}
           letterSpacing="0.5"
         >
-          Radar Tecnológico — Telecomunicaciones CEET 2025-2035
+          {t("title")}
         </text>
 
         {/* Ring fills — outermost first */}
@@ -121,25 +202,16 @@ export const RadarChart = forwardRef<SVGSVGElement, RadarChartProps>(
           return <g key={s.id}>{segments}</g>;
         })}
 
-        {/* Sector labels — single line, outside outermost ring */}
+        {/* Sector labels */}
         {SECTORS.map((s, si) => {
           const midAngle = s.startAngle + SECTOR_ANGLE / 2;
           const labelR = RINGS[3].radius + 30;
           const pos = polarToXY(CX, CY, labelR, midAngle);
 
-          // Always center-align the lines relative to each other
-          const anchor = "middle";
-
-          // Adjust x-position to simulate the previous start/end anchoring
-          // so the text block stays roughly in the same place
           let textX = pos.x;
-          const shift = 60; // Approximate half-width of labels
-
-          if (pos.x > CX + 60) {
-            textX += shift;
-          } else if (pos.x < CX - 60) {
-            textX -= shift;
-          }
+          const shift = 60;
+          if (pos.x > CX + 60) textX += shift;
+          else if (pos.x < CX - 60) textX -= shift;
 
           const isActive = activeSectors.has(si);
 
@@ -148,7 +220,7 @@ export const RadarChart = forwardRef<SVGSVGElement, RadarChartProps>(
               key={`sl-${s.id}`}
               x={textX}
               y={pos.y}
-              textAnchor={anchor}
+              textAnchor="middle"
               fill={isActive ? s.color : "#9e9e9e"}
               fontSize={12}
               fontWeight={800}
@@ -166,23 +238,45 @@ export const RadarChart = forwardRef<SVGSVGElement, RadarChartProps>(
         })}
 
         {/* Technology dots */}
-        {filteredTechs.map((tech) => {
+        {sortedTechs.map((tech, index) => {
           const pos = getTechPosition(tech, CX, CY);
           const sector = SECTORS[tech.sector];
           const isActive =
             selectedTech?.id === tech.id || hoveredTech?.id === tech.id;
-          const r = isActive ? 8 : 6;
+          const isFocused = focusedIndex === index;
+          const r = isActive || isFocused ? 8 : 6;
 
           return (
             <g
               key={tech.id}
+              ref={(el) => { dotRefs.current[index] = el; }}
+              role="button"
+              tabIndex={0}
+              aria-label={tech.name}
+              aria-pressed={selectedTech?.id === tech.id}
+              className="radar-dot-group"
               style={{ cursor: "pointer" }}
               onClick={() =>
                 onSelect(selectedTech?.id === tech.id ? null : tech)
               }
               onMouseEnter={() => onHover(tech)}
               onMouseLeave={() => onHover(null)}
+              onFocus={() => setFocusedIndex(index)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
             >
+              {/* Focus ring — visible only when keyboard-focused */}
+              {isFocused && (
+                <circle
+                  cx={pos.x}
+                  cy={pos.y}
+                  r={r + 5}
+                  fill="none"
+                  stroke="var(--ring)"
+                  strokeWidth={2}
+                  strokeDasharray="3 2"
+                  pointerEvents="none"
+                />
+              )}
               {/* Glow for active */}
               {isActive && (
                 <circle
@@ -199,11 +293,11 @@ export const RadarChart = forwardRef<SVGSVGElement, RadarChartProps>(
                 cy={pos.y}
                 r={r}
                 fill={sector.color}
-                stroke="#fff"
+                stroke={isFocused ? "var(--ring)" : "#fff"}
                 strokeWidth={isActive ? 2.5 : 1.5}
                 opacity={isActive ? 1 : 0.85}
               />
-              {/* Label — dark text for readability */}
+              {/* Label */}
               <text
                 x={pos.x}
                 y={pos.y + (tech.labelDy ?? (isActive ? 19 : 16))}
@@ -233,8 +327,7 @@ export const RadarChart = forwardRef<SVGSVGElement, RadarChartProps>(
           fontSize={12}
           fontWeight={500}
         >
-          Fuente: Elaboración propia basada en ejercicio VCyT CEET-GICS (2025).
-          Metodología tipo Gartner Technology Radar.
+          {t("source")}
         </text>
       </svg>
     );

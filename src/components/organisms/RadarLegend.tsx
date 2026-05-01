@@ -1,8 +1,51 @@
 "use client";
 
+import { useContext } from "react";
+import { useStore } from "zustand/react";
 import { RINGS, SECTORS } from "@/lib/radar-data";
+import { RadarStoreContext } from "@/core/store";
+import type { RadarRing, RadarSector } from "@/core";
+import type { Ring, Sector } from "@/types/radar";
 
-export function RadarLegend() {
+/* ── Conversion helpers ─────────────────────────────────────── */
+
+function convertRing(r: RadarRing): Ring {
+  return {
+    id: r.id,
+    label: r.label as string,
+    radius: r.outerRadius,
+    color: r.color,
+    fillColor: r.fillColor,
+    borderColor: r.borderColor,
+    labelColor: r.labelColor,
+    desc: (r.description as string) ?? "",
+    trl: (r.maturityHint as string) ?? "",
+    recommendedAction: (r.recommendedAction as string) ?? "",
+  };
+}
+
+function convertSector(s: RadarSector): Sector {
+  return {
+    id: s.id,
+    label: s.label as string,
+    shortLabel: (s.shortLabel as string) ?? (s.label as string),
+    labelLines: s.labelLines as string[] | undefined,
+    startAngle: s.startAngle ?? 0,
+    color: s.color,
+    bgLight: s.bgLight ?? "",
+    bgDark: s.bgDark ?? "",
+    icon: s.icon ?? "",
+  };
+}
+
+/* ── Shared render ──────────────────────────────────────────── */
+
+interface RadarLegendRenderProps {
+  rings: Ring[];
+  sectors: Sector[];
+}
+
+function RadarLegendRender({ rings, sectors }: RadarLegendRenderProps) {
   return (
     <div className="border rounded-xl bg-card p-4 space-y-4 text-sm">
       {/* Anillos section */}
@@ -11,7 +54,7 @@ export function RadarLegend() {
           Anillos (fase de adopción CEET)
         </h4>
         <div className="space-y-1.5">
-          {RINGS.map((ring) => (
+          {rings.map((ring) => (
             <div key={ring.id} className="flex items-center gap-3">
               <span
                 className="w-6 h-4 rounded-sm flex-shrink-0 border"
@@ -35,7 +78,7 @@ export function RadarLegend() {
           Sectores (Direccionadores)
         </h4>
         <div className="space-y-1.5">
-          {SECTORS.map((sector) => (
+          {sectors.map((sector) => (
             <div key={sector.id} className="flex items-center gap-3">
               <span
                 className="w-3.5 h-3.5 rounded-full flex-shrink-0"
@@ -51,4 +94,45 @@ export function RadarLegend() {
       </div>
     </div>
   );
+}
+
+/* ── Prop-based implementation ──────────────────────────────── */
+
+interface RadarLegendProps {
+  rings?: Ring[];
+  sectors?: Sector[];
+}
+
+function RadarLegendPropsImpl({ rings, sectors }: Required<RadarLegendProps>) {
+  return <RadarLegendRender rings={rings} sectors={sectors} />;
+}
+
+/* ── Store-based implementation ─────────────────────────────── */
+
+function RadarLegendStoreImpl() {
+  const store = useContext(RadarStoreContext);
+  const schema = useStore(store!, (state) => state.schema);
+
+  const rings = schema.rings
+    .sort((a, b) => a.order - b.order)
+    .map(convertRing);
+  const sectors = schema.sectors.map(convertSector);
+
+  return <RadarLegendRender rings={rings} sectors={sectors} />;
+}
+
+/* ── Public component ───────────────────────────────────────── */
+
+export function RadarLegend({ rings, sectors }: RadarLegendProps = {}) {
+  const store = useContext(RadarStoreContext);
+
+  if (rings && sectors) {
+    return <RadarLegendPropsImpl rings={rings} sectors={sectors} />;
+  }
+
+  if (store) {
+    return <RadarLegendStoreImpl />;
+  }
+
+  return <RadarLegendRender rings={RINGS} sectors={SECTORS} />;
 }

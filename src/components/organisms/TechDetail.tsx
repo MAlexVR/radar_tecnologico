@@ -1,5 +1,7 @@
 "use client";
 
+import { useContext } from "react";
+import { useStore } from "zustand/react";
 import { Technology } from "@/types/radar";
 import {
   RINGS,
@@ -11,20 +13,76 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Target, Gauge, ArrowRight, Lightbulb } from "lucide-react";
+import { Target, Gauge, Lightbulb } from "lucide-react";
+import { RadarStoreContext } from "@/core/store";
+import { useRadarSelection } from "@/core/hooks";
+import type { RadarRing, RadarSector, RadarItem } from "@/core";
+import type { Ring, Sector } from "@/types/radar";
 
-interface TechDetailProps {
-  tech: Technology | null;
+/* ── Conversion helpers ─────────────────────────────────────── */
+
+function convertRing(r: RadarRing): Ring {
+  return {
+    id: r.id,
+    label: r.label as string,
+    radius: r.outerRadius,
+    color: r.color,
+    fillColor: r.fillColor,
+    borderColor: r.borderColor,
+    labelColor: r.labelColor,
+    desc: (r.description as string) ?? "",
+    trl: (r.maturityHint as string) ?? "",
+    recommendedAction: (r.recommendedAction as string) ?? "",
+  };
 }
 
-const RING_ACTIONS = [
-  "Implementación inmediata: actualización curricular, adquisición de equipos y capacitación a instructores prioritaria.",
-  "Programa piloto: desarrollar laboratorios de práctica, incluir en certificaciones y formar instructores.",
-  "Fase de investigación: incorporar en contenidos teóricos, monitorear evolución y establecer alianzas académicas.",
-  "Vigilancia activa: seguimiento semestral, participar en eventos y documentar avances del ecosistema.",
-];
+function convertSector(s: RadarSector): Sector {
+  return {
+    id: s.id,
+    label: s.label as string,
+    shortLabel: (s.shortLabel as string) ?? (s.label as string),
+    labelLines: s.labelLines as string[] | undefined,
+    startAngle: s.startAngle ?? 0,
+    color: s.color,
+    bgLight: s.bgLight ?? "",
+    bgDark: s.bgDark ?? "",
+    icon: s.icon ?? "",
+  };
+}
 
-export function TechDetail({ tech }: TechDetailProps) {
+function convertItem(
+  item: RadarItem,
+  rings: Ring[],
+  sectors: Sector[],
+): Technology {
+  const ringOrder = rings.map((r) => r.id);
+  const sectorOrder = sectors.map((s) => s.id);
+  return {
+    id: item.id,
+    name: item.name as string,
+    nameLines: item.nameLines as string[] | undefined,
+    code: item.code ?? "",
+    sector: sectorOrder.indexOf(item.sectorId),
+    ring: ringOrder.indexOf(item.ringId),
+    angleOff: item.angleOff,
+    labelDy: item.labelDy,
+    trl: item.maturity?.value ?? 0,
+    desc: (item.description as string) ?? "",
+    impact: (item.metadata?.impact as string) ?? "",
+    horizon: (item.metadata?.horizon as string) ?? "",
+  };
+}
+
+/* ── Shared render ──────────────────────────────────────────── */
+
+interface TechDetailRenderProps {
+  tech: Technology | null;
+  rings: Ring[];
+  sectors: Sector[];
+  technologies: Technology[];
+}
+
+function TechDetailRender({ tech, rings, sectors, technologies }: TechDetailRenderProps) {
   if (!tech) {
     return (
       <div className="flex flex-col items-center justify-center h-full p-4 text-center">
@@ -41,8 +99,8 @@ export function TechDetail({ tech }: TechDetailProps) {
 
         {/* Quick stats */}
         <div className="grid grid-cols-2 gap-2 w-full mt-6">
-          {RINGS.map((ring, i) => {
-            const count = TECHNOLOGIES.filter((t) => t.ring === i).length;
+          {rings.map((ring, i) => {
+            const count = technologies.filter((t) => t.ring === i).length;
             return (
               <div
                 key={ring.id}
@@ -65,8 +123,8 @@ export function TechDetail({ tech }: TechDetailProps) {
     );
   }
 
-  const sector = SECTORS[tech.sector];
-  const ring = RINGS[tech.ring];
+  const sector = sectors[tech.sector];
+  const ring = rings[tech.ring];
   const tempColor = getTrlColor(tech.trl);
 
   return (
@@ -170,9 +228,67 @@ export function TechDetail({ tech }: TechDetailProps) {
           </span>
         </div>
         <p className="text-[11px] text-muted-foreground leading-relaxed">
-          {RING_ACTIONS[tech.ring]}
+          {ring.recommendedAction}
         </p>
       </div>
     </div>
   );
+}
+
+/* ── Prop-based implementation ──────────────────────────────── */
+
+interface TechDetailProps {
+  tech?: Technology | null;
+}
+
+function TechDetailPropsImpl({ tech }: TechDetailProps) {
+  return (
+    <TechDetailRender
+      tech={tech ?? null}
+      rings={RINGS}
+      sectors={SECTORS}
+      technologies={TECHNOLOGIES}
+    />
+  );
+}
+
+/* ── Store-based implementation ─────────────────────────────── */
+
+function TechDetailStoreImpl() {
+  const { selectedItem } = useRadarSelection();
+  const store = useContext(RadarStoreContext);
+  const schema = useStore(store!, (state) => state.schema);
+
+  const rings = schema.rings
+    .sort((a, b) => a.order - b.order)
+    .map(convertRing);
+  const sectors = schema.sectors.map(convertSector);
+  const technologies = schema.items.map((item) => convertItem(item, rings, sectors));
+
+  const tech = selectedItem ? convertItem(selectedItem, rings, sectors) : null;
+
+  return (
+    <TechDetailRender
+      tech={tech}
+      rings={rings}
+      sectors={sectors}
+      technologies={technologies}
+    />
+  );
+}
+
+/* ── Public component ───────────────────────────────────────── */
+
+export function TechDetail({ tech }: TechDetailProps = {}) {
+  const store = useContext(RadarStoreContext);
+
+  if (tech !== undefined) {
+    return <TechDetailPropsImpl tech={tech} />;
+  }
+
+  if (store) {
+    return <TechDetailStoreImpl />;
+  }
+
+  return <TechDetailPropsImpl tech={null} />;
 }

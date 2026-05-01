@@ -1,0 +1,442 @@
+{
+  "$schemaVersion": "1.0.0",
+  "id": "ceet-telecom-2025-2035",
+  "title": "Radar Tecnológico — Telecomunicaciones CEET 2025-2035",
+  "rings": [
+    {
+      "id": "adopt",
+      "label": "ADOPTAR",
+      "order": 0,
+      "innerRadius": 0,
+      "outerRadius": 110,
+      "color": "#2E7D32",
+      "fillColor": "#C8E6C9",
+      "borderColor": "#81C784",
+      "labelColor": "#2E7D32",
+      "description": "Implementación inmediata",
+      "recommendedAction": "Implementación inmediata: actualización curricular, adquisición de equipos y capacitación a instructores prioritaria.",
+      "maturityHint": "TRL 7-9"
+    },
+    {
+      "id": "trial",
+      "label": "PROBAR",
+      "order": 1,
+      "innerRadius": 110,
+      "outerRadius": 210,
+      "color": "#558B2F",
+      "fillColor": "#E1F0C4",
+      "borderColor": "#AED581",
+      "labelColor": "#688C36",
+      "description": "Pilotos y capacitación",
+      "recommendedAction": "Programa piloto: desarrollar laboratorios de práctica, incluir en certificaciones y formar instructores.",
+      "maturityHint": "TRL 5-7"
+    },
+    {
+      "id": "assess",
+      "label": "EVALUAR",
+      "order": 2,
+      "innerRadius": 210,
+      "outerRadius": 305,
+      "color": "#F9A825",
+      "fillColor": "#FFF3CD",
+      "borderColor": "#FFD54F",
+      "labelColor": "#B48C14",
+      "description": "Investigación / formación",
+      "recommendedAction": "Fase de investigación: incorporar en contenidos teóricos, monitorear evolución y establecer alianzas académicas.",
+      "maturityHint": "TRL 3-5"
+    },
+    {
+      "id": "monitor",
+      "label": "MONITOREAR",
+      "order": 3,
+      "innerRadius": 305,
+      "outerRadius": 400,
+      "color": "#E64A19",
+      "fillColor": "#FFE0D2",
+      "borderColor": "#FFAB91",
+      "labelColor": "#BE643C",
+      "description": "Seguimiento largo plazo",
+      "recommendedAction": "Vigilancia activa: seguimiento semestral, participar en eventos y documentar avances del ecosistema.",
+      "maturityHint": "TRL 1-3"
+    }
+  ],
+  "sectors": [
+    {
+      "id": "D1",
+      "label": "Inteligencia Nativa y Redes Autónomas",
+      "shortLabel": "D1: Inteligencia Nativa y Redes Autónomas",
+      "labelLines": ["D1: Inteligencia Nativa", "y Redes Autónomas"],
+      "startAngle": -18,
+      "color": "#1565C0",
+      "bgLight": "#E3F2FD",
+      "bgDark": "rgba(21,101,192,0.12)",
+      "icon": "🧠"
+    },
+    {
+      "id": "D2",
+      "label": "Conectividad Extrema y Convergente",
+      "shortLabel": "D2: Conectividad Extrema y Convergente",
+      "labelLines": ["D2: Conectividad Extrema", "y Convergente"],
+      "startAngle": 54,
+      "color": "#C62828",
+      "bgLight": "#FFEBEE",
+      "bgDark": "rgba(198,40,40,0.12)",
+      "icon": "📡"
+    },
+    {
+      "id": "D3",
+      "label": "Arquitectura de Red Desagregada y Plataformas",
+      "shortLabel": "D3: Arquitectura de Red Desagregada y Plataformas",
+      "labelLines": ["D3: Arquitectura de Red", "Desagregada y Plataformas"],
+      "startAngle": 126,
+      "color": "#F57F17",
+      "bgLight": "#FFF3E0",
+      "bgDark": "rgba(245,127,23,0.12)",
+      "icon": "☁️"
+    },
+    {
+      "id": "D4",
+      "label": "Monetización de Capacidades de Red",
+      "shortLabel": "D4: Monetización de Capacidades de Red",
+      "labelLines": ["D4: Monetización de", "Capacidades de Red"],
+      "startAngle": 198,
+      "color": "#6A1B9A",
+      "bgLight": "#F3E5F5",
+      "bgDark": "rgba(106,27,154,0.12)",
+      "icon": "💰"
+    },
+    {
+      "id": "D5",
+      "label": "Seguridad, Resiliencia y Sostenibilidad",
+      "shortLabel": "D5: Seguridad, Resiliencia y Sostenibilidad",
+      "labelLines": ["D5: Seguridad, Resiliencia", "y Sostenibilidad"],
+      "startAngle": 270,
+      "color": "#00695C",
+      "bgLight": "#E0F2F1",
+      "bgDark": "rgba(0,105,92,0.12)",
+      "icon": "🛡️"
+    }
+  ],
+  "items": [
+    {
+      "id": "T01",
+      "name": "Machine Learning / Deep Learning para Optimización",
+      "nameLines": ["Machine Learning / Deep Learning", "para Optimización"],
+      "code": "L04",
+      "sectorId": "D1",
+      "ringId": "adopt",
+      "angleOff": -0,
+      "maturity": { "scaleId": "trl", "value": 8 },
+      "description": "Machine Learning y Deep Learning aplicado a optimización y gestión predictiva de redes de telecomunicaciones.",
+      "metadata": { "impact": "Alto", "horizon": "Corto (1-2 años)" }
+    },
+    {
+      "id": "T02",
+      "name": "Redes Autónomas / Zero-Touch (Niveles L0-L5)",
+      "nameLines": ["Redes Autónomas / Zero-Touch", "(Niveles L0-L5)"],
+      "code": "L02",
+      "sectorId": "D1",
+      "ringId": "trial",
+      "angleOff": 10,
+      "maturity": { "scaleId": "trl", "value": 6 },
+      "description": "Redes gestionadas de forma autónoma mediante IA/ML sin intervención humana (ZSM - Zero-touch network and Service Management).",
+      "metadata": { "impact": "Alto", "horizon": "Medio (2-4 años)" }
+    },
+    {
+      "id": "T03",
+      "name": "IA Generativa / LLM para Telecomunicaciones",
+      "nameLines": ["IA Generativa / LLM", "para Telecomunicaciones"],
+      "code": "L01",
+      "sectorId": "D1",
+      "ringId": "trial",
+      "angleOff": -24,
+      "maturity": { "scaleId": "trl", "value": 4 },
+      "description": "Aplicación de modelos de lenguaje grandes y IA generativa para documentación, atención al cliente y optimización de redes.",
+      "metadata": { "impact": "Disruptivo", "horizon": "Medio (2-4 años)" }
+    },
+    {
+      "id": "T04",
+      "name": "Gemelo Digital de Red (Network Digital Twin)",
+      "nameLines": ["Gemelo Digital de Red", "(Network Digital Twin)"],
+      "code": "L03",
+      "sectorId": "D1",
+      "ringId": "assess",
+      "angleOff": 15,
+      "maturity": { "scaleId": "trl", "value": 3 },
+      "description": "Réplica virtual de infraestructura de red para simulación, planificación y predicción de fallos.",
+      "metadata": { "impact": "Alto", "horizon": "Medio (3-5 años)" }
+    },
+    {
+      "id": "T05",
+      "name": "Sensado Integrado y Comunicaciones (ISAC)",
+      "nameLines": ["Sensado Integrado y", "Comunicaciones (ISAC)"],
+      "code": "L05",
+      "sectorId": "D1",
+      "ringId": "monitor",
+      "angleOff": 15,
+      "maturity": { "scaleId": "trl", "value": 2 },
+      "description": "Integrated Sensing and Communication: convergencia de radar y comunicación en una misma señal.",
+      "metadata": { "impact": "Exploratorio", "horizon": "Largo (5-10 años)" }
+    },
+    {
+      "id": "T06",
+      "name": "5G-Advanced (3GPP Releases 18-19)",
+      "nameLines": ["5G-Advanced", "(3GPP Releases 18-19)"],
+      "code": "L06",
+      "sectorId": "D2",
+      "ringId": "adopt",
+      "angleOff": -15,
+      "maturity": { "scaleId": "trl", "value": 8 },
+      "description": "Evolución del estándar 5G (Rel. 18-19) con mejoras en eficiencia espectral, cobertura y latencia ultra-baja.",
+      "metadata": { "impact": "Alto", "horizon": "Corto (1-2 años)" }
+    },
+    {
+      "id": "T07",
+      "name": "Acceso Fijo Inalámbrico (FWA)",
+      "nameLines": ["FWA", ""],
+      "code": "L09",
+      "sectorId": "D2",
+      "ringId": "adopt",
+      "angleOff": 30,
+      "maturity": { "scaleId": "trl", "value": 7 },
+      "description": "Fixed Wireless Access sobre 5G como alternativa de última milla para conectividad de alta velocidad.",
+      "metadata": { "impact": "Medio", "horizon": "Corto (1-2 años)" }
+    },
+    {
+      "id": "T08",
+      "name": "Redes Ópticas Avanzadas (F5G/F6G)",
+      "nameLines": ["Redes Ópticas Avanzadas", "(F5G/F6G)"],
+      "code": "L10",
+      "sectorId": "D2",
+      "ringId": "trial",
+      "angleOff": -30,
+      "maturity": { "scaleId": "trl", "value": 6 },
+      "description": "Evolución de redes de fibra óptica hacia capacidades 50G-PON y redes ópticas programables.",
+      "metadata": { "impact": "Alto", "horizon": "Medio (2-4 años)" }
+    },
+    {
+      "id": "T09",
+      "name": "Redes No Terrestres (NTN) / Constelaciones LEO",
+      "nameLines": ["Redes No Terrestres (NTN) /", "Constelaciones LEO"],
+      "code": "L08",
+      "sectorId": "D2",
+      "ringId": "trial",
+      "angleOff": 18,
+      "maturity": { "scaleId": "trl", "value": 5 },
+      "description": "Redes No Terrestres con constelaciones LEO (Starlink, OneWeb) integradas al ecosistema 3GPP.",
+      "metadata": { "impact": "Disruptivo", "horizon": "Medio (2-4 años)" }
+    },
+    {
+      "id": "T10",
+      "name": "Tecnologías Habilitadoras 6G (THz, RIS, MIMO Extremo)",
+      "nameLines": ["Tecnologías Habilitadoras 6G", "(THz, RIS, MIMO Extremo)"],
+      "code": "L07",
+      "sectorId": "D2",
+      "ringId": "monitor",
+      "angleOff": 0,
+      "maturity": { "scaleId": "trl", "value": 2 },
+      "description": "Sexta generación: comunicaciones THz, superficies inteligentes reconfigurables y tasas Tbps.",
+      "metadata": { "impact": "Disruptivo", "horizon": "Largo (2030+)" }
+    },
+    {
+      "id": "T11",
+      "name": "SDN/NFV y Redes Cloud-Native",
+      "nameLines": ["SDN/NFV y", "Redes Cloud-Native"],
+      "code": "L12",
+      "sectorId": "D3",
+      "ringId": "adopt",
+      "angleOff": 18,
+      "maturity": { "scaleId": "trl", "value": 8 },
+      "description": "Virtualización de funciones de red y redes definidas por software con arquitectura cloud-native.",
+      "metadata": { "impact": "Alto", "horizon": "Corto (1-2 años)" }
+    },
+    {
+      "id": "T12",
+      "name": "Open RAN / Desagregación de la RAN",
+      "nameLines": ["Open RAN /", "Desagregación de la RAN"],
+      "code": "L11",
+      "sectorId": "D3",
+      "ringId": "trial",
+      "angleOff": 5,
+      "maturity": { "scaleId": "trl", "value": 6 },
+      "description": "Desagregación de la red de acceso radio con interfaces abiertas (O-RAN Alliance).",
+      "metadata": { "impact": "Alto", "horizon": "Medio (2-4 años)" }
+    },
+    {
+      "id": "T13",
+      "name": "Edge Computing / MEC (Multi-Access Edge Computing)",
+      "nameLines": ["Edge Computing / MEC", "(Multi-Access Edge Computing)"],
+      "code": "L13",
+      "sectorId": "D3",
+      "ringId": "trial",
+      "angleOff": -14,
+      "maturity": { "scaleId": "trl", "value": 5 },
+      "description": "Multi-access Edge Computing: procesamiento en el borde de la red para baja latencia.",
+      "metadata": { "impact": "Alto", "horizon": "Medio (2-3 años)" }
+    },
+    {
+      "id": "T14",
+      "name": "Network Slicing End-to-End",
+      "nameLines": ["Network Slicing", "End-to-End"],
+      "code": "L14",
+      "sectorId": "D3",
+      "ringId": "assess",
+      "angleOff": 15,
+      "maturity": { "scaleId": "trl", "value": 4 },
+      "description": "Segmentación dinámica de red en slices lógicas end-to-end con SLA garantizado.",
+      "metadata": { "impact": "Alto", "horizon": "Medio (3-5 años)" }
+    },
+    {
+      "id": "T15",
+      "name": "Convergencia Red-Cómputo (Computing-Network Convergence)",
+      "nameLines": ["Convergencia Red-Cómputo", "(Computing-Network Convergence)"],
+      "code": "L15",
+      "sectorId": "D3",
+      "ringId": "monitor",
+      "angleOff": -12,
+      "maturity": { "scaleId": "trl", "value": 2 },
+      "description": "Fusión de recursos de red y cómputo en una plataforma unificada distribuida.",
+      "metadata": { "impact": "Exploratorio", "horizon": "Largo (5-8 años)" }
+    },
+    {
+      "id": "T16",
+      "name": "Transformación Techco / Servicios B2B",
+      "nameLines": ["Transformación Techco /", "Servicios B2B"],
+      "code": "L17",
+      "sectorId": "D4",
+      "ringId": "trial",
+      "angleOff": -15,
+      "maturity": { "scaleId": "trl", "value": 6 },
+      "description": "Transformación de operadores en Technology Companies con servicios B2B verticales.",
+      "metadata": { "impact": "Alto", "horizon": "Medio (2-4 años)" }
+    },
+    {
+      "id": "T17",
+      "name": "APIs de Red / Network-as-a-Service (NaaS)",
+      "nameLines": ["APIs de Red /", "Network-as-a-Service (NaaS)"],
+      "code": "L16",
+      "sectorId": "D4",
+      "ringId": "assess",
+      "angleOff": 8,
+      "maturity": { "scaleId": "trl", "value": 4 },
+      "description": "Exposición de capacidades de red mediante APIs (CAMARA/GSMA) y Network-as-a-Service.",
+      "metadata": { "impact": "Alto", "horizon": "Medio (3-5 años)" }
+    },
+    {
+      "id": "T18",
+      "name": "Inclusión Digital y Conectividad Universal",
+      "nameLines": ["Inclusión Digital y", "Conectividad Universal"],
+      "code": "L19",
+      "sectorId": "D4",
+      "ringId": "trial",
+      "angleOff": 15,
+      "maturity": { "scaleId": "trl", "value": 5 },
+      "description": "Estrategias para cerrar la brecha digital: conectividad rural, alfabetización digital y acceso universal.",
+      "metadata": { "impact": "Social Alto", "horizon": "Continuo" }
+    },
+    {
+      "id": "T19",
+      "name": "Comunicaciones Inmersivas (XR/Holográfico)",
+      "nameLines": ["Comunicaciones Inmersivas", "(XR/Holográfico)"],
+      "code": "L20",
+      "sectorId": "D4",
+      "ringId": "monitor",
+      "angleOff": 0,
+      "maturity": { "scaleId": "trl", "value": 2 },
+      "description": "Extended Reality y comunicaciones holográficas como nuevos paradigmas de interacción.",
+      "metadata": { "impact": "Disruptivo", "horizon": "Largo (5-10 años)" }
+    },
+    {
+      "id": "T20",
+      "name": "Ciberseguridad de Redes de Próxima Generación",
+      "nameLines": ["Ciberseguridad de Redes", "de Próxima Generación"],
+      "code": "L21",
+      "sectorId": "D5",
+      "ringId": "trial",
+      "angleOff": -13,
+      "maturity": { "scaleId": "trl", "value": 6 },
+      "description": "Seguridad basada en IA, Zero Trust Architecture y detección proactiva de amenazas.",
+      "metadata": { "impact": "Crítico", "horizon": "Corto (1-2 años)" }
+    },
+    {
+      "id": "T21",
+      "name": "Redes Verdes / Eficiencia Energética",
+      "nameLines": ["Redes Verdes /", "Eficiencia Energética"],
+      "code": "L23",
+      "sectorId": "D5",
+      "ringId": "trial",
+      "angleOff": 18,
+      "maturity": { "scaleId": "trl", "value": 4 },
+      "description": "Diseño de redes energéticamente eficientes y sostenibles (Green-Native Networks).",
+      "metadata": { "impact": "Alto", "horizon": "Medio (3-5 años)" }
+    },
+    {
+      "id": "T22",
+      "name": "Criptografía Post-Cuántica (PQC)",
+      "nameLines": ["Criptografía", "Post-Cuántica (PQC)"],
+      "code": "L22",
+      "sectorId": "D5",
+      "ringId": "assess",
+      "angleOff": -10,
+      "maturity": { "scaleId": "trl", "value": 3 },
+      "description": "Algoritmos criptográficos resistentes a computación cuántica (PQC — NIST FIPS 203/204).",
+      "metadata": { "impact": "Crítico", "horizon": "Medio (3-5 años)" }
+    },
+    {
+      "id": "T23",
+      "name": "Gobernanza de Datos / IA Responsable",
+      "nameLines": ["Gobernanza de Datos /", "IA Responsable"],
+      "code": "L25",
+      "sectorId": "D5",
+      "ringId": "assess",
+      "angleOff": 12,
+      "maturity": { "scaleId": "trl", "value": 2 },
+      "description": "Marcos regulatorios y éticos para el uso responsable de IA en telecomunicaciones.",
+      "metadata": { "impact": "Regulatorio", "horizon": "Medio (2-5 años)" }
+    },
+    {
+      "id": "T24",
+      "name": "Blockchain para Telecomunicaciones",
+      "nameLines": ["Blockchain para", "Telecomunicaciones"],
+      "code": "L24",
+      "sectorId": "D5",
+      "ringId": "monitor",
+      "angleOff": -8,
+      "maturity": { "scaleId": "trl", "value": 2 },
+      "description": "Aplicaciones de blockchain en roaming, identidad, SLA y trazabilidad en telecom.",
+      "metadata": { "impact": "Exploratorio", "horizon": "Largo (5-8 años)" }
+    }
+  ],
+  "scales": [
+    {
+      "id": "trl",
+      "label": "TRL — Technology Readiness Level",
+      "min": 1,
+      "max": 9,
+      "buckets": [
+        { "rangeStart": 1, "rangeEnd": 2, "label": "TRL 1-2 (Inicial)", "color": "#4FC3F7" },
+        { "rangeStart": 3, "rangeEnd": 4, "label": "TRL 3-4 (Bajo)", "color": "#FDC300" },
+        { "rangeStart": 5, "rangeEnd": 6, "label": "TRL 5-6 (Medio)", "color": "#E65100" },
+        { "rangeStart": 7, "rangeEnd": 9, "label": "TRL 7-9 (Alto)", "color": "#C62828" }
+      ]
+    }
+  ],
+  "layout": {
+    "viewBoxWidth": 1200,
+    "viewBoxHeight": 1060,
+    "centerX": 600,
+    "centerY": 520,
+    "outerRadius": 400
+  },
+  "excludedItems": [
+    {
+      "code": "L18",
+      "name": "Consolidación Sectorial (M&A)",
+      "sublines": [
+        "SL18a. M&A global: fusiones y adquisiciones entre operadores",
+        "SL18b. Regulación de concentración: políticas antimonopolio en telecomunicaciones"
+      ],
+      "justification": "ESTABLE. Tema regulatorio y empresarial, no tecnológico. Olas de consolidación en Europa (Vodafone/Three UK) y Latam. No genera patentes. No requiere formación técnica específica en el CEET. IMPLICACIÓN CEET: No aplica para formación técnica."
+    }
+  ]
+}
