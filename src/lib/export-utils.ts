@@ -101,7 +101,7 @@ export async function downloadTrajectoryPDF(
   const { toPng } = await import("html-to-image");
   const { jsPDF } = await import("jspdf");
 
-  const imgData = await toPng(el, { cacheBust: true, quality: 1 });
+  const imgData = await toPng(el, { cacheBust: true, pixelRatio: 3 });
 
   const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
   const pageW = pdf.internal.pageSize.getWidth();
