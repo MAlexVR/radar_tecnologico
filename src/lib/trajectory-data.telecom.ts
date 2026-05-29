@@ -49,19 +49,23 @@ const NEUTRAL_COLOR = "bg-gray-100 text-gray-800";
  * Los strings son en español; el motor es agnóstico.
  */
 export const telecomConfig: TrajectoryConfig = {
-  // ── Drivers: derivados de SECTORS (D1..D5) ───────────────────────────────
+  // ── Drivers: derivados de SECTORS (D1..D5) con color institucional ───────
+  // Colores del radar (SECTORS[i].color) para coherencia visual entre radar y mapa.
+  // Orden SECTOR_ORDER: D1, D2, D3, D4, D5.
   drivers: SECTORS.map((s) => ({
     key: s.id,          // "D1" .. "D5"
     label: s.shortLabel, // e.g. "D1: Inteligencia Nativa y Redes Autónomas"
     icon: s.icon,
+    color: s.color,     // hex del radar — coherencia visual entre módulos
   })),
 
-  // ── Layers: 4 swimlanes fijadas por la spec ───────────────────────────────
+  // ── Layers: 4 swimlanes fijadas por la spec con paleta profesional ────────
+  // Paleta distintiva para identificar cada capa a simple vista.
   layers: [
-    { key: "L1", label: "Tecnologías",      order: 1 },
-    { key: "L2", label: "Infraestructura",  order: 2 },
-    { key: "L3", label: "Talento & I+D+i",  order: 3 },
-    { key: "L4", label: "Alianzas",         order: 4 },
+    { key: "L1", label: "Tecnologías",      order: 1, color: "#3949AB" }, // índigo
+    { key: "L2", label: "Infraestructura",  order: 2, color: "#00897B" }, // teal
+    { key: "L3", label: "Talento & I+D+i",  order: 3, color: "#F9A825" }, // ámbar
+    { key: "L4", label: "Alianzas",         order: 4, color: "#8E24AA" }, // púrpura
   ],
 
   // ── Horizon buckets: 5 columnas de tiempo ────────────────────────────────

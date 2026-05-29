@@ -65,6 +65,12 @@ export interface TrajectoryLayer {
   order: number;
   /** Icono opcional (nombre de Lucide u otro sistema). */
   icon?: string;
+  /**
+   * Color hex opcional para acentos visuales de la capa (borde, fondo tintado, swatch de leyenda).
+   * El motor lo lee pero no lo impone — el adaptador de dominio lo provee.
+   * Ejemplo: `"#3949AB"` (índigo para L1 Tecnologías).
+   */
+  color?: string;
 }
 
 /** Descriptor de una columna de horizonte. */
@@ -83,8 +89,12 @@ export interface TrajectoryHorizonBucket {
  * El motor NUNCA lo crea ni lo modifica.
  */
 export interface TrajectoryConfig {
-  /** Lista de drivers/direccionadores. Al menos uno requerido. */
-  drivers: { key: string; label: string; icon?: string }[];
+  /**
+   * Lista de drivers/direccionadores. Al menos uno requerido.
+   * `color` es hex opcional para acentos visuales del selector de driver.
+   * `icon` es el nombre/URL del icono del driver (Lucide u otro sistema).
+   */
+  drivers: { key: string; label: string; icon?: string; color?: string }[];
   /** Lista de swimlanes. Al menos una requerida. Sin claves duplicadas. */
   layers: TrajectoryLayer[];
   /** Lista de buckets de horizonte. Al menos uno requerido. Sin claves duplicadas. */
