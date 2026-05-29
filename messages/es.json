@@ -40,7 +40,7 @@
     "tabLegend": "Leyenda",
     "exportPNGShort": "Exportar PNG",
     "exportPDFShort": "Exportar PDF",
-    "appDescription": "Aplicación web interactiva de vigilancia científico-tecnológica para el área de telecomunicaciones del Centro de Electricidad, Electrónica y Telecomunicaciones (CEET) — SENA.",
+    "appDescription": "Plataforma de vigilancia científico-tecnológica del área de Telecomunicaciones del CEET — SENA. Integra el Radar Tecnológico (madurez y adopción) y el Mapa de Trayectoria Tecnológica (evolución de capacidades), horizonte 2025-2035.",
     "notMapped": "No Graficadas / Excluidas",
     "ringsTitle": "Anillos (fase de adopción CEET)",
     "sectorsTitle": "Sectores (Direccionadores)"
@@ -48,7 +48,7 @@
   "about": {
     "title": "Acerca de",
     "description": "Información del sistema",
-    "appTitle": "Radar Tecnológico",
+    "appTitle": "Vigilancia Tecnológica CEET",
     "version": "Versión 2.1.0",
     "entity": "Entidad",
     "entityValue": "SENA",
@@ -59,7 +59,7 @@
     "regionValue": "Bogotá D.C.",
     "researchGroup": "Grupo I+D",
     "researchGroupValue": "GICS",
-    "aboutText": "Herramienta web de vigilancia científico-tecnológica y prospectiva del área de telecomunicaciones. Visualiza la madurez y adopción de tecnologías clave para el horizonte 2025-2035, organizadas por nivel TRL y direccionadores estratégicos.",
+    "aboutText": "Plataforma de vigilancia científico-tecnológica del área de Telecomunicaciones del CEET — SENA. Integra el Radar Tecnológico (madurez y adopción de tecnologías) y el Mapa de Trayectoria Tecnológica (evolución de capacidades del centro en el tiempo), para el horizonte 2025-2035.",
     "author": "Autor:",
     "authorName": "Ing. Mauricio Alexander Vargas Rodríguez, MSc., MBA Esp. PM.",
     "authorRole": "Instructor G14 — Área de Telecomunicaciones",
@@ -69,7 +69,7 @@
   },
   "help": {
     "title": "Guía de Referencia",
-    "description": "Conceptos clave del Radar Tecnológico de Telecomunicaciones",
+    "description": "Conceptos clave de la Plataforma de Vigilancia Tecnológica CEET",
     "trlTitle": "Niveles de Madurez Tecnológica",
     "trlIntro": "El Technology Readiness Level (TRL) es una escala estandarizada que mide el grado de madurez de una tecnología, desde su concepción hasta su despliegue operativo.",
     "trlBasicResearch": "Investigación Básica",
@@ -89,7 +89,7 @@
     "subtitle": "Telecomunicaciones CEET · SENA · 2025-2035",
     "help": "Ayuda",
     "about": "Acerca de",
-    "trajectory": "Mapa de Trayectoria",
+    "trajectory": "Mapa de Trayectoria Tecnológica",
     "menu": "Menú"
   },
   "trajectory": {

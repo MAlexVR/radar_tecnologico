@@ -1,7 +1,7 @@
 {
   "name": "radar-tecnologico-telecomunicaciones",
   "version": "2.1.0",
-  "description": "Radar Tecnológico Interactivo — Telecomunicaciones CEET 2025-2035 | SENA",
+  "description": "Plataforma de Vigilancia Tecnológica CEET — Radar Tecnológico y Mapa de Trayectoria | Telecomunicaciones SENA 2025-2035",
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",

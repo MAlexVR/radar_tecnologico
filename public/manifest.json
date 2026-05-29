@@ -1,7 +1,7 @@
 {
-  "name": "Radar Tecnológico Telecomunicaciones CEET",
-  "short_name": "Radar Tech",
-  "description": "Radar de vigilancia tecnológica del área de telecomunicaciones — CEET SENA 2025-2035",
+  "name": "Vigilancia Tecnológica CEET — Radar y Mapa de Trayectoria",
+  "short_name": "VCyT CEET",
+  "description": "Plataforma de vigilancia científico-tecnológica del área de Telecomunicaciones del Centro de Electricidad, Electrónica y Telecomunicaciones (CEET — SENA). Integra el Radar Tecnológico (madurez y adopción de tecnologías) y el Mapa de Trayectoria Tecnológica (evolución de capacidades del centro en el tiempo), para el horizonte 2025-2035.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#020617",
