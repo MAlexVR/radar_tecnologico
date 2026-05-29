@@ -26,6 +26,8 @@ export interface TrajectoryLaneProps {
   items: TrajectoryItem[];
   /** Forwarded from TrajectoryMap to each node. */
   onSelect?: (item: TrajectoryItem) => void;
+  /** ID of the currently selected item — used to highlight the active node. */
+  selectedId?: string | null;
   className?: string;
 }
 
@@ -40,7 +42,7 @@ export interface TrajectoryLaneProps {
  * On mobile (`< md`): wraps in a native `<details>` accordion to keep the
  * timeline scannable without horizontal overflow.
  */
-export function TrajectoryLane({ layerKey, items, onSelect, className }: TrajectoryLaneProps) {
+export function TrajectoryLane({ layerKey, items, onSelect, selectedId, className }: TrajectoryLaneProps) {
   const config = useTrajectoryConfig();
 
   const layer = config.layers.find((l) => l.key === layerKey);
@@ -61,57 +63,92 @@ export function TrajectoryLane({ layerKey, items, onSelect, className }: Traject
     }
   }
 
-  // The grid cells (one per horizon bucket)
-  const cells = sortedBuckets.map((bucket) => {
+  const layerColor = (layer as { color?: string } & typeof layer)?.color;
+
+  // The grid cells (one per horizon bucket) — tinted with layer color when available
+  const cells = sortedBuckets.map((bucket, i) => {
     const cellItems = byBucket.get(bucket.key) ?? [];
     return (
       <div
         key={bucket.key}
         role="gridcell"
         aria-label={`${layerLabel} — ${bucket.label}`}
-        className="min-h-[3rem] space-y-1 p-1"
+        className={cn(
+          "min-h-[3rem] space-y-1 p-1 border-b",
+          i < sortedBuckets.length - 1 && "border-r border-r-border/30"
+        )}
+        style={layerColor ? { backgroundColor: `${layerColor}05` } : undefined}
       >
         {cellItems.map((item) => (
-          <TrajectoryNode key={item.id} item={item} onSelect={onSelect} />
+          <TrajectoryNode
+            key={item.id}
+            item={item}
+            onSelect={onSelect}
+            selected={selectedId === item.id}
+          />
         ))}
       </div>
     );
   });
 
-  // ── Mobile: <details> accordion ──────────────────────────────────────────
+  // ── Mobile: <details> accordion with layer color accent ──────────────────
   const mobileView = (
     <details className="md:hidden">
-      <summary className="cursor-pointer select-none rounded-md px-2 py-1.5 text-sm font-medium hover:bg-accent">
+      <summary
+        className="cursor-pointer select-none rounded-md px-3 py-1.5 text-sm font-medium hover:bg-accent"
+        style={
+          layerColor
+            ? {
+                borderLeft: `4px solid ${layerColor}`,
+                color: layerColor,
+              }
+            : undefined
+        }
+      >
         {layerLabel}
         {items.length > 0 && (
-          <span className="ml-2 text-xs text-muted-foreground">
+          <span className="ml-2 text-xs opacity-60">
             ({items.length})
           </span>
         )}
       </summary>
       <div className="mt-1 grid grid-cols-1 gap-1 pl-2 sm:grid-cols-2">
         {items.map((item) => (
-          <TrajectoryNode key={item.id} item={item} onSelect={onSelect} />
+          <TrajectoryNode
+            key={item.id}
+            item={item}
+            onSelect={onSelect}
+            selected={selectedId === item.id}
+          />
         ))}
       </div>
     </details>
   );
 
-  // ── Desktop: grid row ─────────────────────────────────────────────────────
+  // ── Desktop: grid row with layer color label cell ─────────────────────────
   const desktopView = (
     <div
       role="row"
       aria-label={`Capa: ${layerLabel}`}
       className={cn("hidden md:contents", className)}
     >
-      {/* Lane label cell (first column) */}
+      {/* Lane label cell (first column) — tinted bg + left border in layer color */}
       <div
         role="rowheader"
-        className="flex items-center px-2 py-1 text-xs font-medium"
+        className="flex items-center px-2 py-2 text-xs font-semibold border-b border-r"
+        style={
+          layerColor
+            ? {
+                backgroundColor: `${layerColor}12`,
+                borderLeft: `4px solid ${layerColor}`,
+                color: layerColor,
+              }
+            : undefined
+        }
       >
         {layerLabel}
       </div>
-      {/* Horizon cells */}
+      {/* Horizon cells (tinted in cells[] above) */}
       {cells}
     </div>
   );

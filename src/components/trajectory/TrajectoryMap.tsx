@@ -37,6 +37,8 @@ export interface TrajectoryMapProps {
   dataset: TrajectoryDataset;
   /** Called when the user clicks a node. */
   onSelect?: (item: TrajectoryItem) => void;
+  /** ID of the currently selected item — forwarded to lanes for node highlighting. */
+  selectedId?: string | null;
   className?: string;
 }
 
@@ -54,6 +56,7 @@ export function TrajectoryMap({
   config,
   dataset,
   onSelect,
+  selectedId,
   className,
 }: TrajectoryMapProps) {
   const sortedDrivers = config.drivers; // order preserved from config
@@ -76,12 +79,57 @@ export function TrajectoryMap({
           onValueChange={setActiveDriver}
           className="w-full"
         >
-          <TabsList className="w-full flex-wrap justify-start h-auto gap-1">
-            {sortedDrivers.map((driver) => (
-              <TabsTrigger key={driver.key} value={driver.key}>
-                {driver.label}
-              </TabsTrigger>
-            ))}
+          {/* Desktop: uniform grid (1 col per driver). Mobile: wrapping flex. */}
+          <TabsList
+            className="h-auto gap-2 flex flex-wrap p-1 md:grid"
+            style={
+              sortedDrivers.length > 0
+                ? { gridTemplateColumns: `repeat(${sortedDrivers.length}, 1fr)` }
+                : undefined
+            }
+          >
+            {sortedDrivers.map((driver) => {
+              const isActive = activeDriver === driver.key;
+              const color = (driver as { color?: string }).color;
+              return (
+                <TabsTrigger
+                  key={driver.key}
+                  value={driver.key}
+                  className="flex items-center gap-1.5 justify-center transition-all text-xs py-1.5 px-2"
+                  style={
+                    color
+                      ? isActive
+                        ? {
+                            backgroundColor: `${color}15`,
+                            borderBottom: `2px solid ${color}`,
+                            color,
+                            fontWeight: 600,
+                          }
+                        : {
+                            color: "inherit",
+                          }
+                      : undefined
+                  }
+                  onMouseEnter={(e) => {
+                    if (color && !isActive) {
+                      (e.currentTarget as HTMLElement).style.backgroundColor = `${color}0d`;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (color && !isActive) {
+                      (e.currentTarget as HTMLElement).style.backgroundColor = "";
+                    }
+                  }}
+                >
+                  {driver.icon && (
+                    <span aria-hidden className="text-base leading-none">
+                      {driver.icon}
+                    </span>
+                  )}
+                  <span className="line-clamp-1">{driver.label}</span>
+                </TabsTrigger>
+              );
+            })}
           </TabsList>
 
           {sortedDrivers.map((driver) => {
@@ -118,18 +166,21 @@ export function TrajectoryMap({
                             role="row"
                             className="contents"
                           >
-                            {/* Corner cell: layer label column header */}
+                            {/* Corner cell */}
                             <div
                               role="columnheader"
-                              className="border-b px-2 py-1.5 text-xs font-semibold text-muted-foreground"
+                              className="bg-muted/40 border-b border-r px-2 py-2 text-xs font-semibold text-muted-foreground"
                             >
                               <span className="sr-only">Capa</span>
                             </div>
-                            {sortedBuckets.map((bucket) => (
+                            {sortedBuckets.map((bucket, i) => (
                               <div
                                 key={bucket.key}
                                 role="columnheader"
-                                className="border-b px-2 py-1.5 text-center text-xs font-semibold"
+                                className={cn(
+                                  "bg-muted/40 border-b px-2 py-2 text-center text-xs font-semibold tracking-wide",
+                                  i < sortedBuckets.length - 1 && "border-r border-r-border/40"
+                                )}
                               >
                                 {bucket.label}
                               </div>
@@ -145,6 +196,7 @@ export function TrajectoryMap({
                                 layerKey={layer.key}
                                 items={laneItems}
                                 onSelect={onSelect}
+                                selectedId={selectedId}
                               />
                             );
                           })}
@@ -160,6 +212,7 @@ export function TrajectoryMap({
                                 layerKey={layer.key}
                                 items={laneItems}
                                 onSelect={onSelect}
+                                selectedId={selectedId}
                               />
                             );
                           })}

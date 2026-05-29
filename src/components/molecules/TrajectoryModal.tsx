@@ -148,6 +148,7 @@ export function TrajectoryModal({ open, onOpenChange }: TrajectoryModalProps) {
               config={telecomConfig}
               dataset={dataset}
               onSelect={handleSelect}
+              selectedId={selected?.id ?? null}
             />
           </div>
 

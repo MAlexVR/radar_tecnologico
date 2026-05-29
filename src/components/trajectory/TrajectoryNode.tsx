@@ -22,6 +22,8 @@ export interface TrajectoryNodeProps {
   item: TrajectoryItem;
   /** Called when the user clicks the node. */
   onSelect?: (item: TrajectoryItem) => void;
+  /** Whether this node is currently selected (renders a ring in layer color). */
+  selected?: boolean;
   className?: string;
 }
 
@@ -34,7 +36,13 @@ export interface TrajectoryNodeProps {
  * - Optional metric badge from `config.metricBadge`.
  * - aria-label format: "[LayerLabel] | [HorizonLabel] | [Title] | [gap?]"
  */
-export function TrajectoryNode({ item, onSelect, className }: TrajectoryNodeProps) {
+// Gap severity colors — used for the indicator dot
+const GAP_DOT_COLORS: Record<string, string> = {
+  critica: "#C62828",
+  alta: "#F9A825",
+};
+
+export function TrajectoryNode({ item, onSelect, selected = false, className }: TrajectoryNodeProps) {
   const config = useTrajectoryConfig();
 
   // Resolve human-readable layer and horizon labels from config
@@ -44,9 +52,15 @@ export function TrajectoryNode({ item, onSelect, className }: TrajectoryNodeProp
     config.horizonBuckets.find((h) => h.key === item.horizon)?.label ??
     item.horizon;
 
+  // Layer color for left border accent
+  const layerColor = (config.layers.find((l) => l.key === item.layer) as { color?: string } & typeof config.layers[number])?.color;
+
   const colorClass = config.colorFor(item);
   const label = config.labelFor(item);
   const badge = config.metricBadge ? config.metricBadge(item) : null;
+
+  // Gap indicator dot (critica = red, alta = amber)
+  const gapDotColor = item.gap ? GAP_DOT_COLORS[item.gap] : undefined;
 
   // Build a fully descriptive aria-label
   const ariaLabel = [
@@ -62,18 +76,36 @@ export function TrajectoryNode({ item, onSelect, className }: TrajectoryNodeProp
     <button
       type="button"
       aria-label={ariaLabel}
+      aria-pressed={selected}
       className={cn(
         "group relative flex w-full flex-col items-start gap-1 rounded-md border p-2 text-left text-xs",
-        "transition-all duration-150",
-        "hover:shadow-md hover:ring-2 hover:ring-ring hover:ring-offset-1",
+        "bg-card transition-all duration-150",
+        "hover:shadow-md hover:scale-[1.01]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         colorClass,
         className
       )}
+      style={
+        layerColor
+          ? selected
+            ? { borderLeft: `3px solid ${layerColor}`, boxShadow: `0 0 0 2px ${layerColor}40` }
+            : { borderLeft: `3px solid ${layerColor}` }
+          : undefined
+      }
       onClick={() => onSelect?.(item)}
     >
+      {/* Gap severity dot — top-right corner */}
+      {gapDotColor && (
+        <span
+          aria-hidden
+          title={item.gap === "critica" ? "Brecha Crítica" : "Brecha Alta"}
+          className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full shrink-0"
+          style={{ backgroundColor: gapDotColor }}
+        />
+      )}
+
       {/* Node title */}
-      <span className="line-clamp-2 font-medium leading-snug">{label}</span>
+      <span className="line-clamp-2 font-medium leading-snug pr-3">{label}</span>
 
       {/* Metric badge */}
       {badge && (

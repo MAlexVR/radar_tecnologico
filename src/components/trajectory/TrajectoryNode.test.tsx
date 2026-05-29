@@ -122,4 +122,41 @@ describe("TrajectoryNode", () => {
     const label = btn.getAttribute("aria-label") ?? "";
     expect(label).toContain("critical");
   });
+
+  it("renders a gap indicator dot for gap='critica'", () => {
+    const itemCritica: TrajectoryItem = { ...syntheticItem, gap: "critica" };
+    renderNode(itemCritica);
+    // The dot has title="Brecha Crítica" and aria-hidden
+    const dot = document.querySelector('[title="Brecha Crítica"]');
+    expect(dot).toBeInTheDocument();
+  });
+
+  it("renders a gap indicator dot for gap='alta'", () => {
+    const itemAlta: TrajectoryItem = { ...syntheticItem, gap: "alta" };
+    renderNode(itemAlta);
+    const dot = document.querySelector('[title="Brecha Alta"]');
+    expect(dot).toBeInTheDocument();
+  });
+
+  it("does NOT render a gap dot for gaps without a configured severity", () => {
+    const itemModerate: TrajectoryItem = { ...syntheticItem, gap: "moderada" };
+    renderNode(itemModerate);
+    expect(document.querySelector('[title="Brecha Crítica"]')).toBeNull();
+    expect(document.querySelector('[title="Brecha Alta"]')).toBeNull();
+  });
+
+  it("has aria-pressed=true when selected prop is true", () => {
+    const config = { ...syntheticConfig };
+    render(
+      <TrajectoryProvider config={config}>
+        <TrajectoryNode item={syntheticItem} selected={true} />
+      </TrajectoryProvider>
+    );
+    expect(screen.getByRole("button").getAttribute("aria-pressed")).toBe("true");
+  });
+
+  it("has aria-pressed=false when selected prop is false (default)", () => {
+    renderNode(syntheticItem);
+    expect(screen.getByRole("button").getAttribute("aria-pressed")).toBe("false");
+  });
 });
