@@ -89,7 +89,17 @@
     "subtitle": "Telecomunicaciones CEET · SENA · 2025-2035",
     "help": "Ayuda",
     "about": "Acerca de",
+    "trajectory": "Mapa de Trayectoria",
     "menu": "Menú"
+  },
+  "trajectory": {
+    "title": "Mapa de Trayectoria Tecnológica",
+    "description": "Visualización de la hoja de ruta tecnológica CEET 2025-2035 por direccionadores estratégicos y capas de acción.",
+    "exportPDF": "Exportar PDF",
+    "exportingPDF": "Exportando…",
+    "exportError": "Error al exportar. Intenta de nuevo.",
+    "close": "Cerrar",
+    "emptyState": "No hay ítems para este driver."
   },
   "footer": {
     "copyright": "Servicio Nacional de Aprendizaje - SENA",
