@@ -64,8 +64,9 @@ const syntheticDataset: TrajectoryDataset = {
 describe("TrajectoryMap", () => {
   it("renders the driver tabs", () => {
     render(<TrajectoryMap config={syntheticConfig} dataset={syntheticDataset} />);
-    expect(screen.getByRole("tab", { name: "Driver Alpha" })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: "Driver Beta" })).toBeInTheDocument();
+    // Tab text is now two lines: key (bold) + label — accessible name is their concatenation.
+    expect(screen.getByRole("tab", { name: "drvA Driver Alpha" })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "drvB Driver Beta" })).toBeInTheDocument();
   });
 
   it("renders horizon bucket column headers", () => {
@@ -108,7 +109,7 @@ describe("TrajectoryMap", () => {
   it("switches to Driver Beta when its tab is clicked, showing only Beta nodes", async () => {
     const user = userEvent.setup();
     render(<TrajectoryMap config={syntheticConfig} dataset={syntheticDataset} />);
-    await user.click(screen.getByRole("tab", { name: "Driver Beta" }));
+    await user.click(screen.getByRole("tab", { name: "drvB Driver Beta" }));
     // Beta nodes become accessible after tab switch
     expect((await screen.findAllByRole("button", { name: /Beta Node 1/i })).length).toBeGreaterThan(0);
     expect(screen.getAllByRole("button", { name: /Beta Node 2/i }).length).toBeGreaterThan(0);
@@ -122,7 +123,7 @@ describe("TrajectoryMap", () => {
       items: itemsForDrvA, // no drvB items
     };
     render(<TrajectoryMap config={syntheticConfig} dataset={emptyDataset} />);
-    await user.click(screen.getByRole("tab", { name: "Driver Beta" }));
+    await user.click(screen.getByRole("tab", { name: "drvB Driver Beta" }));
     // No node buttons for drvB
     expect(screen.queryByRole("button", { name: /Beta Node/i })).toBeNull();
     // Empty state container should be present

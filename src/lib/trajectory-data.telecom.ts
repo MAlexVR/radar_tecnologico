@@ -62,10 +62,10 @@ export const telecomConfig: TrajectoryConfig = {
   // ── Layers: 4 swimlanes fijadas por la spec con paleta profesional ────────
   // Paleta distintiva para identificar cada capa a simple vista.
   layers: [
-    { key: "L1", label: "Tecnologías",      order: 1, color: "#3949AB" }, // índigo
-    { key: "L2", label: "Infraestructura",  order: 2, color: "#00897B" }, // teal
-    { key: "L3", label: "Talento & I+D+i",  order: 3, color: "#F9A825" }, // ámbar
-    { key: "L4", label: "Alianzas",         order: 4, color: "#8E24AA" }, // púrpura
+    { key: "L1", label: "Tecnologías",      order: 1, color: "#1565C0" }, // azul SENA
+    { key: "L2", label: "Infraestructura",  order: 2, color: "#2E7D32" }, // verde SENA
+    { key: "L3", label: "Talento & I+D+i",  order: 3, color: "#6A1B9A" }, // púrpura
+    { key: "L4", label: "Alianzas",         order: 4, color: "#00838F" }, // cian/teal
   ],
 
   // ── Horizon buckets: 5 columnas de tiempo ────────────────────────────────

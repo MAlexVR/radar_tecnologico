@@ -81,7 +81,7 @@ export function TrajectoryMap({
         >
           {/* Desktop: uniform grid (1 col per driver). Mobile: wrapping flex. */}
           <TabsList
-            className="h-auto gap-2 flex flex-wrap p-1 md:grid"
+            className="h-auto gap-2 flex flex-wrap items-stretch p-1 md:grid"
             style={
               sortedDrivers.length > 0
                 ? { gridTemplateColumns: `repeat(${sortedDrivers.length}, 1fr)` }
@@ -95,7 +95,7 @@ export function TrajectoryMap({
                 <TabsTrigger
                   key={driver.key}
                   value={driver.key}
-                  className="flex items-center gap-1.5 justify-center transition-all text-xs py-1.5 px-2"
+                  className="h-full flex flex-col items-center justify-center gap-0.5 transition-all py-2 px-2 min-h-[3.25rem]"
                   style={
                     color
                       ? isActive
@@ -121,12 +121,12 @@ export function TrajectoryMap({
                     }
                   }}
                 >
-                  {driver.icon && (
-                    <span aria-hidden className="text-base leading-none">
-                      {driver.icon}
-                    </span>
-                  )}
-                  <span className="line-clamp-1">{driver.label}</span>
+                  {/* Line 1: driver code in bold */}
+                  <span className="font-bold text-xs leading-tight">{driver.key}</span>
+                  {/* Line 2: driver label, up to 2 lines, no overflow */}
+                  <span className="line-clamp-2 text-[11px] leading-tight text-center whitespace-normal max-w-full">
+                    {driver.label}
+                  </span>
                 </TabsTrigger>
               );
             })}
