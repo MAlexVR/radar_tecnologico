@@ -11,8 +11,8 @@
  *  - At least one map driver tab is visible when open
  */
 
-import { describe, it, expect, vi, beforeAll } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import messages from "../../../messages/es.json";
 import { TrajectoryModal } from "./TrajectoryModal";
@@ -109,5 +109,37 @@ describe("TrajectoryModal", () => {
     // The mocked dataset has one item: "Lab AIOps" in D1
     const btns = screen.getAllByRole("button", { name: /Lab AIOps/i });
     expect(btns.length).toBeGreaterThan(0);
+  });
+
+  it("clicking a node opens the detail panel", () => {
+    renderModal(true);
+    // Click the node button (first match — desktop or mobile)
+    const btn = screen.getAllByRole("button", { name: /Lab AIOps/i })[0];
+    fireEvent.click(btn);
+    expect(screen.getByTestId("trajectory-detail-panel")).toBeInTheDocument();
+  });
+
+  it("clicking the same node again deselects it (toggle)", () => {
+    renderModal(true);
+    const btn = screen.getAllByRole("button", { name: /Lab AIOps/i })[0];
+    // First click — select
+    fireEvent.click(btn);
+    expect(screen.getByTestId("trajectory-detail-panel")).toBeInTheDocument();
+    // Second click — deselect
+    fireEvent.click(btn);
+    expect(screen.queryByTestId("trajectory-detail-panel")).toBeNull();
+  });
+
+  it("close button inside detail panel hides the panel", async () => {
+    renderModal(true);
+    const btn = screen.getAllByRole("button", { name: /Lab AIOps/i })[0];
+    fireEvent.click(btn);
+    expect(screen.getByTestId("trajectory-detail-panel")).toBeInTheDocument();
+    // The detail close button
+    const closeBtn = screen.getByRole("button", { name: /Cerrar detalle/i });
+    fireEvent.click(closeBtn);
+    await waitFor(() =>
+      expect(screen.queryByTestId("trajectory-detail-panel")).toBeNull()
+    );
   });
 });

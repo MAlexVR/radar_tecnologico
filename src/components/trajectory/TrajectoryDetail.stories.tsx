@@ -75,6 +75,15 @@ export const Full: Story = {
   args: { item: fullItem, config: syntheticConfig },
 };
 
+export const WithClose: Story = {
+  name: "Full Item — with onClose button",
+  args: {
+    item: fullItem,
+    config: syntheticConfig,
+    onClose: () => console.log("closed"),
+  },
+};
+
 export const Minimal: Story = {
   name: "Minimal Item (required fields only)",
   args: { item: minimalItem, config: syntheticConfig },

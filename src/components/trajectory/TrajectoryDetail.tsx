@@ -10,6 +10,7 @@
  * Does NOT import TechDetail or any domain symbol.
  */
 
+import { X } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import type { TrajectoryItem, TrajectoryConfig } from "@/lib/trajectory";
@@ -21,6 +22,11 @@ export interface TrajectoryDetailProps {
   item: TrajectoryItem | null;
   /** The trajectory config (for detailRenderer override and label resolution). */
   config: TrajectoryConfig;
+  /**
+   * Optional callback invoked when the user clicks the close button.
+   * When provided, a close button (×) is rendered in the top-right corner.
+   */
+  onClose?: () => void;
   className?: string;
 }
 
@@ -32,7 +38,7 @@ export interface TrajectoryDetailProps {
  * item, that renderer takes over (the domain adapter can inject TechDetail here
  * for L1 nodes without coupling the motor to it).
  */
-export function TrajectoryDetail({ item, config, className }: TrajectoryDetailProps) {
+export function TrajectoryDetail({ item, config, onClose, className }: TrajectoryDetailProps) {
   if (!item) return null;
 
   // Domain adapter override
@@ -47,23 +53,42 @@ export function TrajectoryDetail({ item, config, className }: TrajectoryDetailPr
     config.horizonBuckets.find((h) => h.key === item.horizon)?.label ??
     item.horizon;
 
+  // Layer color for the accent bar (generic — comes from config)
+  const layerColor = (config.layers.find((l) => l.key === item.layer) as { color?: string } & typeof config.layers[number])?.color;
+
   return (
     <div className={className}>
-      {/* Header */}
-      <div className="space-y-1">
-        <h3 className="text-base font-semibold leading-snug">{item.title}</h3>
-        <div className="flex flex-wrap gap-1.5">
-          <Badge variant="outline" className="text-xs">
-            {layerLabel}
-          </Badge>
-          <Badge variant="outline" className="text-xs">
-            {horizonLabel}
-          </Badge>
-          {item.gap && (
-            <Badge variant="secondary" className="text-xs">
-              {item.gap}
+      {/* Header — layer accent bar + title + close button */}
+      <div
+        className="relative rounded-t-md pb-2"
+        style={layerColor ? { borderLeft: `4px solid ${layerColor}`, paddingLeft: "0.625rem" } : undefined}
+      >
+        {/* Close button */}
+        {onClose && (
+          <button
+            type="button"
+            aria-label="Cerrar detalle"
+            onClick={onClose}
+            className="absolute right-0 top-0 rounded-sm p-0.5 opacity-70 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring transition-opacity"
+          >
+            <X className="h-4 w-4" aria-hidden />
+          </button>
+        )}
+        <div className="space-y-1" style={onClose ? { paddingRight: "1.5rem" } : undefined}>
+          <h3 className="text-base font-semibold leading-snug">{item.title}</h3>
+          <div className="flex flex-wrap gap-1.5">
+            <Badge variant="outline" className="text-xs">
+              {layerLabel}
             </Badge>
-          )}
+            <Badge variant="outline" className="text-xs">
+              {horizonLabel}
+            </Badge>
+            {item.gap && (
+              <Badge variant="secondary" className="text-xs">
+                {item.gap}
+              </Badge>
+            )}
+          </div>
         </div>
       </div>
 

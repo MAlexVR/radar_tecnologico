@@ -45,8 +45,14 @@ export function TrajectoryModal({ open, onOpenChange }: TrajectoryModalProps) {
   // Build dataset once — telecomConfig and buildTelecomTrajectory are pure
   const dataset = useMemo(() => buildTelecomTrajectory(), []);
 
-  // Local selection state
+  // Local selection state — toggling the same item deselects it
   const [selected, setSelected] = useState<TrajectoryItem | null>(null);
+
+  const handleSelect = useCallback(
+    (item: TrajectoryItem) =>
+      setSelected((prev) => (prev?.id === item.id ? null : item)),
+    []
+  );
 
   // Export state
   const [exporting, setExporting] = useState(false);
@@ -88,7 +94,8 @@ export function TrajectoryModal({ open, onOpenChange }: TrajectoryModalProps) {
         aria-describedby="trajectory-modal-description"
       >
         {/* ── Header ───────────────────────────────────────────────── */}
-        <DialogHeader className="px-5 py-3 border-b bg-muted/20 flex-none m-0">
+        {/* pr-12 reserves space so the export button never overlaps the native Dialog close × (right-4 top-4) */}
+        <DialogHeader className="px-5 pr-12 py-3 border-b bg-muted/20 flex-none m-0">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 min-w-0">
               <Map className="w-5 h-5 text-sena-green shrink-0" aria-hidden />
@@ -140,7 +147,7 @@ export function TrajectoryModal({ open, onOpenChange }: TrajectoryModalProps) {
             <TrajectoryMap
               config={telecomConfig}
               dataset={dataset}
-              onSelect={setSelected}
+              onSelect={handleSelect}
             />
           </div>
 
@@ -157,7 +164,11 @@ export function TrajectoryModal({ open, onOpenChange }: TrajectoryModalProps) {
                 "md:h-auto md:w-80 md:shrink-0 md:overflow-y-auto md:p-4",
               ].join(" ")}
             >
-              <TrajectoryDetail item={selected} config={telecomConfig} />
+              <TrajectoryDetail
+                item={selected}
+                config={telecomConfig}
+                onClose={() => setSelected(null)}
+              />
             </div>
           )}
         </div>
