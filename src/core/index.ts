@@ -52,9 +52,9 @@ export {
   resolveMaturityLabel,
 } from "./maturity";
 
-// ── Export (PNG/SVG, no PDF) ──────────────────────────────────
-export { svgToCanvas, exportPNG, exportSVG } from "./export";
-export type { ExportPngOptions } from "./export";
+// ── Export (PNG/SVG/DOM-PDF) ──────────────────────────────────
+export { svgToCanvas, exportPNG, exportSVG, downloadElementAsPDF } from "./export";
+export type { ExportPngOptions, DownloadElementAsPDFOptions } from "./export";
 
 // ── Events / Telemetry ────────────────────────────────────────
 export type { RadarEvent, RadarEventHandler } from "./events";
