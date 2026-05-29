@@ -3,11 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { HelpCircle, Info, Menu, X } from "lucide-react";
+import { HelpCircle, Info, Menu, Route, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { HelpModal } from "@/components/molecules/HelpModal";
 import { AboutModal } from "@/components/molecules/AboutModal";
+import { TrajectoryModal } from "@/components/molecules/TrajectoryModal";
 import { APP_VERSION_LABEL } from "@/lib/version";
 
 export function Header() {
@@ -15,6 +16,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [showTrajectory, setShowTrajectory] = useState(false);
 
   return (
     <header className="w-full bg-sena-green text-white py-3 px-4 md:px-8 border-b-4 border-sena-blue shadow-sm sticky top-0 z-50 transition-all">
@@ -61,6 +63,14 @@ export function Header() {
           </button>
 
           <button
+            onClick={() => setShowTrajectory(true)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-white/90 hover:text-white hover:bg-white/10 transition-colors font-medium"
+          >
+            <Route size={16} />
+            <span>{t("trajectory")}</span>
+          </button>
+
+          <button
             onClick={() => setShowAbout(true)}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-white/90 hover:text-white hover:bg-white/10 transition-colors font-medium"
           >
@@ -92,6 +102,12 @@ export function Header() {
               <HelpCircle size={18} className="text-white/70" /> {t("help")}
             </button>
             <button
+              onClick={() => { setShowTrajectory(true); setMobileMenuOpen(false); }}
+              className="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-white/90 hover:bg-white/10 transition-colors"
+            >
+              <Route size={18} className="text-white/70" /> {t("trajectory")}
+            </button>
+            <button
               onClick={() => { setShowAbout(true); setMobileMenuOpen(false); }}
               className="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-white/90 hover:bg-white/10 transition-colors"
             >
@@ -112,6 +128,7 @@ export function Header() {
       {/* Modales */}
       <HelpModal open={showHelp} onOpenChange={setShowHelp} />
       <AboutModal open={showAbout} onOpenChange={setShowAbout} />
+      <TrajectoryModal open={showTrajectory} onOpenChange={setShowTrajectory} />
     </header>
   );
 }
