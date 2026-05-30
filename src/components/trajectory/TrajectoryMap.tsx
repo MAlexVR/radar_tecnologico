@@ -95,7 +95,7 @@ export function TrajectoryMap({
                 <TabsTrigger
                   key={driver.key}
                   value={driver.key}
-                  className="h-full flex flex-col items-center justify-center gap-0.5 transition-all py-2 px-2 min-h-[3.25rem]"
+                  className="h-full flex-1 basis-[7rem] md:basis-auto flex flex-col items-center justify-center gap-0.5 transition-all py-2 px-2 min-h-[3.25rem]"
                   style={
                     color
                       ? isActive
@@ -219,9 +219,9 @@ export function TrajectoryMap({
                           })}
                         </div>
 
-                        {/* Mobile accordion view */}
-                        <div className="flex flex-col gap-1 md:hidden rounded-xl border border-border shadow-sm overflow-hidden bg-card p-2">
-                          {sortedLayers.map((layer) => {
+                        {/* Mobile accordion view — lanes are bordered cards, grouped by horizon inside */}
+                        <div className="flex flex-col gap-2 md:hidden">
+                          {sortedLayers.map((layer, i) => {
                             const laneItems = layerMap.get(layer.key) ?? [];
                             return (
                               <TrajectoryLane
@@ -230,6 +230,7 @@ export function TrajectoryMap({
                                 items={laneItems}
                                 onSelect={onSelect}
                                 selectedId={selectedId}
+                                defaultOpen={i === 0}
                               />
                             );
                           })}

@@ -28,6 +28,8 @@ export interface TrajectoryLaneProps {
   onSelect?: (item: TrajectoryItem) => void;
   /** ID of the currently selected item — used to highlight the active node. */
   selectedId?: string | null;
+  /** On mobile, render the accordion open by default (used for the first lane). */
+  defaultOpen?: boolean;
   className?: string;
 }
 
@@ -42,7 +44,7 @@ export interface TrajectoryLaneProps {
  * On mobile (`< md`): wraps in a native `<details>` accordion to keep the
  * timeline scannable without horizontal overflow.
  */
-export function TrajectoryLane({ layerKey, items, onSelect, selectedId, className }: TrajectoryLaneProps) {
+export function TrajectoryLane({ layerKey, items, onSelect, selectedId, defaultOpen = false, className }: TrajectoryLaneProps) {
   const config = useTrajectoryConfig();
 
   const layer = config.layers.find((l) => l.key === layerKey);
@@ -94,36 +96,61 @@ export function TrajectoryLane({ layerKey, items, onSelect, selectedId, classNam
     );
   });
 
-  // ── Mobile: <details> accordion with layer color accent ──────────────────
+  // ── Mobile: <details> accordion, grouped BY HORIZON so the time axis is
+  // preserved on small screens (the desktop grid columns can't fit in portrait).
   const mobileView = (
-    <details className="md:hidden">
+    <details
+      className="md:hidden rounded-lg border border-border/60 bg-card overflow-hidden"
+      open={defaultOpen}
+    >
       <summary
-        className="cursor-pointer select-none rounded-md px-3 py-1.5 text-sm font-medium hover:bg-accent"
+        className="flex cursor-pointer select-none items-center justify-between gap-2 px-3 py-2.5 text-sm font-semibold hover:bg-accent"
         style={
           layerColor
-            ? {
-                borderLeft: `4px solid ${layerColor}`,
-                color: layerColor,
-              }
+            ? { borderLeft: `4px solid ${layerColor}`, color: layerColor }
             : undefined
         }
       >
-        {layerLabel}
-        {items.length > 0 && (
-          <span className="ml-2 text-xs opacity-60">
-            ({items.length})
-          </span>
-        )}
+        <span className="leading-tight">{layerLabel}</span>
+        <span className="text-xs opacity-60">({items.length})</span>
       </summary>
-      <div className="mt-1 grid grid-cols-1 gap-1 pl-2 sm:grid-cols-2">
-        {items.map((item) => (
-          <TrajectoryNode
-            key={item.id}
-            item={item}
-            onSelect={onSelect}
-            selected={selectedId === item.id}
-          />
-        ))}
+      <div className="space-y-3 px-3 pb-3 pt-1">
+        {items.length === 0 && (
+          <p className="py-1 text-xs text-muted-foreground">Sin ítems en esta capa.</p>
+        )}
+        {sortedBuckets.map((bucket) => {
+          const cellItems = byBucket.get(bucket.key) ?? [];
+          if (cellItems.length === 0) return null;
+          const bucketColor = (bucket as { color?: string }).color;
+          return (
+            <div key={bucket.key}>
+              {/* Horizon sub-header with its color chip — restores the time context */}
+              <div
+                className="mb-1.5 flex items-center gap-1.5 border-b pb-1"
+                style={bucketColor ? { borderBottomColor: `${bucketColor}55` } : undefined}
+              >
+                <span
+                  aria-hidden
+                  className="h-2.5 w-2.5 shrink-0 rounded-full"
+                  style={bucketColor ? { backgroundColor: bucketColor } : undefined}
+                />
+                <span className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                  {bucket.label}
+                </span>
+              </div>
+              <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+                {cellItems.map((item) => (
+                  <TrajectoryNode
+                    key={item.id}
+                    item={item}
+                    onSelect={onSelect}
+                    selected={selectedId === item.id}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </details>
   );
