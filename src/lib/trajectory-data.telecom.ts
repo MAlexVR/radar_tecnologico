@@ -186,18 +186,26 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
   // Tabla 11, fila 3 (L04): "R-03: Lab AIOps con datasets reales y Python (6-18 meses)"
   // Tabla 8: "Laboratorio de Redes — Adquisición de Tecnología — Implementar plataforma SDN/NFV
   //   con GNS3/EVE-NG + Docker + ONOS. Kit de ciberseguridad: Wireshark, Snort, Suricata — P1"
-  // JUICIO: el lab AIOps se asigna a D1 porque L04 (ML/DL para redes) es D1. Horizonte 6-18m → medio1.
+  // Fundamento: el lab AIOps se asigna a D1 porque L04 (ML/DL para redes) es D1. Horizonte
+  //   ajustado a corto: proyectos SENNOVA duran 12 meses (convocatoria anual SENA/SENNOVA);
+  //   IA en redes validada como tendencia central por CRC Monitoreo Tendencias 2025.
   items.push({
     id: "d1-l2-lab-aiops",
     layer: "L2",
     driver: "D1",
-    horizon: "medio1", // GOR Tabla 11: R-03, 6-18 meses → medio1 (spec A6)
+    horizon: "corto", // Fundamento: ciclo SENNOVA 12 meses (SENA/SENNOVA conv. anual); CRC Tendencias 2025
     title: "Lab AIOps con datasets reales y Python",
     detail:
       "Implementar ambiente de aprendizaje para entrenar modelos ML de predicción de tráfico, detección de anomalías y optimización de recursos de red con datasets reales. Requiere GPUs o cloud para entrenamiento.",
     gap: "Crítica", // Tabla 11 fila 3: brecha Crítica (L04 — sin equipos ni software dedicado)
     source: `${FUENTE_GOR}, Tabla 11`,
-    meta: { Tipo: "ambiente", Prioridad: "P1", Cierre: "R-03", Línea: "L04" },
+    meta: {
+      Tipo: "ambiente",
+      Prioridad: "P1",
+      Cierre: "R-03",
+      Línea: "L04",
+      Fundamento: "Ciclo SENNOVA 12 meses — SENA/SENNOVA convocatoria anual; CRC Monitoreo Tendencias 2025",
+    },
   });
 
   // Tabla 8: "Laboratorio de Radiocomunicaciones — Adquisición de Tecnología —
@@ -227,27 +235,36 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
 
   // Tabla 8: "Todos los programas — Formación Transversal —
   //   Incluir módulo transversal de Python + ML básico — P2 (6-24 meses)"
+  // Fundamento: MinTIC+Fedesoft proyectan 85.000 talentos digitales adicionales a 2030
+  //   (https://www.eltiempo.com 2024); SENA Digital con 30.000 cupos activos en datos/IA;
+  //   demanda inmediata confirma horizonte ahora (competencia ya requerida por mercado).
   items.push({
     id: "d1-l3-python-ml-transversal",
     layer: "L3",
     driver: "D1",
-    horizon: "medio1", // P2 = 6-24 meses → medio1 (JUICIO: plazo medio del rango)
+    horizon: "ahora", // Fundamento: MinTIC+Fedesoft 85K talentos 2030; SENA Digital 30K cupos activos
     title: "Módulo transversal Python + ML básico (todos los programas)",
     detail:
       "Incluir módulo obligatorio de Python y Machine Learning básico como competencia transversal en todos los programas de telecomunicaciones del CEET.",
     gap: "Alta", // Tabla 11: ausencia en aprendices pero no en nivel crítico directo
     source: `${FUENTE_GOR}, Tabla 8`,
-    meta: { Tipo: "talento", Prioridad: "P2" },
+    meta: {
+      Tipo: "talento",
+      Prioridad: "P2",
+      Fundamento: "MinTIC+Fedesoft: 85K talentos digitales a 2030; SENA Digital 30K cupos ciberseg/datos activos — MinTIC/Fedesoft 2024",
+    },
   });
 
   // Tabla 10, fila D1: "Implementación de laboratorio de IA aplicada a operaciones de red (AIOps)"
   //   Tipo: I+D Aplicada (SENNOVA). Aliado: Nokia / Ericsson Educate.
   //   Objetivo: Diseñar e implementar ambiente ML para predicción de tráfico, detección de anomalías.
+  // Fundamento: proyectos SENNOVA duran 12 meses (convocatoria anual SENA/SENNOVA).
+  //   Horizonte corto = 0-12 meses, alineado al ciclo de convocatoria.
   items.push({
     id: "d1-l3-proyecto-aiops-sennova",
     layer: "L3",
     driver: "D1",
-    horizon: "medio1", // JUICIO: proyecto SENNOVA, ventana típica 1-2 años → medio1
+    horizon: "corto", // Fundamento: ciclo SENNOVA 12 meses — SENA/SENNOVA convocatoria anual
     title: "Proyecto SENNOVA: Lab IA aplicada a operaciones de red (AIOps)",
     detail:
       "I+D Aplicada SENNOVA: diseñar e implementar ambiente de aprendizaje donde aprendices entrenen modelos ML para predicción de tráfico, detección de anomalías y optimización de recursos de red usando datasets reales. Aliado potencial: Nokia / Ericsson Educate.",
@@ -256,6 +273,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Tipo: "proyecto",
       Programa: "I+D Aplicada (SENNOVA)",
       Aliado: "Nokia / Ericsson Educate",
+      Fundamento: "Ciclo SENNOVA 12 meses — SENA/SENNOVA convocatoria anual",
     },
   });
 
@@ -280,40 +298,66 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
   // Tabla 9 — aliados relevantes a D1 (IA/ML nativa):
   // Nokia Bell Labs, Ericsson, Huawei, Virginia Tech (Walid Saad — redes autónomas)
 
+  // Fundamento: no hay convenio SENA-Nokia documentado en fuentes primarias colombianas
+  //   (investigación web 2025-2026). GOR Tabla 9 la sugiere; sin convenio vigente confirmado.
+  //   Horizonte medio2 (3-5 años) para gestión y formalización del convenio.
   items.push({
     id: "d1-l4-nokia",
     layer: "L4",
     driver: "D1",
-    horizon: "corto", // JUICIO: alianza de implementación inmediata (certificaciones disponibles)
+    horizon: "medio2", // Fundamento: GOR Tabla 9 (sugerida); sin convenio SENA-Nokia vigente confirmado
     title: "Nokia Bell Labs",
     detail:
       "Innovación en gemelo digital, edge computing y óptica. Nokia Academy con programas certificados. Tipo de alianza sugerida: certificaciones y co-creación de contenidos.",
     source: `${FUENTE_GOR}, Tabla 9`,
-    meta: { Tipo: "alianza", Aliado: "Nokia Bell Labs", "Tipo de aliado": "Empresa", País: "Finlandia" },
+    meta: {
+      Tipo: "alianza",
+      Aliado: "Nokia Bell Labs",
+      "Tipo de aliado": "Empresa",
+      País: "Finlandia",
+      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
+    },
   });
 
+  // Fundamento: no hay convenio SENA-Ericsson documentado en fuentes primarias colombianas
+  //   (investigación web 2025-2026). GOR Tabla 9 la sugiere; sin convenio vigente confirmado.
   items.push({
     id: "d1-l4-ericsson",
     layer: "L4",
     driver: "D1",
-    horizon: "corto", // Ericsson Educate con cursos gratuitos → alianza implementable 0-12m
+    horizon: "medio2", // Fundamento: GOR Tabla 9 (sugerida); sin convenio SENA-Ericsson vigente confirmado
     title: "Ericsson",
     detail:
       "IA agéntica para redes, cloud RAN. Ericsson Educate con cursos gratuitos. Tipo de alianza sugerida: Programa Ericsson Educate / Pasantías.",
     source: `${FUENTE_GOR}, Tabla 9`,
-    meta: { Tipo: "alianza", Aliado: "Ericsson", "Tipo de aliado": "Empresa", País: "Suecia / Col." },
+    meta: {
+      Tipo: "alianza",
+      Aliado: "Ericsson",
+      "Tipo de aliado": "Empresa",
+      País: "Suecia / Col.",
+      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
+    },
   });
 
+  // Fundamento: no hay fuente primaria Colombia-específica para alianza SENA-Virginia Tech
+  //   (investigación web 2025-2026). GOR Tabla 9 la sugiere como referencia académica plausible.
+  //   Colaboración académica internacional típica: 3-5 años para formalización.
   items.push({
     id: "d1-l4-virginia-tech",
     layer: "L4",
     driver: "D1",
-    horizon: "medio1", // JUICIO: alianza académica, acuerdo formal toma 1-2 años
+    horizon: "medio2", // Fundamento: GOR Tabla 9 (sugerida); sin fuente primaria Colombia-específica
     title: "Virginia Tech (Walid Saad)",
     detail:
       "Referente en redes autónomas y Federated Learning. Tipo de alianza sugerida: intercambio de conocimiento y publicaciones conjuntas.",
     source: `${FUENTE_GOR}, Tabla 9`,
-    meta: { Tipo: "alianza", Aliado: "Virginia Tech", "Tipo de aliado": "Universidad", País: "EE.UU." },
+    meta: {
+      Tipo: "alianza",
+      Aliado: "Virginia Tech",
+      "Tipo de aliado": "Universidad",
+      País: "EE.UU.",
+      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
+    },
   });
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -356,14 +400,16 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
   // Tabla 11, fila 4 (L06 / SDR): "R-04: Kit SDR 5G NR + srsRAN (6-18 meses)"
   // Tabla 8: "Laboratorio de Radiocomunicaciones — Adquisición de Tecnología —
   //   Adquirir módulo SDR (USRP B200 + srsRAN) — P1"
-  // JUICIO: L06 es D2 pero el kit SDR físico es infraestructura compartida con D3 (Open RAN).
-  //   Se coloca en D3 porque el lab SDN/NFV/Open RAN lo integra (Tabla 10 D3 lo menciona).
+  // Fundamento: L06 es D2 pero el kit SDR físico es infraestructura compartida con D3 (Open RAN).
+  //   Se coloca en D3 porque Tabla 10 D3 lo integra en el lab SDN/NFV/Open RAN.
   //   El ítem tecnológico L06 sigue en D2/L1.
+  //   Open RAN con hardware real → medio1: sin piloto Open RAN 5G confirmado en Colombia a 2026;
+  //   solo pruebas 4G en sandbox CRC (CRC/colombiainteligente.org 2024).
   items.push({
     id: "d3-l2-kit-sdr",
     layer: "L2",
     driver: "D3",
-    horizon: "medio1", // GOR Tabla 11: R-04, 6-18 meses → medio1 (spec A6)
+    horizon: "medio1", // Fundamento: sin piloto Open RAN 5G confirmado en Colombia a 2026 — CRC Sandbox 2024
     title: "Kit SDR para prácticas 5G NR y Open RAN (USRP B200 + srsRAN)",
     detail:
       "Adquirir módulo SDR (Software Defined Radio) para prácticas de 5G NR y Open RAN. Kit básico: USRP B200 + srsRAN. Sin equipos 5G NR actualmente.",
@@ -374,8 +420,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Prioridad: "P1",
       Cierre: "R-04",
       Línea: "L06",
-      // JUICIO: el SDR aparece en Tabla 8 bajo "Laboratorio de Radiocomunicaciones"
-      //   y en Tabla 10 D3 como parte del lab SDN/NFV/Open RAN. Se asigna a D3.
+      Fundamento: "Sin piloto Open RAN 5G confirmado en Colombia a 2026; solo 4G sandbox CRC — CRC Sandbox Regulatorio / colombiainteligente.org 2024",
     },
   });
 
@@ -399,11 +444,14 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
 
   // Tabla 10, fila D3: "Creación de laboratorio SDN/NFV/Open RAN con herramientas open-source"
   //   Tipo: Modernización de Ambientes. Aliado: O-RAN Alliance / Red Hat.
+  // Fundamento: SDN/NFV identificados como tendencia central en CRC Monitoreo Tendencias 2025
+  //   → corto; Open RAN (hardware real) sin piloto 5G confirmado en Colombia → medio1.
+  //   El proyecto integra ambos → horizonte conservador medio1 para el conjunto.
   items.push({
     id: "d3-l3-proyecto-sdn-nfv-open-ran",
     layer: "L3",
     driver: "D3",
-    horizon: "medio1", // JUICIO: modernización de ambientes, ventana típica 1-2 años
+    horizon: "medio1", // Fundamento: SDN/NFV → corto (CRC 2025); Open RAN 5G → medio1 (CRC Sandbox); conjunto = medio1
     title: "Proyecto: Lab SDN/NFV/Open RAN con herramientas open-source",
     detail:
       "Modernización de Ambientes: desplegar infraestructura virtualizada con GNS3/EVE-NG + Docker + ONOS + simulador O-RAN (OAIC/ns-O-RAN) para prácticas de redes programables, orquestación y desagregación. Aliado potencial: O-RAN Alliance / Red Hat.",
@@ -412,6 +460,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Tipo: "proyecto",
       Programa: "Modernización de Ambientes",
       Aliado: "O-RAN Alliance / Red Hat",
+      Fundamento: "SDN/NFV: tendencia central CRC Monitoreo Tendencias 2025; Open RAN 5G: sin piloto confirmado Colombia — CRC Sandbox 2024",
     },
   });
 
@@ -433,11 +482,14 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
 
   // Tabla 9 — aliados relevantes a D3 (SDN/NFV, Open RAN, Edge):
 
+  // Fundamento: sin membresía Colombia documentada en O-RAN Alliance a 2026
+  //   (investigación web 2025-2026). GOR Tabla 9 sugiere la alianza. Rango global de madurez
+  //   Open RAN en Colombia 2026-2028 → medio2.
   items.push({
     id: "d3-l4-o-ran-alliance",
     layer: "L4",
     driver: "D3",
-    horizon: "medio1", // JUICIO: membresía académica, proceso formal 6-12 meses
+    horizon: "medio2", // Fundamento: GOR Tabla 9 (sugerida); sin membresía Colombia confirmada
     title: "O-RAN Alliance",
     detail:
       "Definición de estándares Open RAN. Laboratorios de testing abiertos. Tipo de alianza sugerida: membresía académica y acceso a especificaciones.",
@@ -447,6 +499,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Aliado: "O-RAN Alliance",
       "Tipo de aliado": "Consorcio",
       País: "Global",
+      Procedencia: "GOR Tabla 9 (sugerida, sin membresía Colombia confirmada)",
     },
   });
 
@@ -469,11 +522,14 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     },
   });
 
+  // Fundamento: sin fuente primaria Colombia-específica para alianza SENA-U. Oulu a 2026.
+  //   GOR Tabla 9 la sugiere como referencia académica plausible. Ajustado a medio2 (3-5 años)
+  //   para formalización de convenio de colaboración internacional.
   items.push({
     id: "d3-l4-universidad-oulu",
     layer: "L4",
     driver: "D3",
-    horizon: "largo", // JUICIO: intercambio académico internacional, ventana 5+ años
+    horizon: "medio2", // Fundamento: GOR Tabla 9 (sugerida); sin fuente primaria Colombia-específica
     title: "Universidad de Oulu (6G Flagship)",
     detail:
       "Centro líder mundial en investigación 6G (Mehdi Bennis). Tipo de alianza sugerida: intercambio académico, webinars y co-investigación en Open RAN e inteligencia edge.",
@@ -483,6 +539,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Aliado: "Universidad de Oulu (6G Flagship)",
       "Tipo de aliado": "Universidad",
       País: "Finlandia",
+      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
     },
   });
 
@@ -517,17 +574,27 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
   // JUICIO: el kit SDR físico está listado en Tabla 8 bajo D2 (5G NR, NTN).
   //   El ítem d3-l2-kit-sdr también lo referencia porque Tabla 10 D3 lo integra.
   //   Aquí se coloca el ítem de D2 con énfasis en la celda base 5G NR.
+  // Fundamento: 5G NR comercial en Colombia desde feb 2024 (subasta IMT-2023);
+  //   3.063 estaciones/184 municipios a dic-2025; Bogotá 69,2% cobertura 5G (sede CEET).
+  //   Infraestructura 5G ya desplegada → brecha del laboratorio CEET es ahora urgente.
+  //   (MinTIC/CRC 2025: https://mintic.gov.co/portal/715/w3-article-428676.html)
   items.push({
     id: "d2-l2-lab-radiocomunicaciones-sdr",
     layer: "L2",
     driver: "D2",
-    horizon: "corto", // GOR Tabla 8: P1 = 0-12 meses
+    horizon: "ahora", // Fundamento: 5G comercial Colombia desde feb 2024; 70,1% cobertura nac., 69,2% Bogotá — MinTIC/CRC 2025
     title: "Lab Radiocomunicaciones: módulo SDR para 5G NR y NTN (USRP B200 + srsRAN)",
     detail:
       "Adquirir módulo SDR (Software Defined Radio) para prácticas 5G NR y NTN. Kit básico: USRP B200 + srsRAN. Habilita prácticas de capa física, configuración de red y pruebas de desempeño alineadas con Tabla 10 D2.",
     gap: "Crítica", // Tabla 11 fila 4: L06 brecha Crítica (sin equipos 5G NR)
     source: `${FUENTE_GOR}, Tabla 8`,
-    meta: { Tipo: "ambiente", Prioridad: "P1", Cierre: "R-04", Línea: "L06" },
+    meta: {
+      Tipo: "ambiente",
+      Prioridad: "P1",
+      Cierre: "R-04",
+      Línea: "L06",
+      Fundamento: "5G comercial Colombia desde feb 2024; 3.063 estaciones/184 municipios dic-2025, Bogotá 69,2% — MinTIC/CRC 2025",
+    },
   });
 
   // Tabla 8: "Laboratorio de Fibra Óptica — Actualización de Equipos —
@@ -549,19 +616,26 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
 
   // Tabla 11, fila 8 (L07): "Seminarios de actualización y monitoreo (12-24 meses)"
   // Tabla 11, fila 9 (L08): "Módulo conceptual + simulación (12-24 meses)"
-  // JUICIO: NTN/LEO requiere conceptual en D2; sin requerimiento de equipos (Tabla 11 fila 9).
-  //   Se agrupa módulo conceptual NTN como acción de infraestructura/ambiente de formación.
+  // Fundamento: 6G/THz → largo (5-10 años). Política de Espectro Nacional 2029 de MinTIC/ANE
+  //   en consulta pública dic-2025 incluye preparación 6G; tecnología pre-comercial.
+  //   NTN/LEO (D2D) en Política de Espectro 2029 → también largo para el aspecto satelital futuro.
+  //   (MinTIC/ANE: https://mobiletime.la/noticias/03/12/2025/colombia-politica-de-espectro/)
   items.push({
     id: "d2-l2-modulo-ntn-leo-conceptual",
     layer: "L2",
     driver: "D2",
-    horizon: "medio2", // Tabla 11 fila 8/9: 12-24 meses → medio2
+    horizon: "largo", // Fundamento: 6G pre-comercial; Política Espectro 2029 MinTIC/ANE (consulta dic-2025)
     title: "Módulo conceptual NTN/LEO y 6G/THz (sin requerimiento de equipos)",
     detail:
       "NTN/LEO: protocolos NTN, Direct-to-Device, constelaciones LEO (Tabla 11: sin equipos satelitales). 6G/THz: conceptos THz, RIS, MIMO holográfico (Tabla 11: no incluido, tecnología pre-comercial). Implementable mediante simuladores y seminarios.",
     gap: "Alta", // Tabla 11 filas 8+9: brechas Alta
     source: `${FUENTE_GOR}, Tabla 11`,
-    meta: { Tipo: "ambiente", Prioridad: "P2", Líneas: "L07,L08" },
+    meta: {
+      Tipo: "ambiente",
+      Prioridad: "P2",
+      Líneas: "L07,L08",
+      Fundamento: "6G/THz pre-comercial; Política Espectro Nacional 2029 (consulta pública dic-2025) — MinTIC/ANE",
+    },
   });
 
   // ── D2 / L3: Talento & I+D+i ─────────────────────────────────────────────
@@ -570,17 +644,25 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
   //   Plan de formación: certificaciones en 5G (Nokia/Ericsson), SDN (ONF),
   //   ciberseguridad (CompTIA Security+). Mínimo 2 instructores por tecnología. — P1"
   // JUICIO: capacitación 5G (Nokia/Ericsson) se asigna a D2 como aspecto dominante.
+  // Fundamento: 5G NR comercial en Colombia desde feb 2024; 3.063 estaciones/184 municipios
+  //   a dic-2025; demanda inmediata de instructores capacitados en 5G NR ya activa.
+  //   GOR P1 + evidencia de despliegue 5G en Bogotá (sede CEET) → ahora.
+  //   (MinTIC/CRC 2025: https://mintic.gov.co/portal/715/w3-article-428676.html)
   items.push({
     id: "d2-l3-capacitacion-5g-nokia-qualcomm",
     layer: "L3",
     driver: "D2",
-    horizon: "corto", // GOR Tabla 8: P1 = 0-12 meses
+    horizon: "ahora", // Fundamento: 5G comercial Colombia desde feb 2024; demanda inmediata instructores — MinTIC/CRC 2025
     title: "Capacitación docente: 5G NR (certificaciones Nokia/Ericsson, Qualcomm Academy)",
     detail:
       "Plan de formación para instructores en 5G NR: capa física, NTN, RedCap, MIMO. Certificaciones disponibles en Nokia Academy, Ericsson Educate y Qualcomm Academy. Mínimo 2 instructores capacitados.",
     gap: "Crítica", // Tabla 11 fila 4: L06 brecha Crítica (contenido 4G sin 5G NR)
     source: `${FUENTE_GOR}, Tabla 8`,
-    meta: { Tipo: "talento", Prioridad: "P1" },
+    meta: {
+      Tipo: "talento",
+      Prioridad: "P1",
+      Fundamento: "5G comercial Colombia desde feb 2024; 3.063 estaciones/184 municipios dic-2025 — MinTIC/CRC 2025",
+    },
   });
 
   // Tabla 8: "Tecnólogo en Gestión de Redes — Actualización Curricular —
@@ -604,11 +686,15 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
   //   Tipo: Modernización de Ambientes.
   //   Aliado: Qualcomm / MinTIC.
   //   Objetivo: celda 5G NR funcional con USRP + srsRAN; prácticas de capa física, NTN.
+  // Fundamento: 5G NR comercial en Colombia desde feb 2024 (subasta IMT-2023);
+  //   3.063 estaciones en 184 municipios a dic-2025, 70,1% cobertura poblacional,
+  //   Bogotá 69,2% (MinTIC/CRC 2025). Infraestructura 5G ya desplegada en ciudad sede del CEET.
+  //   Proyectos SENNOVA duran 12 meses → horizonte corto.
   items.push({
     id: "d2-l3-proyecto-5g-nr-sdr",
     layer: "L3",
     driver: "D2",
-    horizon: "medio1", // JUICIO: modernización de ambientes, ventana típica 1-2 años
+    horizon: "corto", // Fundamento: 5G comercial Colombia desde 2024; ciclo SENNOVA 12 meses — MinTIC/CRC 2025
     title: "Proyecto: Piloto estación base 5G NR con SDR (USRP + srsRAN)",
     detail:
       "Modernización de Ambientes: implementar una celda 5G NR funcional usando USRP + srsRAN para prácticas de capa física, configuración de red y pruebas de desempeño. Incluir conceptos NTN. Aliado potencial: Qualcomm / MinTIC.",
@@ -617,6 +703,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Tipo: "proyecto",
       Programa: "Modernización de Ambientes",
       Aliado: "Qualcomm / MinTIC",
+      Fundamento: "5G comercial Colombia desde feb 2024; 3.063 estaciones/184 municipios dic-2025 — MinTIC/CRC 2025; ciclo SENNOVA 12 meses",
     },
   });
 
@@ -624,16 +711,24 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
 
   // Tabla 9 — aliados relevantes a D2 (5G/6G, NTN, óptica):
 
+  // Fundamento: no hay convenio SENA-Qualcomm documentado en fuentes primarias colombianas
+  //   (investigación web 2025-2026). GOR Tabla 9 la sugiere. Ajustado a medio2 (3-5 años).
   items.push({
     id: "d2-l4-qualcomm",
     layer: "L4",
     driver: "D2",
-    horizon: "corto", // Qualcomm Academy y kits de desarrollo disponibles → alianza 0-12m
+    horizon: "medio2", // Fundamento: GOR Tabla 9 (sugerida); sin convenio SENA-Qualcomm vigente confirmado
     title: "Qualcomm",
     detail:
       "Líder en chipsets 5G. Qualcomm Academy con programa para universidades. Tipo de alianza sugerida: kits de desarrollo, becas y cursos.",
     source: `${FUENTE_GOR}, Tabla 9`,
-    meta: { Tipo: "alianza", Aliado: "Qualcomm", "Tipo de aliado": "Empresa", País: "EE.UU." },
+    meta: {
+      Tipo: "alianza",
+      Aliado: "Qualcomm",
+      "Tipo de aliado": "Empresa",
+      País: "EE.UU.",
+      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
+    },
   });
 
   items.push({
@@ -665,11 +760,13 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     },
   });
 
+  // Fundamento: sin fuente primaria Colombia-específica para alianza SENA-U. Oulu a 2026.
+  //   GOR Tabla 9 la sugiere. Ajustado a medio2 (3-5 años) para formalización de convenio.
   items.push({
     id: "d2-l4-universidad-oulu",
     layer: "L4",
     driver: "D2",
-    horizon: "largo", // JUICIO: intercambio académico internacional 5+ años
+    horizon: "medio2", // Fundamento: GOR Tabla 9 (sugerida); sin fuente primaria Colombia-específica
     title: "Universidad de Oulu (6G Flagship)",
     detail:
       "Centro líder mundial en investigación 6G (Mehdi Bennis). Tipo de alianza sugerida: intercambio académico, webinars y co-investigación en 6G, edge intelligence y Open RAN.",
@@ -679,6 +776,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Aliado: "Universidad de Oulu (6G Flagship)",
       "Tipo de aliado": "Universidad",
       País: "Finlandia",
+      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
     },
   });
 
@@ -728,11 +826,15 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
   //   Tipo: I+D+i Aplicada (Semillero).
   //   Aliado: Operadores colombianos / GSMA.
   //   Objetivo: app web que consuma APIs GSMA Open Gateway; casos de uso B2B.
+  // Fundamento: mercado network slicing USD 1,92B (2025) → USD 13,49B (2030);
+  //   NaaS emergente identificado por CRC Monitoreo Tendencias 2025;
+  //   5G SA y APIs de red como próxima fase de los operadores colombianos.
+  //   Semillero + SENNOVA 12 meses → horizonte medio1 (1-3 años).
   items.push({
     id: "d4-l3-proyecto-api-naas-semillero",
     layer: "L3",
     driver: "D4",
-    horizon: "medio2", // JUICIO: semillero de investigación, ventana típica 12-24 meses → medio2
+    horizon: "medio1", // Fundamento: NaaS emergente CRC Tendencias 2025; mercado slicing creciente; SENNOVA 12m
     title: "Proyecto Semillero: prototipo API de red para monetización de capacidades 5G",
     detail:
       "I+D+i Aplicada (Semillero): desarrollar una aplicación web que consuma APIs de GSMA Open Gateway (QoD, Device Location) sobre una red simulada, demostrando casos de uso B2B. Perfil profesional emergente: desarrollador telecom. Aliado potencial: operadores colombianos / GSMA.",
@@ -741,6 +843,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Tipo: "proyecto",
       Programa: "I+D+i Aplicada (Semillero)",
       Aliado: "Operadores colombianos / GSMA",
+      Fundamento: "NaaS emergente CRC Monitoreo Tendencias 2025; mercado slicing USD 1,92B→13,49B 2025-2030",
     },
   });
 
@@ -748,16 +851,25 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
 
   // Tabla 9 — aliados relevantes a D4 (APIs, NaaS, slicing, B2B):
 
+  // Fundamento: operadores colombianos (Claro, Movistar, Tigo) son miembros GSMA;
+  //   Open Gateway como marco de APIs de red para el sector. No hay convenio SENA-GSMA específico
+  //   documentado; acceso a informes inmediato pero capacitación formal 6-12m → medio1.
   items.push({
     id: "d4-l4-gsma",
     layer: "L4",
     driver: "D4",
-    horizon: "medio1", // JUICIO: acceso a informes GSMA inmediato; capacitación formal 6-12m
+    horizon: "medio1", // Fundamento: operadores colombianos en GSMA (2016+); convenio SENA-GSMA no documentado
     title: "GSMA",
     detail:
       "Open Gateway, estudios de mercado, programas de capacitación. Más de 50 operadores adheridos a Open Gateway. Tipo de alianza sugerida: acceso a informes, capacitación y eventos.",
     source: `${FUENTE_GOR}, Tabla 9`,
-    meta: { Tipo: "alianza", Aliado: "GSMA", "Tipo de aliado": "Asociación", País: "Global" },
+    meta: {
+      Tipo: "alianza",
+      Aliado: "GSMA",
+      "Tipo de aliado": "Asociación",
+      País: "Global",
+      Fundamento: "Operadores colombianos miembros GSMA; convenio específico SENA-GSMA no documentado en fuentes primarias",
+    },
   });
 
   items.push({
@@ -804,27 +916,38 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
   // Tabla 11, fila 7 (L21): "R-07: Kit ciberseg (Wireshark, Snort, Suricata) + diplomado (0-12 meses)"
   // Tabla 8: "Laboratorio de Redes — Adquisición de Tecnología —
   //   Kit de ciberseguridad: Wireshark, Snort, Suricata — P1"
+  // Fundamento: Colombia absorbió 36M eventos maliciosos 2024 (25% de LATAM), déficit de
+  //   5.000 profesionales en ciberseguridad (CCIT 2024); SENA con 30.000 cupos activos
+  //   (SENA Digital); alianzas Fortinet/Cisco/MNEMO ya activas → acción inmediata = ahora.
+  //   (https://www.ccit.org.co/noticias/balance-de-ciberseguridad-2024-...)
   items.push({
     id: "d5-l2-kit-ciberseguridad",
     layer: "L2",
     driver: "D5",
-    horizon: "corto", // GOR Tabla 11: R-07, 0-12 meses / Tabla 8: P1
+    horizon: "ahora", // Fundamento: 36M eventos 2024, déficit 5K profesionales — CCIT 2024; SENA 30K cupos
     title: "Kit de ciberseguridad: Wireshark + Snort + Suricata (Lab de Redes)",
     detail:
       "Implementar kit de ciberseguridad en el Laboratorio de Redes: Wireshark, Snort, Suricata. Sin laboratorio de ciberseguridad actualmente. Cierre de brecha R-07.",
     gap: "Crítica", // Tabla 11 fila 7: L21 brecha Crítica (solo fundamentos básicos de seguridad)
     source: `${FUENTE_GOR}, Tabla 8`,
-    meta: { Tipo: "ambiente", Prioridad: "P1", Cierre: "R-07", Línea: "L21" },
+    meta: {
+      Tipo: "ambiente",
+      Prioridad: "P1",
+      Cierre: "R-07",
+      Línea: "L21",
+      Fundamento: "36M eventos maliciosos Colombia 2024, déficit 5.000 profesionales ciberseg — CCIT 2024; SENA Digital 30K cupos activos",
+    },
   });
 
   // Tabla 11, fila 14 (L22): "Módulo conceptual en todos los programas de redes (6-18 meses)"
-  // JUICIO: PQC no requiere hardware especial (Tabla 11). Infraestructura = entorno conceptual/simulación.
-  //   Se incluye como ítem de ambiente/entorno de formación para criptografía PQC.
+  // Fundamento: PQC no requiere hardware especial (Tabla 11). Infraestructura = entorno conceptual/simulación.
+  //   Horizonte medio1 conserva el rango GOR (6-18 meses). Sin fuente colombiana específica adicional;
+  //   estándares CRYSTALS-Kyber/Dilithium del NIST publicados 2024 como base técnica.
   items.push({
     id: "d5-l2-entorno-pqc-gobernanza",
     layer: "L2",
     driver: "D5",
-    horizon: "medio1", // Tabla 11 fila 14: 6-18 meses → medio1; fila 16: 12-24m → medio2 (JUICIO: medio1)
+    horizon: "medio1", // Fundamento: Tabla 11 fila 14 (6-18 meses); NIST PQC estándares 2024
     title: "Entorno formativo: PQC y Gobernanza IA (sin requerimiento de hardware especial)",
     detail:
       "Criptografía PQC (L22): CRYSTALS-Kyber/Dilithium, QKD conceptual — sin requerimiento hardware especial (Tabla 11). Gobernanza IA (L25): explicabilidad, auditoría, ética IA — sin requerimiento especial. Implementable mediante módulos conceptuales y simuladores.",
@@ -852,28 +975,38 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
   });
 
   // Tabla 8: "Instructores — Capacitación Docente — ciberseguridad (CompTIA Security+) — P1"
+  // Fundamento: demanda crítica inmediata — 36M eventos Colombia 2024, déficit 5K profesionales
+  //   (CCIT 2024); Fortinet y Cisco con programas de certificación activos en SenaTIC 2025.
+  //   GOR P1 + respaldo de fuentes primarias colombianas → ahora.
   items.push({
     id: "d5-l3-capacitacion-ciberseguridad",
     layer: "L3",
     driver: "D5",
-    horizon: "corto", // GOR Tabla 8: P1 = 0-12 meses
+    horizon: "ahora", // Fundamento: déficit 5K profesionales CCIT 2024; Fortinet/Cisco activos SenaTIC 2025
     title: "Capacitación docente: ciberseguridad (CompTIA Security+, Cisco, Fortinet NSE)",
     detail:
       "Plan de formación para instructores en ciberseguridad de redes: Zero Trust, PQC, detección IA de amenazas. Certificaciones: CompTIA Security+, Cisco CyberOps, Fortinet NSE. Mínimo 2 instructores capacitados.",
     gap: "Crítica", // Tabla 11 fila 7: L21 brecha Crítica
     source: `${FUENTE_GOR}, Tabla 8`,
-    meta: { Tipo: "talento", Prioridad: "P1" },
+    meta: {
+      Tipo: "talento",
+      Prioridad: "P1",
+      Fundamento: "Déficit 5.000 profesionales ciberseg Colombia — CCIT 2024; Fortinet/Cisco activos en SenaTIC 2025",
+    },
   });
 
   // Tabla 10, fila D5: "Cursos complementarios en Ciberseguridad de Redes con certificación"
   //   Tipo: Cursos complementarios.
   //   Aliado: Cisco / Fortinet / Palo Alto.
   //   Objetivo: ruta 120h — Zero Trust 5G, PQC, detección IA, auditoría; prácticas Wireshark/Snort/Suricata.
+  // Fundamento: demanda crítica e inmediata — 36M eventos maliciosos 2024, déficit 5K profesionales
+  //   (CCIT 2024); SENA Digital 30K cupos activos; alianzas Cisco/Fortinet/MNEMO ya activas en SenaTIC 2025.
+  //   Los cursos complementarios pueden iniciarse de inmediato → ahora.
   items.push({
     id: "d5-l3-proyecto-cursos-ciberseguridad",
     layer: "L3",
     driver: "D5",
-    horizon: "medio1", // JUICIO: diseño e impartición de cursos, ventana 6-12 meses → medio1
+    horizon: "ahora", // Fundamento: 36M eventos 2024, déficit 5K prof., Cisco/Fortinet activos SenaTIC 2025 — CCIT/MinTIC
     title: "Proyecto: Cursos complementarios Ciberseguridad de Redes Telecom (ruta 120h)",
     detail:
       "Cursos complementarios: ruta de 120h que cubra Zero Trust para 5G, criptografía PQC, detección de amenazas con IA y auditoría de seguridad en redes. Incluir prácticas con Wireshark, Snort, Suricata. Aliado potencial: Cisco / Fortinet / Palo Alto.",
@@ -882,6 +1015,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Tipo: "proyecto",
       Programa: "Cursos complementarios",
       Aliado: "Cisco / Fortinet / Palo Alto",
+      Fundamento: "36M eventos maliciosos Colombia 2024, déficit 5K profesionales — CCIT 2024; Cisco/Fortinet activos en SenaTIC 2025",
     },
   });
 
@@ -891,28 +1025,46 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
   // Nota: Cisco, Fortinet y Palo Alto están listados en Tabla 10 D5 como aliados potenciales.
   // Huawei también está en Tabla 9 y cubre D5 parcialmente.
 
+  // Fundamento: Cisco Networking Academy activa con SENA desde décadas; SenaTIC 2025
+  //   (MinTIC+SENA+OIT) incluye Cisco; convenio vigente confirmado → ahora.
+  //   (https://mintic.gov.co/portal/715/w3-article-400043.html; SenaTIC 2025)
   items.push({
     id: "d5-l4-cisco",
     layer: "L4",
     driver: "D5",
-    horizon: "corto", // Cisco con presencia local y programas educativos disponibles
+    horizon: "ahora", // Fundamento: Cisco Networking Academy con SENA activa; SenaTIC 2025 — MinTIC/SenaTIC 2025
     title: "Cisco Systems",
     detail:
       "Intent-based networking, SD-WAN, SASE. Programas educativos Cisco Networking Academy. Aliado potencial en Tabla 10 D5. Tipo de alianza sugerida: Cisco Networking Academy + CyberOps Associate.",
     source: `${FUENTE_GOR}, Tabla 10`,
-    meta: { Tipo: "alianza", Aliado: "Cisco Systems", "Tipo de aliado": "Empresa", País: "EE.UU." },
+    meta: {
+      Tipo: "alianza",
+      Aliado: "Cisco Systems",
+      "Tipo de aliado": "Empresa",
+      País: "EE.UU.",
+      Fundamento: "Cisco Networking Academy con SENA activa (décadas); SenaTIC 2025 — MinTIC/SenaTIC 2025",
+    },
   });
 
+  // Fundamento: Fortinet participa en SenaTIC 2025 (Seguridad Digital); alianza SENA-MNEMO
+  //   ciberseguridad activa desde 2020 (meta 23K aprendices 2024).
+  //   (https://www.infobae.com/america/colombia/2020/10/23/...; SenaTIC 2025)
   items.push({
     id: "d5-l4-fortinet",
     layer: "L4",
     driver: "D5",
-    horizon: "corto", // Fortinet NSE con programas gratuitos disponibles
+    horizon: "ahora", // Fundamento: Fortinet en SenaTIC 2025 (Seg. Digital); alianza MNEMO-SENA 2020 — SenaTIC 2025
     title: "Fortinet",
     detail:
       "Ciberseguridad de redes, NGFW, SD-WAN. Fortinet NSE con cursos y certificaciones disponibles. Aliado potencial en Tabla 10 D5. Tipo de alianza sugerida: Fortinet NSE Training Institute.",
     source: `${FUENTE_GOR}, Tabla 10`,
-    meta: { Tipo: "alianza", Aliado: "Fortinet", "Tipo de aliado": "Empresa", País: "EE.UU." },
+    meta: {
+      Tipo: "alianza",
+      Aliado: "Fortinet",
+      "Tipo de aliado": "Empresa",
+      País: "EE.UU.",
+      Fundamento: "Fortinet en SenaTIC 2025 (Seguridad Digital); alianza SENA-MNEMO ciberseg activa desde 2020 — SenaTIC 2025",
+    },
   });
 
   items.push({
