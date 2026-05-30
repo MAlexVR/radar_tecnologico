@@ -81,6 +81,12 @@ export interface TrajectoryHorizonBucket {
   label: string;
   /** Orden de visualización (ascendente). */
   order: number;
+  /**
+   * Color hex opcional para el encabezado de columna del horizonte.
+   * Rampa de intensidad de un solo tono — el adaptador de dominio lo provee.
+   * Ejemplo: `"#37474F"` (gris azulado intenso para el horizonte "ahora").
+   */
+  color?: string;
 }
 
 /**

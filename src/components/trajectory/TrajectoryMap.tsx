@@ -173,18 +173,32 @@ export function TrajectoryMap({
                             >
                               <span className="sr-only">Capa</span>
                             </div>
-                            {sortedBuckets.map((bucket, i) => (
-                              <div
-                                key={bucket.key}
-                                role="columnheader"
-                                className={cn(
-                                  "bg-muted/40 border-b px-2 py-2 text-center text-xs font-semibold tracking-wide",
-                                  i < sortedBuckets.length - 1 && "border-r border-r-border/40"
-                                )}
-                              >
-                                {bucket.label}
-                              </div>
-                            ))}
+                            {sortedBuckets.map((bucket, i) => {
+                              const hColor = (bucket as { color?: string }).color;
+                              return (
+                                <div
+                                  key={bucket.key}
+                                  role="columnheader"
+                                  className={cn(
+                                    "border-b px-2 py-2 text-center text-xs font-semibold tracking-wide",
+                                    i < sortedBuckets.length - 1 && "border-r border-r-border/40",
+                                    !hColor && "bg-muted/40"
+                                  )}
+                                  style={
+                                    hColor
+                                      ? {
+                                          backgroundColor: `${hColor}18`,
+                                          borderBottomColor: `${hColor}60`,
+                                          borderBottomWidth: "2px",
+                                          color: hColor,
+                                        }
+                                      : undefined
+                                  }
+                                >
+                                  {bucket.label}
+                                </div>
+                              );
+                            })}
                           </div>
 
                           {/* One lane per layer */}
