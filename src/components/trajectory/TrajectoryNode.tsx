@@ -36,10 +36,14 @@ export interface TrajectoryNodeProps {
  * - Optional metric badge from `config.metricBadge`.
  * - aria-label format: "[LayerLabel] | [HorizonLabel] | [Title] | [gap?]"
  */
-// Gap severity colors — used for the indicator dot
+// Gap severity colors — used for the indicator dot.
+// Both capitalized (production data) and lowercase forms are accepted for
+// backward-compatibility with synthetic test fixtures.
 const GAP_DOT_COLORS: Record<string, string> = {
-  critica: "#C62828",
-  alta: "#F9A825",
+  "Crítica":  "#C62828",
+  "Alta":     "#F9A825",
+  critica:    "#C62828",   // legacy / synthetic fixtures
+  alta:       "#F9A825",   // legacy / synthetic fixtures
 };
 
 export function TrajectoryNode({ item, onSelect, selected = false, className }: TrajectoryNodeProps) {
@@ -98,7 +102,11 @@ export function TrajectoryNode({ item, onSelect, selected = false, className }: 
       {gapDotColor && (
         <span
           aria-hidden
-          title={item.gap === "critica" ? "Brecha Crítica" : "Brecha Alta"}
+          title={
+            item.gap === "Crítica" || item.gap === "critica"
+              ? "Brecha Crítica"
+              : "Brecha Alta"
+          }
           className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full shrink-0"
           style={{ backgroundColor: gapDotColor }}
         />

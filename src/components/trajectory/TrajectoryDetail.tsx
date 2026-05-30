@@ -15,6 +15,18 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import type { TrajectoryItem, TrajectoryConfig } from "@/lib/trajectory";
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+/**
+ * Capitalizes the first character of a string while preserving the rest.
+ * Handles strings that are already correctly capitalized (e.g. "P1", "Nokia", siglas).
+ * Strings with only 1 character or less are returned as-is.
+ */
+function capitalizeFirst(value: string): string {
+  if (!value || value.length === 0) return value;
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
 // ── Props ─────────────────────────────────────────────────────────────────────
 
 export interface TrajectoryDetailProps {
@@ -125,10 +137,10 @@ export function TrajectoryDetail({ item, config, onClose, className }: Trajector
           <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
             {Object.entries(item.meta).map(([key, value]) => (
               <div key={key} className="contents">
-                <dt className="font-medium text-muted-foreground capitalize">
+                <dt className="font-medium text-muted-foreground">
                   {key}
                 </dt>
-                <dd className="truncate">{String(value)}</dd>
+                <dd className="truncate">{capitalizeFirst(String(value))}</dd>
               </div>
             ))}
           </dl>
