@@ -68,16 +68,17 @@ export const telecomConfig: TrajectoryConfig = {
     { key: "L4", label: "Alianzas",         order: 4, color: "#00838F" }, // cian/teal
   ],
 
-  // ── Horizon buckets: 5 columnas de tiempo con rampa gris-azulada ─────────
-  // Rampa secuencial de UN solo tono (gris azulado SENA):
-  //   cercano = intenso (#37474F) → lejano = tenue (#B0BEC5).
-  // Evita colores de capa (azul/verde/púrpura/cian) y de brecha (rojo/ámbar).
+  // ── Horizon buckets: 5 columnas de tiempo con continuo frío vívido ──────
+  // Gradiente secuencial teal → azul → índigo → violeta → púrpura.
+  // Se lee como progresión temporal (no categórico) y evita:
+  //   - colores de capa (azul-oscuro/verde/púrpura-oscuro/cian) → tono y luminosidad distintos
+  //   - colores de brecha (rojo #C62828, ámbar #F9A825) → hue completamente diferente
   horizonBuckets: [
-    { key: "ahora",  label: "Ya / Ahora",  order: 1, color: "#37474F" },
-    { key: "corto",  label: "0–12 meses",  order: 2, color: "#546E7A" },
-    { key: "medio1", label: "1–3 años",    order: 3, color: "#78909C" },
-    { key: "medio2", label: "3–5 años",    order: 4, color: "#90A4AE" },
-    { key: "largo",  label: "5–10 años",   order: 5, color: "#B0BEC5" },
+    { key: "ahora",  label: "Ya / Ahora",  order: 1, color: "#14B8A6" }, // teal
+    { key: "corto",  label: "0–12 meses",  order: 2, color: "#3B82F6" }, // azul
+    { key: "medio1", label: "1–3 años",    order: 3, color: "#6366F1" }, // índigo
+    { key: "medio2", label: "3–5 años",    order: 4, color: "#8B5CF6" }, // violeta
+    { key: "largo",  label: "5–10 años",   order: 5, color: "#A855F7" }, // púrpura
   ],
 
   // ── colorFor: por gap (semántica de brecha); L1 por driver si no hay gap ─

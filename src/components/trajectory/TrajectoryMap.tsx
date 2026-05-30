@@ -180,17 +180,18 @@ export function TrajectoryMap({
                                   key={bucket.key}
                                   role="columnheader"
                                   className={cn(
-                                    "border-b px-2 py-2 text-center text-xs font-semibold tracking-wide",
-                                    i < sortedBuckets.length - 1 && "border-r border-r-border/40",
-                                    !hColor && "bg-muted/40"
+                                    "border-b px-2 py-2 text-center text-xs font-semibold tracking-wide rounded-t-sm",
+                                    i < sortedBuckets.length - 1 && "border-r border-r-white/20",
+                                    !hColor && "bg-muted/40 text-muted-foreground"
                                   )}
                                   style={
                                     hColor
                                       ? {
-                                          backgroundColor: `${hColor}18`,
-                                          borderBottomColor: `${hColor}60`,
+                                          backgroundColor: hColor,
+                                          borderBottomColor: `${hColor}`,
                                           borderBottomWidth: "2px",
-                                          color: hColor,
+                                          color: "#ffffff",
+                                          textShadow: "0 1px 2px rgba(0,0,0,0.25)",
                                         }
                                       : undefined
                                   }

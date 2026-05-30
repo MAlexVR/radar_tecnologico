@@ -65,9 +65,12 @@ export function TrajectoryLane({ layerKey, items, onSelect, selectedId, classNam
 
   const layerColor = (layer as { color?: string } & typeof layer)?.color;
 
-  // The grid cells (one per horizon bucket) — tinted with layer color when available
+  // The grid cells (one per horizon bucket) — tinted with horizon bucket color (8% alpha)
+  // layerColor is expressed via the rowheader left-border; cells use the column (horizon) tint
+  // so that the two visual systems (layer = rows, horizon = columns) don't fight each other.
   const cells = sortedBuckets.map((bucket, i) => {
     const cellItems = byBucket.get(bucket.key) ?? [];
+    const bucketColor = (bucket as { color?: string }).color;
     return (
       <div
         key={bucket.key}
@@ -77,7 +80,7 @@ export function TrajectoryLane({ layerKey, items, onSelect, selectedId, classNam
           "min-h-[3rem] space-y-1 p-1 border-b",
           i < sortedBuckets.length - 1 && "border-r border-r-border/30"
         )}
-        style={layerColor ? { backgroundColor: `${layerColor}05` } : undefined}
+        style={bucketColor ? { backgroundColor: `${bucketColor}14` } : undefined}
       >
         {cellItems.map((item) => (
           <TrajectoryNode

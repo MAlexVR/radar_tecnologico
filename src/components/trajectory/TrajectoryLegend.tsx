@@ -108,7 +108,7 @@ export function TrajectoryLegend({ config, className }: TrajectoryLegendProps) {
 
       <Separator />
 
-      {/* 3. Horizon buckets section */}
+      {/* 3. Horizon buckets section — swatch in bucket.color when available */}
       <section>
         <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           Horizonte
@@ -116,14 +116,30 @@ export function TrajectoryLegend({ config, className }: TrajectoryLegendProps) {
         <ul className="space-y-1.5" role="list">
           {[...config.horizonBuckets]
             .sort((a, b) => a.order - b.order)
-            .map((bucket) => (
-              <li key={bucket.key} className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">
-                  {bucket.order}.
-                </span>
-                <span className="text-xs">{bucket.label}</span>
-              </li>
-            ))}
+            .map((bucket) => {
+              const bucketColor = (bucket as { color?: string }).color;
+              return (
+                <li key={bucket.key} className="flex items-center gap-2">
+                  {bucketColor ? (
+                    <span
+                      aria-hidden="true"
+                      className="h-3 w-3 shrink-0 rounded-sm"
+                      style={{ backgroundColor: bucketColor }}
+                    />
+                  ) : (
+                    <span className="text-xs text-muted-foreground">
+                      {bucket.order}.
+                    </span>
+                  )}
+                  <span
+                    className="text-xs"
+                    style={bucketColor ? { color: bucketColor, fontWeight: 500 } : undefined}
+                  >
+                    {bucket.label}
+                  </span>
+                </li>
+              );
+            })}
         </ul>
       </section>
     </aside>
