@@ -139,17 +139,25 @@ export function TrajectoryModal({ open, onOpenChange }: TrajectoryModalProps) {
 
         {/* ── Body ─────────────────────────────────────────────────── */}
         <div className="flex-1 overflow-hidden flex flex-col md:flex-row gap-0">
-          {/* Map area */}
+          {/* Map area — ref wraps the entire frame so PDF export captures the panel */}
           <div
             ref={mapContainerRef}
             className="flex-1 overflow-auto p-3 md:p-4"
           >
-            <TrajectoryMap
-              config={telecomConfig}
-              dataset={dataset}
-              onSelect={handleSelect}
-              selectedId={selected?.id ?? null}
-            />
+            {/* Elegant outer frame — Card-style panel with SENA green accent */}
+            <div className="rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden">
+              {/* Accent band: thin SENA-green top stripe */}
+              <div className="h-1 w-full bg-sena-green" aria-hidden />
+              {/* Inner content with generous padding */}
+              <div className="p-3 md:p-5 bg-gradient-to-b from-muted/20 to-transparent">
+                <TrajectoryMap
+                  config={telecomConfig}
+                  dataset={dataset}
+                  onSelect={handleSelect}
+                  selectedId={selected?.id ?? null}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Detail panel — lateral on desktop, stacked below on mobile */}
