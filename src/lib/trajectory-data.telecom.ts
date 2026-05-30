@@ -61,8 +61,8 @@ export const telecomConfig: TrajectoryConfig = {
   // Colores del radar (SECTORS[i].color) para coherencia visual entre radar y mapa.
   // Orden SECTOR_ORDER: D1, D2, D3, D4, D5.
   drivers: SECTORS.map((s) => ({
-    key: s.id,          // "D1" .. "D5"
-    label: s.shortLabel, // e.g. "D1: Inteligencia Nativa y Redes Autónomas"
+    key: s.id,          // "D1" .. "D5" — se muestra en la línea 1 del tab
+    label: s.label,     // sin prefijo de código (la línea 1 ya muestra D1..D5); evita redundancia
     icon: s.icon,
     color: s.color,     // hex del radar — coherencia visual entre módulos
   })),
