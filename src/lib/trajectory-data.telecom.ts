@@ -23,13 +23,21 @@ import type {
   TrajectoryItem,
 } from "@/lib/trajectory";
 
+// ── Constante: título oficial del documento GOR ───────────────────────────────
+// Fuente: GOR-F-012_V03_Formato_de_Vigilancia_Cientifico_Tecnologica.md
+// Nombre del documento: "Vigilancia científico-tecnológica y prospectiva del área
+//   de telecomunicaciones 2025 - 2035" (GOR-F-012 V03)
+const FUENTE_GOR =
+  "Vigilancia científico-tecnológica y prospectiva del área de telecomunicaciones 2025-2035 (GOR-F-012 V03)";
+
 // ── Paleta SENA / semántica de brecha ────────────────────────────────────────
 // Colores SENA institucionales + semántica de estado de brecha.
+// Las claves usan la forma capitalizada (con tilde) que va en los datos.
 
 const GAP_COLORS: Record<string, string> = {
-  critica: "bg-red-700 text-white",         // Rojo SENA — brecha crítica (Tabla 11)
-  alta: "bg-amber-500 text-white",           // Ámbar — brecha alta (Tabla 11)
-  moderada: "bg-green-300 text-green-900",   // Verde claro — brecha moderada
+  "Crítica":  "bg-red-700 text-white",         // Rojo SENA — brecha crítica (Tabla 11)
+  "Alta":     "bg-amber-500 text-white",        // Ámbar — brecha alta (Tabla 11)
+  "Moderada": "bg-green-300 text-green-900",    // Verde claro — brecha moderada
 };
 
 const DRIVER_COLORS: Record<string, string> = {
@@ -143,7 +151,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
   // ── L1: Tecnologías (todos los direccionadores) ───────────────────────────
   // Fuente: TECHNOLOGIES de radar-data.ts
   // El horizonte se normaliza con el helper del motor (normalizeHorizon).
-  // Las líneas críticas (L01, L02, L04, L11, L12 per Tabla 11) llevan gap="critica".
+  // Las líneas críticas (L01, L02, L04, L11, L12 per Tabla 11) llevan gap="Crítica".
 
   const CRITICAL_LINES = new Set(["L01", "L02", "L04", "L06", "L11", "L12", "L21"]);
   // L06 y L21 también están en Tabla 11 con brecha crítica.
@@ -161,10 +169,10 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       title: tech.name,
       detail: tech.desc,
       metric: { label: "TRL", value: tech.trl },
-      gap: isCritical ? "critica" : undefined,
+      gap: isCritical ? "Crítica" : undefined,
       relatedIds: [],
-      source: "Radar CEET",
-      meta: { code: tech.code, kind: "tecnologia" },
+      source: `${FUENTE_GOR}, Radar tecnológico`,
+      meta: { Código: tech.code, Tipo: "tecnologia" },
     });
   }
 
@@ -187,9 +195,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Lab AIOps con datasets reales y Python",
     detail:
       "Implementar ambiente de aprendizaje para entrenar modelos ML de predicción de tráfico, detección de anomalías y optimización de recursos de red con datasets reales. Requiere GPUs o cloud para entrenamiento.",
-    gap: "critica", // Tabla 11 fila 3: brecha Crítica (L04 — sin equipos ni software dedicado)
-    source: "GOR Tabla 11 — R-03",
-    meta: { kind: "ambiente", priority: "P1", closure: "R-03", line: "L04" },
+    gap: "Crítica", // Tabla 11 fila 3: brecha Crítica (L04 — sin equipos ni software dedicado)
+    source: `${FUENTE_GOR}, Tabla 11`,
+    meta: { Tipo: "ambiente", Prioridad: "P1", Cierre: "R-03", Línea: "L04" },
   });
 
   // Tabla 8: "Laboratorio de Radiocomunicaciones — Adquisición de Tecnología —
@@ -212,9 +220,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Capacitación docente: IA/ML para redes (certificaciones Nokia / Ericsson Educate)",
     detail:
       "Plan de formación para instructores en fundamentos de IA/ML aplicados a telecomunicaciones. Certificaciones disponibles en Nokia Academy y Ericsson Educate. Mínimo 2 instructores capacitados.",
-    gap: "critica", // Tabla 11: L01/L04 sin formación IA/ML → brecha crítica
-    source: "GOR Tabla 8",
-    meta: { kind: "talento", priority: "P1" },
+    gap: "Crítica", // Tabla 11: L01/L04 sin formación IA/ML → brecha crítica
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "talento", Prioridad: "P1" },
   });
 
   // Tabla 8: "Todos los programas — Formación Transversal —
@@ -227,9 +235,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Módulo transversal Python + ML básico (todos los programas)",
     detail:
       "Incluir módulo obligatorio de Python y Machine Learning básico como competencia transversal en todos los programas de telecomunicaciones del CEET.",
-    gap: "alta", // Tabla 11: ausencia en aprendices pero no en nivel crítico directo
-    source: "GOR Tabla 8",
-    meta: { kind: "talento", priority: "P2" },
+    gap: "Alta", // Tabla 11: ausencia en aprendices pero no en nivel crítico directo
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "talento", Prioridad: "P2" },
   });
 
   // Tabla 10, fila D1: "Implementación de laboratorio de IA aplicada a operaciones de red (AIOps)"
@@ -243,11 +251,11 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Proyecto SENNOVA: Lab IA aplicada a operaciones de red (AIOps)",
     detail:
       "I+D Aplicada SENNOVA: diseñar e implementar ambiente de aprendizaje donde aprendices entrenen modelos ML para predicción de tráfico, detección de anomalías y optimización de recursos de red usando datasets reales. Aliado potencial: Nokia / Ericsson Educate.",
-    source: "GOR Tabla 10",
+    source: `${FUENTE_GOR}, Tabla 10`,
     meta: {
-      kind: "proyecto",
-      projectType: "I+D Aplicada (SENNOVA)",
-      ally: "Nokia / Ericsson Educate",
+      Tipo: "proyecto",
+      Programa: "I+D Aplicada (SENNOVA)",
+      Aliado: "Nokia / Ericsson Educate",
     },
   });
 
@@ -262,9 +270,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Actualización curricular: Tecnólogo en Gestión de Redes (IA/ML para redes L04)",
     detail:
       "Incluir módulos de fundamentos de IA/ML para redes (L04) en el Tecnólogo en Gestión de Redes de Telecomunicaciones. Incorporar prácticas con Open RAN simulado.",
-    gap: "critica",
-    source: "GOR Tabla 8",
-    meta: { kind: "servicio", priority: "P1" },
+    gap: "Crítica",
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "servicio", Prioridad: "P1" },
   });
 
   // ── D1 / L4: Alianzas ────────────────────────────────────────────────────
@@ -280,8 +288,8 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Nokia Bell Labs",
     detail:
       "Innovación en gemelo digital, edge computing y óptica. Nokia Academy con programas certificados. Tipo de alianza sugerida: certificaciones y co-creación de contenidos.",
-    source: "GOR Tabla 9",
-    meta: { kind: "alianza", ally: "Nokia Bell Labs", allyType: "Empresa", country: "Finlandia" },
+    source: `${FUENTE_GOR}, Tabla 9`,
+    meta: { Tipo: "alianza", Aliado: "Nokia Bell Labs", "Tipo de aliado": "Empresa", País: "Finlandia" },
   });
 
   items.push({
@@ -292,8 +300,8 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Ericsson",
     detail:
       "IA agéntica para redes, cloud RAN. Ericsson Educate con cursos gratuitos. Tipo de alianza sugerida: Programa Ericsson Educate / Pasantías.",
-    source: "GOR Tabla 9",
-    meta: { kind: "alianza", ally: "Ericsson", allyType: "Empresa", country: "Suecia / Col." },
+    source: `${FUENTE_GOR}, Tabla 9`,
+    meta: { Tipo: "alianza", Aliado: "Ericsson", "Tipo de aliado": "Empresa", País: "Suecia / Col." },
   });
 
   items.push({
@@ -304,8 +312,8 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Virginia Tech (Walid Saad)",
     detail:
       "Referente en redes autónomas y Federated Learning. Tipo de alianza sugerida: intercambio de conocimiento y publicaciones conjuntas.",
-    source: "GOR Tabla 9",
-    meta: { kind: "alianza", ally: "Virginia Tech", allyType: "Universidad", country: "EE.UU." },
+    source: `${FUENTE_GOR}, Tabla 9`,
+    meta: { Tipo: "alianza", Aliado: "Virginia Tech", "Tipo de aliado": "Universidad", País: "EE.UU." },
   });
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -326,9 +334,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Lab SDN/NFV: Mininet + Docker + ONOS + EVE-NG",
     detail:
       "Implementar plataforma SDN/NFV con GNS3/EVE-NG + Docker + ONOS. Kit de laboratorio: Mininet, Docker, ONOS, EVE-NG. Sin laboratorio SDN/NFV actualmente en el CEET.",
-    gap: "critica", // Tabla 11 fila 6: L12 brecha Crítica (sin laboratorio SDN/NFV)
-    source: "GOR Tabla 11 — R-06 / Tabla 8",
-    meta: { kind: "ambiente", priority: "P1", closure: "R-06", line: "L12" },
+    gap: "Crítica", // Tabla 11 fila 6: L12 brecha Crítica (sin laboratorio SDN/NFV)
+    source: `${FUENTE_GOR}, Tabla 11`,
+    meta: { Tipo: "ambiente", Prioridad: "P1", Cierre: "R-06", Línea: "L12" },
   });
 
   // Tabla 11, fila 5 (L11): "R-05: Lab Open RAN virtualizado con ns-O-RAN (6-24 meses)"
@@ -340,9 +348,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Lab Open RAN virtualizado (ns-O-RAN)",
     detail:
       "Desplegar simulador O-RAN (OAIC/ns-O-RAN) para prácticas de arquitectura O-RAN, RIC, xApps/rApps. Sin infraestructura Open RAN actualmente en el CEET.",
-    gap: "critica", // Tabla 11 fila 5: L11 brecha Crítica (no incluido en programas actuales)
-    source: "GOR Tabla 11 — R-05",
-    meta: { kind: "ambiente", priority: "P1", closure: "R-05", line: "L11" },
+    gap: "Crítica", // Tabla 11 fila 5: L11 brecha Crítica (no incluido en programas actuales)
+    source: `${FUENTE_GOR}, Tabla 11`,
+    meta: { Tipo: "ambiente", Prioridad: "P1", Cierre: "R-05", Línea: "L11" },
   });
 
   // Tabla 11, fila 4 (L06 / SDR): "R-04: Kit SDR 5G NR + srsRAN (6-18 meses)"
@@ -359,13 +367,13 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Kit SDR para prácticas 5G NR y Open RAN (USRP B200 + srsRAN)",
     detail:
       "Adquirir módulo SDR (Software Defined Radio) para prácticas de 5G NR y Open RAN. Kit básico: USRP B200 + srsRAN. Sin equipos 5G NR actualmente.",
-    gap: "critica", // Tabla 11 fila 4: L06 brecha Crítica (sin equipos 5G NR)
-    source: "GOR Tabla 8 / Tabla 11 — R-04",
+    gap: "Crítica", // Tabla 11 fila 4: L06 brecha Crítica (sin equipos 5G NR)
+    source: `${FUENTE_GOR}, Tabla 8`,
     meta: {
-      kind: "ambiente",
-      priority: "P1",
-      closure: "R-04",
-      line: "L06",
+      Tipo: "ambiente",
+      Prioridad: "P1",
+      Cierre: "R-04",
+      Línea: "L06",
       // JUICIO: el SDR aparece en Tabla 8 bajo "Laboratorio de Radiocomunicaciones"
       //   y en Tabla 10 D3 como parte del lab SDN/NFV/Open RAN. Se asigna a D3.
     },
@@ -384,9 +392,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Actualización curricular: Tecnólogo en Implementación de Redes (Open RAN L11, SDN/NFV L12)",
     detail:
       "Agregar contenidos de Open RAN (L11), ciberseguridad Zero Trust (L21) y redes ópticas coherentes (L10). Incluir NTN/LEO conceptual. Incorporar prácticas con Open RAN simulado.",
-    gap: "critica",
-    source: "GOR Tabla 8",
-    meta: { kind: "talento", priority: "P1" },
+    gap: "Crítica",
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "talento", Prioridad: "P1" },
   });
 
   // Tabla 10, fila D3: "Creación de laboratorio SDN/NFV/Open RAN con herramientas open-source"
@@ -399,11 +407,11 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Proyecto: Lab SDN/NFV/Open RAN con herramientas open-source",
     detail:
       "Modernización de Ambientes: desplegar infraestructura virtualizada con GNS3/EVE-NG + Docker + ONOS + simulador O-RAN (OAIC/ns-O-RAN) para prácticas de redes programables, orquestación y desagregación. Aliado potencial: O-RAN Alliance / Red Hat.",
-    source: "GOR Tabla 10",
+    source: `${FUENTE_GOR}, Tabla 10`,
     meta: {
-      kind: "proyecto",
-      projectType: "Modernización de Ambientes",
-      ally: "O-RAN Alliance / Red Hat",
+      Tipo: "proyecto",
+      Programa: "Modernización de Ambientes",
+      Aliado: "O-RAN Alliance / Red Hat",
     },
   });
 
@@ -416,9 +424,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Capacitación docente: SDN/NFV y Open RAN (certificación ONF, O-RAN Alliance)",
     detail:
       "Plan de formación para instructores en SDN (Open Networking Foundation), NFV y Open RAN. Certificaciones disponibles en ONF y O-RAN Alliance. Mínimo 2 instructores capacitados.",
-    gap: "critica", // Tabla 11: L12 brecha Crítica (conceptos básicos sin práctica)
-    source: "GOR Tabla 8",
-    meta: { kind: "talento", priority: "P1" },
+    gap: "Crítica", // Tabla 11: L12 brecha Crítica (conceptos básicos sin práctica)
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "talento", Prioridad: "P1" },
   });
 
   // ── D3 / L4: Alianzas ────────────────────────────────────────────────────
@@ -433,12 +441,12 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "O-RAN Alliance",
     detail:
       "Definición de estándares Open RAN. Laboratorios de testing abiertos. Tipo de alianza sugerida: membresía académica y acceso a especificaciones.",
-    source: "GOR Tabla 9",
+    source: `${FUENTE_GOR}, Tabla 9`,
     meta: {
-      kind: "alianza",
-      ally: "O-RAN Alliance",
-      allyType: "Consorcio",
-      country: "Global",
+      Tipo: "alianza",
+      Aliado: "O-RAN Alliance",
+      "Tipo de aliado": "Consorcio",
+      País: "Global",
     },
   });
 
@@ -452,12 +460,12 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Red Hat",
     detail:
       "Plataforma OpenShift y Ansible para virtualización de funciones de red y automatización. Aliado potencial para el proyecto de Lab SDN/NFV/Open RAN (Tabla 10 D3).",
-    source: "GOR Tabla 10",
+    source: `${FUENTE_GOR}, Tabla 10`,
     meta: {
-      kind: "alianza",
-      ally: "Red Hat",
-      allyType: "Empresa",
-      country: "EE.UU.",
+      Tipo: "alianza",
+      Aliado: "Red Hat",
+      "Tipo de aliado": "Empresa",
+      País: "EE.UU.",
     },
   });
 
@@ -469,12 +477,12 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Universidad de Oulu (6G Flagship)",
     detail:
       "Centro líder mundial en investigación 6G (Mehdi Bennis). Tipo de alianza sugerida: intercambio académico, webinars y co-investigación en Open RAN e inteligencia edge.",
-    source: "GOR Tabla 9",
+    source: `${FUENTE_GOR}, Tabla 9`,
     meta: {
-      kind: "alianza",
-      ally: "Universidad de Oulu (6G Flagship)",
-      allyType: "Universidad",
-      country: "Finlandia",
+      Tipo: "alianza",
+      Aliado: "Universidad de Oulu (6G Flagship)",
+      "Tipo de aliado": "Universidad",
+      País: "Finlandia",
     },
   });
 
@@ -487,12 +495,12 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Universidad de los Andes",
     detail:
       "Grupo de telecomunicaciones con investigación en IoT y espectro. Tipo de alianza sugerida: I+D conjunta, pasantías y semilleros compartidos.",
-    source: "GOR Tabla 9",
+    source: `${FUENTE_GOR}, Tabla 9`,
     meta: {
-      kind: "alianza",
-      ally: "Universidad de los Andes",
-      allyType: "Universidad",
-      country: "Colombia",
+      Tipo: "alianza",
+      Aliado: "Universidad de los Andes",
+      "Tipo de aliado": "Universidad",
+      País: "Colombia",
     },
   });
 
@@ -517,9 +525,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Lab Radiocomunicaciones: módulo SDR para 5G NR y NTN (USRP B200 + srsRAN)",
     detail:
       "Adquirir módulo SDR (Software Defined Radio) para prácticas 5G NR y NTN. Kit básico: USRP B200 + srsRAN. Habilita prácticas de capa física, configuración de red y pruebas de desempeño alineadas con Tabla 10 D2.",
-    gap: "critica", // Tabla 11 fila 4: L06 brecha Crítica (sin equipos 5G NR)
-    source: "GOR Tabla 8 / Tabla 11 — R-04",
-    meta: { kind: "ambiente", priority: "P1", closure: "R-04", line: "L06" },
+    gap: "Crítica", // Tabla 11 fila 4: L06 brecha Crítica (sin equipos 5G NR)
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "ambiente", Prioridad: "P1", Cierre: "R-04", Línea: "L06" },
   });
 
   // Tabla 8: "Laboratorio de Fibra Óptica — Actualización de Equipos —
@@ -534,9 +542,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Lab Fibra Óptica: OTDR avanzado + kits WDM y óptica coherente",
     detail:
       "Evolucionar de GPON a prácticas con WDM y conceptos de óptica coherente. Adquirir OTDR avanzado y kit de empalme para fibra monomodo de alta densidad. OTDR básico existente en el CEET.",
-    gap: "alta", // Tabla 11 fila 10: L10 brecha Alta (FTTH/GPON básico sin óptica coherente)
-    source: "GOR Tabla 8 / Tabla 11",
-    meta: { kind: "ambiente", priority: "P2", line: "L10" },
+    gap: "Alta", // Tabla 11 fila 10: L10 brecha Alta (FTTH/GPON básico sin óptica coherente)
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "ambiente", Prioridad: "P2", Línea: "L10" },
   });
 
   // Tabla 11, fila 8 (L07): "Seminarios de actualización y monitoreo (12-24 meses)"
@@ -551,9 +559,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Módulo conceptual NTN/LEO y 6G/THz (sin requerimiento de equipos)",
     detail:
       "NTN/LEO: protocolos NTN, Direct-to-Device, constelaciones LEO (Tabla 11: sin equipos satelitales). 6G/THz: conceptos THz, RIS, MIMO holográfico (Tabla 11: no incluido, tecnología pre-comercial). Implementable mediante simuladores y seminarios.",
-    gap: "alta", // Tabla 11 filas 8+9: brechas Alta
-    source: "GOR Tabla 11",
-    meta: { kind: "ambiente", priority: "P2", lines: "L07,L08" },
+    gap: "Alta", // Tabla 11 filas 8+9: brechas Alta
+    source: `${FUENTE_GOR}, Tabla 11`,
+    meta: { Tipo: "ambiente", Prioridad: "P2", Líneas: "L07,L08" },
   });
 
   // ── D2 / L3: Talento & I+D+i ─────────────────────────────────────────────
@@ -570,9 +578,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Capacitación docente: 5G NR (certificaciones Nokia/Ericsson, Qualcomm Academy)",
     detail:
       "Plan de formación para instructores en 5G NR: capa física, NTN, RedCap, MIMO. Certificaciones disponibles en Nokia Academy, Ericsson Educate y Qualcomm Academy. Mínimo 2 instructores capacitados.",
-    gap: "critica", // Tabla 11 fila 4: L06 brecha Crítica (contenido 4G sin 5G NR)
-    source: "GOR Tabla 8",
-    meta: { kind: "talento", priority: "P1" },
+    gap: "Crítica", // Tabla 11 fila 4: L06 brecha Crítica (contenido 4G sin 5G NR)
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "talento", Prioridad: "P1" },
   });
 
   // Tabla 8: "Tecnólogo en Gestión de Redes — Actualización Curricular —
@@ -587,9 +595,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Actualización curricular: Tecnólogo en Gestión de Redes (5G NR L06 + NTN L08)",
     detail:
       "Incluir módulos de 5G NR (L06: capa física, NTN, RedCap, MIMO mejorado) en el Tecnólogo en Gestión de Redes de Telecomunicaciones. Incorporar NTN/LEO conceptual.",
-    gap: "critica",
-    source: "GOR Tabla 8",
-    meta: { kind: "talento", priority: "P1" },
+    gap: "Crítica",
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "talento", Prioridad: "P1" },
   });
 
   // Tabla 10, fila D2: "Piloto de estación base 5G NR con SDR para formación en radiocomunicaciones avanzadas"
@@ -604,11 +612,11 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Proyecto: Piloto estación base 5G NR con SDR (USRP + srsRAN)",
     detail:
       "Modernización de Ambientes: implementar una celda 5G NR funcional usando USRP + srsRAN para prácticas de capa física, configuración de red y pruebas de desempeño. Incluir conceptos NTN. Aliado potencial: Qualcomm / MinTIC.",
-    source: "GOR Tabla 10",
+    source: `${FUENTE_GOR}, Tabla 10`,
     meta: {
-      kind: "proyecto",
-      projectType: "Modernización de Ambientes",
-      ally: "Qualcomm / MinTIC",
+      Tipo: "proyecto",
+      Programa: "Modernización de Ambientes",
+      Aliado: "Qualcomm / MinTIC",
     },
   });
 
@@ -624,8 +632,8 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Qualcomm",
     detail:
       "Líder en chipsets 5G. Qualcomm Academy con programa para universidades. Tipo de alianza sugerida: kits de desarrollo, becas y cursos.",
-    source: "GOR Tabla 9",
-    meta: { kind: "alianza", ally: "Qualcomm", allyType: "Empresa", country: "EE.UU." },
+    source: `${FUENTE_GOR}, Tabla 9`,
+    meta: { Tipo: "alianza", Aliado: "Qualcomm", "Tipo de aliado": "Empresa", País: "EE.UU." },
   });
 
   items.push({
@@ -636,8 +644,8 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "MinTIC Colombia",
     detail:
       "Regulador colombiano. Programas de conectividad rural y transformación digital. Tipo de alianza sugerida: proyectos de inclusión digital y financiamiento. Aliado citado en Tabla 10 D2.",
-    source: "GOR Tabla 9 / Tabla 10",
-    meta: { kind: "alianza", ally: "MinTIC Colombia", allyType: "Gobierno", country: "Colombia" },
+    source: `${FUENTE_GOR}, Tabla 9`,
+    meta: { Tipo: "alianza", Aliado: "MinTIC Colombia", "Tipo de aliado": "Gobierno", País: "Colombia" },
   });
 
   items.push({
@@ -648,12 +656,12 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Claro / Movistar / WOM Colombia",
     detail:
       "Operadores con despliegue 5G comercial en curso en Colombia. Demanda de talento técnico. Tipo de alianza sugerida: validación de perfiles, pasantías y prácticas en red viva.",
-    source: "GOR Tabla 9",
+    source: `${FUENTE_GOR}, Tabla 9`,
     meta: {
-      kind: "alianza",
-      ally: "Claro / Movistar / WOM Colombia",
-      allyType: "Operadores",
-      country: "Colombia",
+      Tipo: "alianza",
+      Aliado: "Claro / Movistar / WOM Colombia",
+      "Tipo de aliado": "Operadores",
+      País: "Colombia",
     },
   });
 
@@ -665,12 +673,12 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Universidad de Oulu (6G Flagship)",
     detail:
       "Centro líder mundial en investigación 6G (Mehdi Bennis). Tipo de alianza sugerida: intercambio académico, webinars y co-investigación en 6G, edge intelligence y Open RAN.",
-    source: "GOR Tabla 9",
+    source: `${FUENTE_GOR}, Tabla 9`,
     meta: {
-      kind: "alianza",
-      ally: "Universidad de Oulu (6G Flagship)",
-      allyType: "Universidad",
-      country: "Finlandia",
+      Tipo: "alianza",
+      Aliado: "Universidad de Oulu (6G Flagship)",
+      "Tipo de aliado": "Universidad",
+      País: "Finlandia",
     },
   });
 
@@ -692,9 +700,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Entorno de desarrollo para APIs de red / NaaS (GSMA Open Gateway)",
     detail:
       "Configurar entorno de desarrollo que permita consumir APIs de GSMA Open Gateway (QoD, NumberVerify, Device Location) sobre red simulada. Requiere entorno de desarrollo (sin hardware especial). Base para Tabla 10 D4.",
-    gap: "alta", // Tabla 11 fila 13: L16 brecha Alta (no incluido en currículo actual)
-    source: "GOR Tabla 11",
-    meta: { kind: "ambiente", priority: "P2", line: "L16" },
+    gap: "Alta", // Tabla 11 fila 13: L16 brecha Alta (no incluido en currículo actual)
+    source: `${FUENTE_GOR}, Tabla 11`,
+    meta: { Tipo: "ambiente", Prioridad: "P2", Línea: "L16" },
   });
 
   // ── D4 / L3: Talento & I+D+i ─────────────────────────────────────────────
@@ -711,9 +719,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Módulo transversal Python + desarrollo de APIs de red (todos los programas)",
     detail:
       "Incluir módulo transversal de Python y desarrollo de APIs como competencia obligatoria para todos los programas de telecomunicaciones. Base para perfil emergente desarrollador telecom.",
-    gap: "alta", // Tabla 11: ausencia de competencias en programación en aprendices
-    source: "GOR Tabla 8",
-    meta: { kind: "talento", priority: "P2" },
+    gap: "Alta", // Tabla 11: ausencia de competencias en programación en aprendices
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "talento", Prioridad: "P2" },
   });
 
   // Tabla 10, fila D4: "Desarrollo de prototipo de API de red para monetización de capacidades 5G"
@@ -728,11 +736,11 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Proyecto Semillero: prototipo API de red para monetización de capacidades 5G",
     detail:
       "I+D+i Aplicada (Semillero): desarrollar una aplicación web que consuma APIs de GSMA Open Gateway (QoD, Device Location) sobre una red simulada, demostrando casos de uso B2B. Perfil profesional emergente: desarrollador telecom. Aliado potencial: operadores colombianos / GSMA.",
-    source: "GOR Tabla 10",
+    source: `${FUENTE_GOR}, Tabla 10`,
     meta: {
-      kind: "proyecto",
-      projectType: "I+D+i Aplicada (Semillero)",
-      ally: "Operadores colombianos / GSMA",
+      Tipo: "proyecto",
+      Programa: "I+D+i Aplicada (Semillero)",
+      Aliado: "Operadores colombianos / GSMA",
     },
   });
 
@@ -748,8 +756,8 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "GSMA",
     detail:
       "Open Gateway, estudios de mercado, programas de capacitación. Más de 50 operadores adheridos a Open Gateway. Tipo de alianza sugerida: acceso a informes, capacitación y eventos.",
-    source: "GOR Tabla 9",
-    meta: { kind: "alianza", ally: "GSMA", allyType: "Asociación", country: "Global" },
+    source: `${FUENTE_GOR}, Tabla 9`,
+    meta: { Tipo: "alianza", Aliado: "GSMA", "Tipo de aliado": "Asociación", País: "Global" },
   });
 
   items.push({
@@ -760,12 +768,12 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Cámara Colombiana de Informática y Telecom (CCIT)",
     detail:
       "Agrupador del sector TIC en Colombia. Estudios de demanda laboral. Tipo de alianza sugerida: validación de perfiles de egreso y participación en eventos sectoriales.",
-    source: "GOR Tabla 9",
+    source: `${FUENTE_GOR}, Tabla 9`,
     meta: {
-      kind: "alianza",
-      ally: "Cámara Colombiana de Informática y Telecom (CCIT)",
-      allyType: "Gremio",
-      country: "Colombia",
+      Tipo: "alianza",
+      Aliado: "Cámara Colombiana de Informática y Telecom (CCIT)",
+      "Tipo de aliado": "Gremio",
+      País: "Colombia",
     },
   });
 
@@ -777,12 +785,12 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Claro / Movistar / WOM Colombia (APIs y B2B)",
     detail:
       "Operadores colombianos con despliegue 5G y adopción de GSMA Open Gateway. Demanda de talento en perfil desarrollador telecom. Tipo de alianza sugerida: hackathon con APIs reales y prácticas en red viva.",
-    source: "GOR Tabla 9 / Tabla 10",
+    source: `${FUENTE_GOR}, Tabla 9`,
     meta: {
-      kind: "alianza",
-      ally: "Operadores colombianos",
-      allyType: "Operadores",
-      country: "Colombia",
+      Tipo: "alianza",
+      Aliado: "Operadores colombianos",
+      "Tipo de aliado": "Operadores",
+      País: "Colombia",
     },
   });
 
@@ -804,9 +812,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Kit de ciberseguridad: Wireshark + Snort + Suricata (Lab de Redes)",
     detail:
       "Implementar kit de ciberseguridad en el Laboratorio de Redes: Wireshark, Snort, Suricata. Sin laboratorio de ciberseguridad actualmente. Cierre de brecha R-07.",
-    gap: "critica", // Tabla 11 fila 7: L21 brecha Crítica (solo fundamentos básicos de seguridad)
-    source: "GOR Tabla 8 / Tabla 11 — R-07",
-    meta: { kind: "ambiente", priority: "P1", closure: "R-07", line: "L21" },
+    gap: "Crítica", // Tabla 11 fila 7: L21 brecha Crítica (solo fundamentos básicos de seguridad)
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "ambiente", Prioridad: "P1", Cierre: "R-07", Línea: "L21" },
   });
 
   // Tabla 11, fila 14 (L22): "Módulo conceptual en todos los programas de redes (6-18 meses)"
@@ -820,9 +828,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Entorno formativo: PQC y Gobernanza IA (sin requerimiento de hardware especial)",
     detail:
       "Criptografía PQC (L22): CRYSTALS-Kyber/Dilithium, QKD conceptual — sin requerimiento hardware especial (Tabla 11). Gobernanza IA (L25): explicabilidad, auditoría, ética IA — sin requerimiento especial. Implementable mediante módulos conceptuales y simuladores.",
-    gap: "alta", // Tabla 11 filas 14+16: brechas Alta
-    source: "GOR Tabla 11",
-    meta: { kind: "ambiente", priority: "P2", lines: "L22,L25" },
+    gap: "Alta", // Tabla 11 filas 14+16: brechas Alta
+    source: `${FUENTE_GOR}, Tabla 11`,
+    meta: { Tipo: "ambiente", Prioridad: "P2", Líneas: "L22,L25" },
   });
 
   // ── D5 / L3: Talento & I+D+i ─────────────────────────────────────────────
@@ -838,9 +846,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Nuevo programa: Tecnólogo/Especialización en Ciberseguridad de Redes Telecom",
     detail:
       "Diseñar tecnólogo o especialización tecnológica en ciberseguridad de redes. Perfil: Zero Trust 5G/6G, criptografía PQC, detección de amenazas con IA, auditoría de seguridad en redes. Demanda laboral validada (CCIT, 2024).",
-    gap: "alta", // Tabla 11: demanda laboral insatisfecha; brecha Alta
-    source: "GOR Tabla 8",
-    meta: { kind: "talento", priority: "P2" },
+    gap: "Alta", // Tabla 11: demanda laboral insatisfecha; brecha Alta
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "talento", Prioridad: "P2" },
   });
 
   // Tabla 8: "Instructores — Capacitación Docente — ciberseguridad (CompTIA Security+) — P1"
@@ -852,9 +860,9 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Capacitación docente: ciberseguridad (CompTIA Security+, Cisco, Fortinet NSE)",
     detail:
       "Plan de formación para instructores en ciberseguridad de redes: Zero Trust, PQC, detección IA de amenazas. Certificaciones: CompTIA Security+, Cisco CyberOps, Fortinet NSE. Mínimo 2 instructores capacitados.",
-    gap: "critica", // Tabla 11 fila 7: L21 brecha Crítica
-    source: "GOR Tabla 8",
-    meta: { kind: "talento", priority: "P1" },
+    gap: "Crítica", // Tabla 11 fila 7: L21 brecha Crítica
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: { Tipo: "talento", Prioridad: "P1" },
   });
 
   // Tabla 10, fila D5: "Cursos complementarios en Ciberseguridad de Redes con certificación"
@@ -869,11 +877,11 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Proyecto: Cursos complementarios Ciberseguridad de Redes Telecom (ruta 120h)",
     detail:
       "Cursos complementarios: ruta de 120h que cubra Zero Trust para 5G, criptografía PQC, detección de amenazas con IA y auditoría de seguridad en redes. Incluir prácticas con Wireshark, Snort, Suricata. Aliado potencial: Cisco / Fortinet / Palo Alto.",
-    source: "GOR Tabla 10",
+    source: `${FUENTE_GOR}, Tabla 10`,
     meta: {
-      kind: "proyecto",
-      projectType: "Cursos complementarios",
-      ally: "Cisco / Fortinet / Palo Alto",
+      Tipo: "proyecto",
+      Programa: "Cursos complementarios",
+      Aliado: "Cisco / Fortinet / Palo Alto",
     },
   });
 
@@ -891,8 +899,8 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Cisco Systems",
     detail:
       "Intent-based networking, SD-WAN, SASE. Programas educativos Cisco Networking Academy. Aliado potencial en Tabla 10 D5. Tipo de alianza sugerida: Cisco Networking Academy + CyberOps Associate.",
-    source: "GOR Tabla 10",
-    meta: { kind: "alianza", ally: "Cisco Systems", allyType: "Empresa", country: "EE.UU." },
+    source: `${FUENTE_GOR}, Tabla 10`,
+    meta: { Tipo: "alianza", Aliado: "Cisco Systems", "Tipo de aliado": "Empresa", País: "EE.UU." },
   });
 
   items.push({
@@ -903,8 +911,8 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Fortinet",
     detail:
       "Ciberseguridad de redes, NGFW, SD-WAN. Fortinet NSE con cursos y certificaciones disponibles. Aliado potencial en Tabla 10 D5. Tipo de alianza sugerida: Fortinet NSE Training Institute.",
-    source: "GOR Tabla 10",
-    meta: { kind: "alianza", ally: "Fortinet", allyType: "Empresa", country: "EE.UU." },
+    source: `${FUENTE_GOR}, Tabla 10`,
+    meta: { Tipo: "alianza", Aliado: "Fortinet", "Tipo de aliado": "Empresa", País: "EE.UU." },
   });
 
   items.push({
@@ -915,8 +923,8 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     title: "Palo Alto Networks",
     detail:
       "Zero Trust, SASE/SSE, detección de amenazas con IA. Aliado potencial en Tabla 10 D5. Tipo de alianza sugerida: Palo Alto Networks Academy + prácticas en entorno virtualizado.",
-    source: "GOR Tabla 10",
-    meta: { kind: "alianza", ally: "Palo Alto Networks", allyType: "Empresa", country: "EE.UU." },
+    source: `${FUENTE_GOR}, Tabla 10`,
+    meta: { Tipo: "alianza", Aliado: "Palo Alto Networks", "Tipo de aliado": "Empresa", País: "EE.UU." },
   });
 
   return { items };

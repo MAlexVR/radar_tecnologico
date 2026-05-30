@@ -72,7 +72,7 @@ describe("telecomConfig", () => {
     expect(color.length).toBeGreaterThan(0);
   });
 
-  it("colorFor returns red class for gap='critica'", () => {
+  it("colorFor returns red class for gap='Crítica'", () => {
     const item = {
       id: "t",
       layer: "L2",
@@ -80,12 +80,12 @@ describe("telecomConfig", () => {
       horizon: "corto" as const,
       title: "X",
       detail: "",
-      gap: "critica",
+      gap: "Crítica",
     };
     expect(telecomConfig.colorFor(item)).toContain("red");
   });
 
-  it("colorFor returns amber class for gap='alta'", () => {
+  it("colorFor returns amber class for gap='Alta'", () => {
     const item = {
       id: "t",
       layer: "L2",
@@ -93,7 +93,7 @@ describe("telecomConfig", () => {
       horizon: "corto" as const,
       title: "X",
       detail: "",
-      gap: "alta",
+      gap: "Alta",
     };
     expect(telecomConfig.colorFor(item)).toContain("amber");
   });
@@ -279,15 +279,15 @@ describe("buildTelecomTrajectory()", () => {
     }
   });
 
-  it("L1 items with critical lines have gap='critica'", () => {
+  it("L1 items with critical lines have gap='Crítica'", () => {
     // L01, L02, L04, L06, L11, L12, L21 per Tabla 11 brecha Crítica
     const criticalCodes = ["L01", "L02", "L04", "L06", "L11", "L12", "L21"];
     for (const code of criticalCodes) {
       const item = dataset.items.find(
-        (i) => i.layer === "L1" && i.meta?.code === code
+        (i) => i.layer === "L1" && i.meta?.Código === code
       );
       expect(item, `Expected L1 item for code ${code}`).toBeDefined();
-      expect(item?.gap).toBe("critica");
+      expect(item?.gap).toBe("Crítica");
     }
   });
 
