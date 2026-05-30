@@ -165,6 +165,43 @@ export function TrajectoryModal({ open, onOpenChange }: TrajectoryModalProps) {
                   onSelect={handleSelect}
                   selectedId={selected?.id ?? null}
                 />
+
+                {/* Theoretical sources (APA) — verified Springer DOIs */}
+                <div className="mt-5 border-t pt-3">
+                  <h4 className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                    {t("sourcesTitle")}
+                  </h4>
+                  <ul className="space-y-1.5 text-[11px] leading-relaxed text-sena-gray-dark/90">
+                    <li>
+                      de Weck, O. L. (2022). <em>Technology roadmapping and
+                      development: A quantitative approach to the management of
+                      technology</em>. Springer. ISBN&nbsp;978-3-030-88345-4.{" "}
+                      <a
+                        href="https://doi.org/10.1007/978-3-030-88346-1"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sena-blue underline underline-offset-2 hover:text-sena-green break-all"
+                      >
+                        https://doi.org/10.1007/978-3-030-88346-1
+                      </a>
+                    </li>
+                    <li>
+                      Nimmo, G. (2013). Technology roadmapping on the industry
+                      level: Experiences from Canada. En M. G. Moehrle, R.
+                      Isenmann &amp; R. Phaal (Eds.), <em>Technology roadmapping
+                      for strategy and innovation: Charting the route to
+                      success</em> (pp.&nbsp;47–65). Springer.{" "}
+                      <a
+                        href="https://doi.org/10.1007/978-3-642-33923-3_4"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sena-blue underline underline-offset-2 hover:text-sena-green break-all"
+                      >
+                        https://doi.org/10.1007/978-3-642-33923-3_4
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

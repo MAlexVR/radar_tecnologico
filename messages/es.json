@@ -97,6 +97,7 @@
     "description": "Visualización de la hoja de ruta tecnológica CEET 2025-2035 por direccionadores estratégicos y capas de acción.",
     "introTitle": "Mapa de Trayectoria Tecnológica del área de Telecomunicaciones",
     "introText": "Esta visualización proyecta en el tiempo (2025–2035) la evolución de las capacidades del área de Telecomunicaciones del Centro de Electricidad, Electrónica y Telecomunicaciones (CEET). Es un producto del ejercicio de Vigilancia Científico-Tecnológica y de la prospectiva tecnológica del Centro: organiza, por direccionador estratégico y horizonte de adopción, las tecnologías, la infraestructura, el talento, los proyectos de I+D+i y las alianzas que el área requiere para anticipar el cambio tecnológico, cerrar brechas de formación y orientar las decisiones estratégicas hacia una oferta formativa pertinente y a la vanguardia del sector.",
+    "sourcesTitle": "Fuentes teóricas",
     "exportPDF": "Exportar PDF",
     "exportingPDF": "Exportando…",
     "exportError": "Error al exportar. Intenta de nuevo.",
