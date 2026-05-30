@@ -166,12 +166,14 @@ export function TrajectoryMap({
                             role="row"
                             className="contents"
                           >
-                            {/* Corner cell */}
+                            {/* Corner cell — axis labels */}
                             <div
                               role="columnheader"
-                              className="bg-muted/40 border-b border-r px-2 py-2 text-xs font-semibold text-muted-foreground"
+                              aria-label="Eje filas: Capas; Eje columnas: Horizonte"
+                              className="bg-sena-green/10 border-b border-r px-2 py-2 text-[10px] font-semibold text-sena-green flex flex-col justify-between"
                             >
-                              <span className="sr-only">Capa</span>
+                              <span className="self-end leading-tight">Horizonte →</span>
+                              <span className="self-start leading-tight">Capas ↓</span>
                             </div>
                             {sortedBuckets.map((bucket, i) => {
                               const hColor = (bucket as { color?: string }).color;
