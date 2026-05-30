@@ -142,7 +142,7 @@ export function TrajectoryModal({ open, onOpenChange }: TrajectoryModalProps) {
           {/* Map area — ref wraps the entire frame so PDF export captures the panel */}
           <div
             ref={mapContainerRef}
-            className="flex-1 overflow-auto p-3 md:p-4"
+            className="flex-1 min-w-0 overflow-auto p-3 md:p-4"
           >
             {/* Elegant outer frame — Card-style panel with SENA green accent */}
             <div className="rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden">

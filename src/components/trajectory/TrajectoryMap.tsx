@@ -141,7 +141,7 @@ export function TrajectoryMap({
               <TabsContent key={driver.key} value={driver.key}>
                 <div className="flex gap-4">
                   {/* Main grid */}
-                  <div className="flex-1 overflow-x-auto">
+                  <div className="min-w-0 flex-1 overflow-x-auto">
                     {isEmpty ? (
                       // Empty state
                       <div
