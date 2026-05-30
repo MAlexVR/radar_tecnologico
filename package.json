@@ -1,6 +1,6 @@
 {
   "name": "radar-tecnologico-telecomunicaciones",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Plataforma de Vigilancia Tecnológica CEET — Radar Tecnológico y Mapa de Trayectoria | Telecomunicaciones SENA 2025-2035",
   "private": true,
   "scripts": {
