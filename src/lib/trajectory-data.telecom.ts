@@ -225,7 +225,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     layer: "L3",
     driver: "D1",
     horizon: "corto", // GOR Tabla 8: P1 = implementación 0-12 meses
-    title: "Capacitación docente: IA/ML para redes (certificaciones Nokia / Ericsson Educate)",
+    title: "Formación a instructores: IA/ML para redes (certificaciones Nokia / Ericsson Educate)",
     detail:
       "Plan de formación para instructores en fundamentos de IA/ML aplicados a telecomunicaciones. Certificaciones disponibles en Nokia Academy y Ericsson Educate. Mínimo 2 instructores capacitados.",
     gap: "Crítica", // Tabla 11: L01/L04 sin formación IA/ML → brecha crítica
@@ -315,7 +315,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Aliado: "Nokia Bell Labs",
       "Tipo de aliado": "Empresa",
       País: "Finlandia",
-      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
+      Procedencia: `${FUENTE_GOR}, Tabla 9 (sugerida, sin convenio vigente confirmado)`,
     },
   });
 
@@ -335,7 +335,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Aliado: "Ericsson",
       "Tipo de aliado": "Empresa",
       País: "Suecia / Col.",
-      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
+      Procedencia: `${FUENTE_GOR}, Tabla 9 (sugerida, sin convenio vigente confirmado)`,
     },
   });
 
@@ -356,7 +356,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Aliado: "Virginia Tech",
       "Tipo de aliado": "Universidad",
       País: "EE.UU.",
-      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
+      Procedencia: `${FUENTE_GOR}, Tabla 9 (sugerida, sin convenio vigente confirmado)`,
     },
   });
 
@@ -470,7 +470,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     layer: "L3",
     driver: "D3",
     horizon: "corto", // P1 = 0-12 meses
-    title: "Capacitación docente: SDN/NFV y Open RAN (certificación ONF, O-RAN Alliance)",
+    title: "Formación a instructores: SDN/NFV y Open RAN (certificación ONF, O-RAN Alliance)",
     detail:
       "Plan de formación para instructores en SDN (Open Networking Foundation), NFV y Open RAN. Certificaciones disponibles en ONF y O-RAN Alliance. Mínimo 2 instructores capacitados.",
     gap: "Crítica", // Tabla 11: L12 brecha Crítica (conceptos básicos sin práctica)
@@ -499,7 +499,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Aliado: "O-RAN Alliance",
       "Tipo de aliado": "Consorcio",
       País: "Global",
-      Procedencia: "GOR Tabla 9 (sugerida, sin membresía Colombia confirmada)",
+      Procedencia: `${FUENTE_GOR}, Tabla 9 (sugerida, sin membresía Colombia confirmada)`,
     },
   });
 
@@ -539,7 +539,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Aliado: "Universidad de Oulu (6G Flagship)",
       "Tipo de aliado": "Universidad",
       País: "Finlandia",
-      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
+      Procedencia: `${FUENTE_GOR}, Tabla 9 (sugerida, sin convenio vigente confirmado)`,
     },
   });
 
@@ -653,7 +653,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     layer: "L3",
     driver: "D2",
     horizon: "ahora", // Fundamento: 5G comercial Colombia desde feb 2024; demanda inmediata instructores — MinTIC/CRC 2025
-    title: "Capacitación docente: 5G NR (certificaciones Nokia/Ericsson, Qualcomm Academy)",
+    title: "Formación a instructores: 5G NR (certificaciones Nokia/Ericsson, Qualcomm Academy)",
     detail:
       "Plan de formación para instructores en 5G NR: capa física, NTN, RedCap, MIMO. Certificaciones disponibles en Nokia Academy, Ericsson Educate y Qualcomm Academy. Mínimo 2 instructores capacitados.",
     gap: "Crítica", // Tabla 11 fila 4: L06 brecha Crítica (contenido 4G sin 5G NR)
@@ -727,7 +727,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Aliado: "Qualcomm",
       "Tipo de aliado": "Empresa",
       País: "EE.UU.",
-      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
+      Procedencia: `${FUENTE_GOR}, Tabla 9 (sugerida, sin convenio vigente confirmado)`,
     },
   });
 
@@ -776,7 +776,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Aliado: "Universidad de Oulu (6G Flagship)",
       "Tipo de aliado": "Universidad",
       País: "Finlandia",
-      Procedencia: "GOR Tabla 9 (sugerida, sin convenio vigente confirmado)",
+      Procedencia: `${FUENTE_GOR}, Tabla 9 (sugerida, sin convenio vigente confirmado)`,
     },
   });
 
@@ -983,7 +983,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     layer: "L3",
     driver: "D5",
     horizon: "ahora", // Fundamento: déficit 5K profesionales CCIT 2024; Fortinet/Cisco activos SenaTIC 2025
-    title: "Capacitación docente: ciberseguridad (CompTIA Security+, Cisco, Fortinet NSE)",
+    title: "Formación a instructores: ciberseguridad (CompTIA Security+, Cisco, Fortinet NSE)",
     detail:
       "Plan de formación para instructores en ciberseguridad de redes: Zero Trust, PQC, detección IA de amenazas. Certificaciones: CompTIA Security+, Cisco CyberOps, Fortinet NSE. Mínimo 2 instructores capacitados.",
     gap: "Crítica", // Tabla 11 fila 7: L21 brecha Crítica
