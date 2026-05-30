@@ -68,13 +68,16 @@ export const telecomConfig: TrajectoryConfig = {
     { key: "L4", label: "Alianzas",         order: 4, color: "#00838F" }, // cian/teal
   ],
 
-  // ── Horizon buckets: 5 columnas de tiempo ────────────────────────────────
+  // ── Horizon buckets: 5 columnas de tiempo con rampa gris-azulada ─────────
+  // Rampa secuencial de UN solo tono (gris azulado SENA):
+  //   cercano = intenso (#37474F) → lejano = tenue (#B0BEC5).
+  // Evita colores de capa (azul/verde/púrpura/cian) y de brecha (rojo/ámbar).
   horizonBuckets: [
-    { key: "ahora",  label: "Ya / Ahora",  order: 1 },
-    { key: "corto",  label: "0–12 meses",  order: 2 },
-    { key: "medio1", label: "1–3 años",    order: 3 },
-    { key: "medio2", label: "3–5 años",    order: 4 },
-    { key: "largo",  label: "5–10 años",   order: 5 },
+    { key: "ahora",  label: "Ya / Ahora",  order: 1, color: "#37474F" },
+    { key: "corto",  label: "0–12 meses",  order: 2, color: "#546E7A" },
+    { key: "medio1", label: "1–3 años",    order: 3, color: "#78909C" },
+    { key: "medio2", label: "3–5 años",    order: 4, color: "#90A4AE" },
+    { key: "largo",  label: "5–10 años",   order: 5, color: "#B0BEC5" },
   ],
 
   // ── colorFor: por gap (semántica de brecha); L1 por driver si no hay gap ─
@@ -110,13 +113,28 @@ function driverKey(sectorIndex: number): string {
 
 // ── buildTelecomTrajectory ────────────────────────────────────────────────────
 
+/*
+ * ────────────────────────────────────────────────────────────────────────────
+ * MATRIZ DE COBERTURA (driver × capa → número de ítems L2/L3/L4)
+ * ────────────────────────────────────────────────────────────────────────────
+ *        L2    L3    L4   | total cap.
+ * D1      1     4     3   |     8
+ * D2      3     3     4   |    10
+ * D3      3     3     4   |    10
+ * D4      1     2     3   |     6
+ * D5      2     3     3   |     8
+ * ────────────────────────────────────────────────────────────────────────────
+ * L1 (tecnologías): 24 ítems transversales derivados de TECHNOLOGIES.
+ * Total ítems L2-L4: 42 ítems.  Total general: 66 ítems.
+ * ────────────────────────────────────────────────────────────────────────────
+ */
+
 /**
  * Construye el TrajectoryDataset para el mapa de trayectoria telecom.
  *
  * Capa L1 — Tecnologías: derivada de TODOS los items de TECHNOLOGIES.
  * Capas L2/L3/L4 — Infraestructura, Talento & I+D+i, Alianzas:
- *   Pobladas solo para D1 y D3 (MVP), transcritas fielmente del GOR.
- *   D2/D4/D5 quedan vacíos (carga incremental futura).
+ *   Pobladas para TODOS los direccionadores D1–D5, transcritas fielmente del GOR.
  */
 export function buildTelecomTrajectory(): TrajectoryDataset {
   const items: TrajectoryItem[] = [];
@@ -475,6 +493,429 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       allyType: "Universidad",
       country: "Colombia",
     },
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // D2: Conectividad Extrema y Convergente (5G/6G/NTN/Óptica)
+  // L2/L3/L4 — fuente: GOR Tablas 8, 9, 10, 11
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // ── D2 / L2: Infraestructura ─────────────────────────────────────────────
+
+  // Tabla 11, fila 4 (L06): "R-04: Kit SDR 5G NR + srsRAN (6-18 meses)"
+  // Tabla 8: "Laboratorio de Radiocomunicaciones — Adquisición de Tecnología —
+  //   Adquirir módulo SDR (Software Defined Radio) para prácticas 5G NR y NTN. Kit básico: USRP B200 + srsRAN. — P1"
+  // JUICIO: el kit SDR físico está listado en Tabla 8 bajo D2 (5G NR, NTN).
+  //   El ítem d3-l2-kit-sdr también lo referencia porque Tabla 10 D3 lo integra.
+  //   Aquí se coloca el ítem de D2 con énfasis en la celda base 5G NR.
+  items.push({
+    id: "d2-l2-lab-radiocomunicaciones-sdr",
+    layer: "L2",
+    driver: "D2",
+    horizon: "corto", // GOR Tabla 8: P1 = 0-12 meses
+    title: "Lab Radiocomunicaciones: módulo SDR para 5G NR y NTN (USRP B200 + srsRAN)",
+    detail:
+      "Adquirir módulo SDR (Software Defined Radio) para prácticas 5G NR y NTN. Kit básico: USRP B200 + srsRAN. Habilita prácticas de capa física, configuración de red y pruebas de desempeño alineadas con Tabla 10 D2.",
+    gap: "critica", // Tabla 11 fila 4: L06 brecha Crítica (sin equipos 5G NR)
+    source: "GOR Tabla 8 / Tabla 11 — R-04",
+    meta: { kind: "ambiente", priority: "P1", closure: "R-04", line: "L06" },
+  });
+
+  // Tabla 8: "Laboratorio de Fibra Óptica — Actualización de Equipos —
+  //   Evolucionar de GPON a prácticas con WDM y conceptos de óptica coherente.
+  //   Adquirir OTDR avanzado y kit de empalme para fibra monomodo de alta densidad. — P2 (6-24 meses)"
+  // Tabla 11, fila 10 (L10): "Actualizar lab fibra: OTDR avanzado + kits WDM (6-18 meses)"
+  items.push({
+    id: "d2-l2-lab-fibra-optica",
+    layer: "L2",
+    driver: "D2",
+    horizon: "medio1", // Tabla 8: P2 = 6-24 meses; Tabla 11: 6-18 meses → medio1
+    title: "Lab Fibra Óptica: OTDR avanzado + kits WDM y óptica coherente",
+    detail:
+      "Evolucionar de GPON a prácticas con WDM y conceptos de óptica coherente. Adquirir OTDR avanzado y kit de empalme para fibra monomodo de alta densidad. OTDR básico existente en el CEET.",
+    gap: "alta", // Tabla 11 fila 10: L10 brecha Alta (FTTH/GPON básico sin óptica coherente)
+    source: "GOR Tabla 8 / Tabla 11",
+    meta: { kind: "ambiente", priority: "P2", line: "L10" },
+  });
+
+  // Tabla 11, fila 8 (L07): "Seminarios de actualización y monitoreo (12-24 meses)"
+  // Tabla 11, fila 9 (L08): "Módulo conceptual + simulación (12-24 meses)"
+  // JUICIO: NTN/LEO requiere conceptual en D2; sin requerimiento de equipos (Tabla 11 fila 9).
+  //   Se agrupa módulo conceptual NTN como acción de infraestructura/ambiente de formación.
+  items.push({
+    id: "d2-l2-modulo-ntn-leo-conceptual",
+    layer: "L2",
+    driver: "D2",
+    horizon: "medio2", // Tabla 11 fila 8/9: 12-24 meses → medio2
+    title: "Módulo conceptual NTN/LEO y 6G/THz (sin requerimiento de equipos)",
+    detail:
+      "NTN/LEO: protocolos NTN, Direct-to-Device, constelaciones LEO (Tabla 11: sin equipos satelitales). 6G/THz: conceptos THz, RIS, MIMO holográfico (Tabla 11: no incluido, tecnología pre-comercial). Implementable mediante simuladores y seminarios.",
+    gap: "alta", // Tabla 11 filas 8+9: brechas Alta
+    source: "GOR Tabla 11",
+    meta: { kind: "ambiente", priority: "P2", lines: "L07,L08" },
+  });
+
+  // ── D2 / L3: Talento & I+D+i ─────────────────────────────────────────────
+
+  // Tabla 8: "Instructores de Telecomunicaciones — Capacitación Docente —
+  //   Plan de formación: certificaciones en 5G (Nokia/Ericsson), SDN (ONF),
+  //   ciberseguridad (CompTIA Security+). Mínimo 2 instructores por tecnología. — P1"
+  // JUICIO: capacitación 5G (Nokia/Ericsson) se asigna a D2 como aspecto dominante.
+  items.push({
+    id: "d2-l3-capacitacion-5g-nokia-qualcomm",
+    layer: "L3",
+    driver: "D2",
+    horizon: "corto", // GOR Tabla 8: P1 = 0-12 meses
+    title: "Capacitación docente: 5G NR (certificaciones Nokia/Ericsson, Qualcomm Academy)",
+    detail:
+      "Plan de formación para instructores en 5G NR: capa física, NTN, RedCap, MIMO. Certificaciones disponibles en Nokia Academy, Ericsson Educate y Qualcomm Academy. Mínimo 2 instructores capacitados.",
+    gap: "critica", // Tabla 11 fila 4: L06 brecha Crítica (contenido 4G sin 5G NR)
+    source: "GOR Tabla 8",
+    meta: { kind: "talento", priority: "P1" },
+  });
+
+  // Tabla 8: "Tecnólogo en Gestión de Redes — Actualización Curricular —
+  //   Incluir módulos de 5G NR (L06), SDN/NFV con labs Docker+Mininet (L12),
+  //   fundamentos de IA/ML para redes (L04). — P1"
+  // JUICIO: el aspecto 5G NR (L06) de este programa se registra en D2.
+  items.push({
+    id: "d2-l3-actualizacion-curricular-gestion-redes-5g",
+    layer: "L3",
+    driver: "D2",
+    horizon: "corto", // P1 = 0-12 meses
+    title: "Actualización curricular: Tecnólogo en Gestión de Redes (5G NR L06 + NTN L08)",
+    detail:
+      "Incluir módulos de 5G NR (L06: capa física, NTN, RedCap, MIMO mejorado) en el Tecnólogo en Gestión de Redes de Telecomunicaciones. Incorporar NTN/LEO conceptual.",
+    gap: "critica",
+    source: "GOR Tabla 8",
+    meta: { kind: "talento", priority: "P1" },
+  });
+
+  // Tabla 10, fila D2: "Piloto de estación base 5G NR con SDR para formación en radiocomunicaciones avanzadas"
+  //   Tipo: Modernización de Ambientes.
+  //   Aliado: Qualcomm / MinTIC.
+  //   Objetivo: celda 5G NR funcional con USRP + srsRAN; prácticas de capa física, NTN.
+  items.push({
+    id: "d2-l3-proyecto-5g-nr-sdr",
+    layer: "L3",
+    driver: "D2",
+    horizon: "medio1", // JUICIO: modernización de ambientes, ventana típica 1-2 años
+    title: "Proyecto: Piloto estación base 5G NR con SDR (USRP + srsRAN)",
+    detail:
+      "Modernización de Ambientes: implementar una celda 5G NR funcional usando USRP + srsRAN para prácticas de capa física, configuración de red y pruebas de desempeño. Incluir conceptos NTN. Aliado potencial: Qualcomm / MinTIC.",
+    source: "GOR Tabla 10",
+    meta: {
+      kind: "proyecto",
+      projectType: "Modernización de Ambientes",
+      ally: "Qualcomm / MinTIC",
+    },
+  });
+
+  // ── D2 / L4: Alianzas ────────────────────────────────────────────────────
+
+  // Tabla 9 — aliados relevantes a D2 (5G/6G, NTN, óptica):
+
+  items.push({
+    id: "d2-l4-qualcomm",
+    layer: "L4",
+    driver: "D2",
+    horizon: "corto", // Qualcomm Academy y kits de desarrollo disponibles → alianza 0-12m
+    title: "Qualcomm",
+    detail:
+      "Líder en chipsets 5G. Qualcomm Academy con programa para universidades. Tipo de alianza sugerida: kits de desarrollo, becas y cursos.",
+    source: "GOR Tabla 9",
+    meta: { kind: "alianza", ally: "Qualcomm", allyType: "Empresa", country: "EE.UU." },
+  });
+
+  items.push({
+    id: "d2-l4-mintIC",
+    layer: "L4",
+    driver: "D2",
+    horizon: "corto", // MinTIC Colombia — regulador local, alianza inmediata viable
+    title: "MinTIC Colombia",
+    detail:
+      "Regulador colombiano. Programas de conectividad rural y transformación digital. Tipo de alianza sugerida: proyectos de inclusión digital y financiamiento. Aliado citado en Tabla 10 D2.",
+    source: "GOR Tabla 9 / Tabla 10",
+    meta: { kind: "alianza", ally: "MinTIC Colombia", allyType: "Gobierno", country: "Colombia" },
+  });
+
+  items.push({
+    id: "d2-l4-operadores-colombianos",
+    layer: "L4",
+    driver: "D2",
+    horizon: "corto", // Operadores con 5G en despliegue — alianza inmediata para prácticas
+    title: "Claro / Movistar / WOM Colombia",
+    detail:
+      "Operadores con despliegue 5G comercial en curso en Colombia. Demanda de talento técnico. Tipo de alianza sugerida: validación de perfiles, pasantías y prácticas en red viva.",
+    source: "GOR Tabla 9",
+    meta: {
+      kind: "alianza",
+      ally: "Claro / Movistar / WOM Colombia",
+      allyType: "Operadores",
+      country: "Colombia",
+    },
+  });
+
+  items.push({
+    id: "d2-l4-universidad-oulu",
+    layer: "L4",
+    driver: "D2",
+    horizon: "largo", // JUICIO: intercambio académico internacional 5+ años
+    title: "Universidad de Oulu (6G Flagship)",
+    detail:
+      "Centro líder mundial en investigación 6G (Mehdi Bennis). Tipo de alianza sugerida: intercambio académico, webinars y co-investigación en 6G, edge intelligence y Open RAN.",
+    source: "GOR Tabla 9",
+    meta: {
+      kind: "alianza",
+      ally: "Universidad de Oulu (6G Flagship)",
+      allyType: "Universidad",
+      country: "Finlandia",
+    },
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // D4: Monetización de Capacidades de Red y Transformación B2B
+  // L2/L3/L4 — fuente: GOR Tablas 8, 9, 10, 11
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // ── D4 / L2: Infraestructura ─────────────────────────────────────────────
+
+  // Tabla 11, fila 13 (L16): "Módulo APIs + hackathon con operadores (12-24 meses)"
+  // JUICIO: el entorno de desarrollo para APIs (L16) es la infraestructura de D4.
+  //   "Requiere entorno de desarrollo" (Tabla 11); no se menciona equipamiento especial.
+  items.push({
+    id: "d4-l2-entorno-desarrollo-apis",
+    layer: "L2",
+    driver: "D4",
+    horizon: "medio2", // Tabla 11 fila 13: 12-24 meses → medio2
+    title: "Entorno de desarrollo para APIs de red / NaaS (GSMA Open Gateway)",
+    detail:
+      "Configurar entorno de desarrollo que permita consumir APIs de GSMA Open Gateway (QoD, NumberVerify, Device Location) sobre red simulada. Requiere entorno de desarrollo (sin hardware especial). Base para Tabla 10 D4.",
+    gap: "alta", // Tabla 11 fila 13: L16 brecha Alta (no incluido en currículo actual)
+    source: "GOR Tabla 11",
+    meta: { kind: "ambiente", priority: "P2", line: "L16" },
+  });
+
+  // ── D4 / L3: Talento & I+D+i ─────────────────────────────────────────────
+
+  // Tabla 8: "Todos los programas — Formación Transversal —
+  //   Incluir módulo transversal de Python + ML básico — P2 (6-24 meses)"
+  // JUICIO: el aspecto de APIs/desarrollo de D4 se refuerza con Python transversal.
+  //   Se registra en D4 el énfasis en desarrollo de aplicaciones sobre APIs de red.
+  items.push({
+    id: "d4-l3-formacion-transversal-python-apis",
+    layer: "L3",
+    driver: "D4",
+    horizon: "medio1", // Tabla 8: P2 = 6-24 meses → medio1 (JUICIO: plazo medio del rango)
+    title: "Módulo transversal Python + desarrollo de APIs de red (todos los programas)",
+    detail:
+      "Incluir módulo transversal de Python y desarrollo de APIs como competencia obligatoria para todos los programas de telecomunicaciones. Base para perfil emergente desarrollador telecom.",
+    gap: "alta", // Tabla 11: ausencia de competencias en programación en aprendices
+    source: "GOR Tabla 8",
+    meta: { kind: "talento", priority: "P2" },
+  });
+
+  // Tabla 10, fila D4: "Desarrollo de prototipo de API de red para monetización de capacidades 5G"
+  //   Tipo: I+D+i Aplicada (Semillero).
+  //   Aliado: Operadores colombianos / GSMA.
+  //   Objetivo: app web que consuma APIs GSMA Open Gateway; casos de uso B2B.
+  items.push({
+    id: "d4-l3-proyecto-api-naas-semillero",
+    layer: "L3",
+    driver: "D4",
+    horizon: "medio2", // JUICIO: semillero de investigación, ventana típica 12-24 meses → medio2
+    title: "Proyecto Semillero: prototipo API de red para monetización de capacidades 5G",
+    detail:
+      "I+D+i Aplicada (Semillero): desarrollar una aplicación web que consuma APIs de GSMA Open Gateway (QoD, Device Location) sobre una red simulada, demostrando casos de uso B2B. Perfil profesional emergente: desarrollador telecom. Aliado potencial: operadores colombianos / GSMA.",
+    source: "GOR Tabla 10",
+    meta: {
+      kind: "proyecto",
+      projectType: "I+D+i Aplicada (Semillero)",
+      ally: "Operadores colombianos / GSMA",
+    },
+  });
+
+  // ── D4 / L4: Alianzas ────────────────────────────────────────────────────
+
+  // Tabla 9 — aliados relevantes a D4 (APIs, NaaS, slicing, B2B):
+
+  items.push({
+    id: "d4-l4-gsma",
+    layer: "L4",
+    driver: "D4",
+    horizon: "medio1", // JUICIO: acceso a informes GSMA inmediato; capacitación formal 6-12m
+    title: "GSMA",
+    detail:
+      "Open Gateway, estudios de mercado, programas de capacitación. Más de 50 operadores adheridos a Open Gateway. Tipo de alianza sugerida: acceso a informes, capacitación y eventos.",
+    source: "GOR Tabla 9",
+    meta: { kind: "alianza", ally: "GSMA", allyType: "Asociación", country: "Global" },
+  });
+
+  items.push({
+    id: "d4-l4-ccit",
+    layer: "L4",
+    driver: "D4",
+    horizon: "corto", // CCIT Colombia — gremio local, alianza inmediata viable
+    title: "Cámara Colombiana de Informática y Telecom (CCIT)",
+    detail:
+      "Agrupador del sector TIC en Colombia. Estudios de demanda laboral. Tipo de alianza sugerida: validación de perfiles de egreso y participación en eventos sectoriales.",
+    source: "GOR Tabla 9",
+    meta: {
+      kind: "alianza",
+      ally: "Cámara Colombiana de Informática y Telecom (CCIT)",
+      allyType: "Gremio",
+      country: "Colombia",
+    },
+  });
+
+  items.push({
+    id: "d4-l4-operadores-d4",
+    layer: "L4",
+    driver: "D4",
+    horizon: "medio1", // JUICIO: alianza para hackathon y prácticas en red viva, 6-12m
+    title: "Claro / Movistar / WOM Colombia (APIs y B2B)",
+    detail:
+      "Operadores colombianos con despliegue 5G y adopción de GSMA Open Gateway. Demanda de talento en perfil desarrollador telecom. Tipo de alianza sugerida: hackathon con APIs reales y prácticas en red viva.",
+    source: "GOR Tabla 9 / Tabla 10",
+    meta: {
+      kind: "alianza",
+      ally: "Operadores colombianos",
+      allyType: "Operadores",
+      country: "Colombia",
+    },
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // D5: Seguridad, Resiliencia y Sostenibilidad
+  // L2/L3/L4 — fuente: GOR Tablas 8, 9, 10, 11
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // ── D5 / L2: Infraestructura ─────────────────────────────────────────────
+
+  // Tabla 11, fila 7 (L21): "R-07: Kit ciberseg (Wireshark, Snort, Suricata) + diplomado (0-12 meses)"
+  // Tabla 8: "Laboratorio de Redes — Adquisición de Tecnología —
+  //   Kit de ciberseguridad: Wireshark, Snort, Suricata — P1"
+  items.push({
+    id: "d5-l2-kit-ciberseguridad",
+    layer: "L2",
+    driver: "D5",
+    horizon: "corto", // GOR Tabla 11: R-07, 0-12 meses / Tabla 8: P1
+    title: "Kit de ciberseguridad: Wireshark + Snort + Suricata (Lab de Redes)",
+    detail:
+      "Implementar kit de ciberseguridad en el Laboratorio de Redes: Wireshark, Snort, Suricata. Sin laboratorio de ciberseguridad actualmente. Cierre de brecha R-07.",
+    gap: "critica", // Tabla 11 fila 7: L21 brecha Crítica (solo fundamentos básicos de seguridad)
+    source: "GOR Tabla 8 / Tabla 11 — R-07",
+    meta: { kind: "ambiente", priority: "P1", closure: "R-07", line: "L21" },
+  });
+
+  // Tabla 11, fila 14 (L22): "Módulo conceptual en todos los programas de redes (6-18 meses)"
+  // JUICIO: PQC no requiere hardware especial (Tabla 11). Infraestructura = entorno conceptual/simulación.
+  //   Se incluye como ítem de ambiente/entorno de formación para criptografía PQC.
+  items.push({
+    id: "d5-l2-entorno-pqc-gobernanza",
+    layer: "L2",
+    driver: "D5",
+    horizon: "medio1", // Tabla 11 fila 14: 6-18 meses → medio1; fila 16: 12-24m → medio2 (JUICIO: medio1)
+    title: "Entorno formativo: PQC y Gobernanza IA (sin requerimiento de hardware especial)",
+    detail:
+      "Criptografía PQC (L22): CRYSTALS-Kyber/Dilithium, QKD conceptual — sin requerimiento hardware especial (Tabla 11). Gobernanza IA (L25): explicabilidad, auditoría, ética IA — sin requerimiento especial. Implementable mediante módulos conceptuales y simuladores.",
+    gap: "alta", // Tabla 11 filas 14+16: brechas Alta
+    source: "GOR Tabla 11",
+    meta: { kind: "ambiente", priority: "P2", lines: "L22,L25" },
+  });
+
+  // ── D5 / L3: Talento & I+D+i ─────────────────────────────────────────────
+
+  // Tabla 8: "Programa nuevo: Ciberseguridad en Telecomunicaciones — Diseño Curricular —
+  //   Crear tecnólogo o especialización tecnológica en ciberseguridad de redes.
+  //   Perfil: Zero Trust, PQC, detección de amenazas con IA. — P2 (6-24 meses)"
+  items.push({
+    id: "d5-l3-nuevo-programa-ciberseguridad",
+    layer: "L3",
+    driver: "D5",
+    horizon: "medio1", // Tabla 8: P2 = 6-24 meses → medio1 (JUICIO: plazo medio del rango)
+    title: "Nuevo programa: Tecnólogo/Especialización en Ciberseguridad de Redes Telecom",
+    detail:
+      "Diseñar tecnólogo o especialización tecnológica en ciberseguridad de redes. Perfil: Zero Trust 5G/6G, criptografía PQC, detección de amenazas con IA, auditoría de seguridad en redes. Demanda laboral validada (CCIT, 2024).",
+    gap: "alta", // Tabla 11: demanda laboral insatisfecha; brecha Alta
+    source: "GOR Tabla 8",
+    meta: { kind: "talento", priority: "P2" },
+  });
+
+  // Tabla 8: "Instructores — Capacitación Docente — ciberseguridad (CompTIA Security+) — P1"
+  items.push({
+    id: "d5-l3-capacitacion-ciberseguridad",
+    layer: "L3",
+    driver: "D5",
+    horizon: "corto", // GOR Tabla 8: P1 = 0-12 meses
+    title: "Capacitación docente: ciberseguridad (CompTIA Security+, Cisco, Fortinet NSE)",
+    detail:
+      "Plan de formación para instructores en ciberseguridad de redes: Zero Trust, PQC, detección IA de amenazas. Certificaciones: CompTIA Security+, Cisco CyberOps, Fortinet NSE. Mínimo 2 instructores capacitados.",
+    gap: "critica", // Tabla 11 fila 7: L21 brecha Crítica
+    source: "GOR Tabla 8",
+    meta: { kind: "talento", priority: "P1" },
+  });
+
+  // Tabla 10, fila D5: "Cursos complementarios en Ciberseguridad de Redes con certificación"
+  //   Tipo: Cursos complementarios.
+  //   Aliado: Cisco / Fortinet / Palo Alto.
+  //   Objetivo: ruta 120h — Zero Trust 5G, PQC, detección IA, auditoría; prácticas Wireshark/Snort/Suricata.
+  items.push({
+    id: "d5-l3-proyecto-cursos-ciberseguridad",
+    layer: "L3",
+    driver: "D5",
+    horizon: "medio1", // JUICIO: diseño e impartición de cursos, ventana 6-12 meses → medio1
+    title: "Proyecto: Cursos complementarios Ciberseguridad de Redes Telecom (ruta 120h)",
+    detail:
+      "Cursos complementarios: ruta de 120h que cubra Zero Trust para 5G, criptografía PQC, detección de amenazas con IA y auditoría de seguridad en redes. Incluir prácticas con Wireshark, Snort, Suricata. Aliado potencial: Cisco / Fortinet / Palo Alto.",
+    source: "GOR Tabla 10",
+    meta: {
+      kind: "proyecto",
+      projectType: "Cursos complementarios",
+      ally: "Cisco / Fortinet / Palo Alto",
+    },
+  });
+
+  // ── D5 / L4: Alianzas ────────────────────────────────────────────────────
+
+  // Tabla 9 — aliados relevantes a D5 (ciberseguridad, sostenibilidad, PQC):
+  // Nota: Cisco, Fortinet y Palo Alto están listados en Tabla 10 D5 como aliados potenciales.
+  // Huawei también está en Tabla 9 y cubre D5 parcialmente.
+
+  items.push({
+    id: "d5-l4-cisco",
+    layer: "L4",
+    driver: "D5",
+    horizon: "corto", // Cisco con presencia local y programas educativos disponibles
+    title: "Cisco Systems",
+    detail:
+      "Intent-based networking, SD-WAN, SASE. Programas educativos Cisco Networking Academy. Aliado potencial en Tabla 10 D5. Tipo de alianza sugerida: Cisco Networking Academy + CyberOps Associate.",
+    source: "GOR Tabla 10",
+    meta: { kind: "alianza", ally: "Cisco Systems", allyType: "Empresa", country: "EE.UU." },
+  });
+
+  items.push({
+    id: "d5-l4-fortinet",
+    layer: "L4",
+    driver: "D5",
+    horizon: "corto", // Fortinet NSE con programas gratuitos disponibles
+    title: "Fortinet",
+    detail:
+      "Ciberseguridad de redes, NGFW, SD-WAN. Fortinet NSE con cursos y certificaciones disponibles. Aliado potencial en Tabla 10 D5. Tipo de alianza sugerida: Fortinet NSE Training Institute.",
+    source: "GOR Tabla 10",
+    meta: { kind: "alianza", ally: "Fortinet", allyType: "Empresa", country: "EE.UU." },
+  });
+
+  items.push({
+    id: "d5-l4-palo-alto",
+    layer: "L4",
+    driver: "D5",
+    horizon: "medio1", // JUICIO: Palo Alto con presencia regional; alianza formal 6-12m
+    title: "Palo Alto Networks",
+    detail:
+      "Zero Trust, SASE/SSE, detección de amenazas con IA. Aliado potencial en Tabla 10 D5. Tipo de alianza sugerida: Palo Alto Networks Academy + prácticas en entorno virtualizado.",
+    source: "GOR Tabla 10",
+    meta: { kind: "alianza", ally: "Palo Alto Networks", allyType: "Empresa", country: "EE.UU." },
   });
 
   return { items };

@@ -205,31 +205,67 @@ describe("buildTelecomTrajectory()", () => {
     expect(d3L4.length).toBeGreaterThan(0);
   });
 
-  it("D2 has NO capacity items (L2/L3/L4 empty — MVP)", () => {
-    const d2Capacity = dataset.items.filter(
-      (i) =>
-        i.driver === "D2" &&
-        (i.layer === "L2" || i.layer === "L3" || i.layer === "L4")
+  it("D2 has at least one item in L2 (infraestructura)", () => {
+    const d2L2 = dataset.items.filter(
+      (i) => i.driver === "D2" && i.layer === "L2"
     );
-    expect(d2Capacity).toHaveLength(0);
+    expect(d2L2.length).toBeGreaterThan(0);
   });
 
-  it("D4 has NO capacity items (L2/L3/L4 empty — MVP)", () => {
-    const d4Capacity = dataset.items.filter(
-      (i) =>
-        i.driver === "D4" &&
-        (i.layer === "L2" || i.layer === "L3" || i.layer === "L4")
+  it("D2 has at least one item in L3 (talento & I+D+i)", () => {
+    const d2L3 = dataset.items.filter(
+      (i) => i.driver === "D2" && i.layer === "L3"
     );
-    expect(d4Capacity).toHaveLength(0);
+    expect(d2L3.length).toBeGreaterThan(0);
   });
 
-  it("D5 has NO capacity items (L2/L3/L4 empty — MVP)", () => {
-    const d5Capacity = dataset.items.filter(
-      (i) =>
-        i.driver === "D5" &&
-        (i.layer === "L2" || i.layer === "L3" || i.layer === "L4")
+  it("D2 has at least one item in L4 (alianzas)", () => {
+    const d2L4 = dataset.items.filter(
+      (i) => i.driver === "D2" && i.layer === "L4"
     );
-    expect(d5Capacity).toHaveLength(0);
+    expect(d2L4.length).toBeGreaterThan(0);
+  });
+
+  it("D4 has at least one item in L2 (infraestructura)", () => {
+    const d4L2 = dataset.items.filter(
+      (i) => i.driver === "D4" && i.layer === "L2"
+    );
+    expect(d4L2.length).toBeGreaterThan(0);
+  });
+
+  it("D4 has at least one item in L3 (talento & I+D+i)", () => {
+    const d4L3 = dataset.items.filter(
+      (i) => i.driver === "D4" && i.layer === "L3"
+    );
+    expect(d4L3.length).toBeGreaterThan(0);
+  });
+
+  it("D4 has at least one item in L4 (alianzas)", () => {
+    const d4L4 = dataset.items.filter(
+      (i) => i.driver === "D4" && i.layer === "L4"
+    );
+    expect(d4L4.length).toBeGreaterThan(0);
+  });
+
+  it("D5 has at least one item in L2 (infraestructura)", () => {
+    const d5L2 = dataset.items.filter(
+      (i) => i.driver === "D5" && i.layer === "L2"
+    );
+    expect(d5L2.length).toBeGreaterThan(0);
+  });
+
+  it("D5 has at least one item in L3 (talento & I+D+i)", () => {
+    const d5L3 = dataset.items.filter(
+      (i) => i.driver === "D5" && i.layer === "L3"
+    );
+    expect(d5L3.length).toBeGreaterThan(0);
+  });
+
+  it("D5 has at least one item in L4 (alianzas)", () => {
+    const d5L4 = dataset.items.filter(
+      (i) => i.driver === "D5" && i.layer === "L4"
+    );
+    expect(d5L4.length).toBeGreaterThan(0);
   });
 
   it("L2/L3/L4 items have a source field (GOR traceability)", () => {
