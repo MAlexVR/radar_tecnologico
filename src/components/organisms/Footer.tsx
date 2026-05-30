@@ -35,8 +35,7 @@ export function Footer() {
             &copy; {currentYear} {t("copyright")}
           </p>
           <p className="text-xs md:text-sm text-white/90 mt-1 leading-snug">
-            {t("center")}
-            &middot; {t("region")}
+            {t("center")} &middot; {t("region")}
           </p>
         </div>
       </div>
