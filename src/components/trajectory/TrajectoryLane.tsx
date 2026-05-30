@@ -100,7 +100,7 @@ export function TrajectoryLane({ layerKey, items, onSelect, selectedId, defaultO
   // preserved on small screens (the desktop grid columns can't fit in portrait).
   const mobileView = (
     <details
-      className="lg:hidden rounded-lg border border-border/60 bg-card overflow-hidden"
+      className="sm:hidden rounded-lg border border-border/60 bg-card overflow-hidden"
       open={defaultOpen}
     >
       <summary
@@ -160,7 +160,7 @@ export function TrajectoryLane({ layerKey, items, onSelect, selectedId, defaultO
     <div
       role="row"
       aria-label={`Capa: ${layerLabel}`}
-      className={cn("hidden lg:contents", className)}
+      className={cn("hidden sm:contents", className)}
     >
       {/* Lane label cell (first column) — tinted bg + left border in layer color */}
       <div

@@ -81,7 +81,7 @@ export function TrajectoryMap({
         >
           {/* Desktop: uniform grid (1 col per driver). Mobile: wrapping flex. */}
           <TabsList
-            className="h-auto gap-2 flex flex-wrap items-stretch p-1 lg:grid"
+            className="h-auto gap-2 flex flex-wrap items-stretch p-1 sm:grid"
             style={
               sortedDrivers.length > 0
                 ? { gridTemplateColumns: `repeat(${sortedDrivers.length}, 1fr)` }
@@ -95,7 +95,7 @@ export function TrajectoryMap({
                 <TabsTrigger
                   key={driver.key}
                   value={driver.key}
-                  className="h-full flex-1 basis-[7rem] lg:basis-auto flex flex-col items-center justify-center gap-0.5 transition-all py-2 px-2 min-h-[3.25rem]"
+                  className="h-full flex-1 basis-[7rem] sm:basis-auto flex flex-col items-center justify-center gap-0.5 transition-all py-2 px-2 min-h-[3.25rem]"
                   style={
                     color
                       ? isActive
@@ -140,8 +140,11 @@ export function TrajectoryMap({
             return (
               <TabsContent key={driver.key} value={driver.key}>
                 <div className="flex gap-4">
-                  {/* Main grid */}
-                  <div className="min-w-0 flex-1 overflow-x-auto">
+                  {/* Main grid — sole horizontal scroller (touch swipe to reveal all horizon columns) */}
+                  <div
+                    className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain"
+                    style={{ WebkitOverflowScrolling: "touch" }}
+                  >
                     {isEmpty ? (
                       // Empty state
                       <div
@@ -156,7 +159,7 @@ export function TrajectoryMap({
                         <div
                           role="grid"
                           aria-label={`Mapa de trayectoria — ${driver.label}`}
-                          className="hidden lg:grid rounded-xl border border-border shadow-sm overflow-hidden bg-card"
+                          className="hidden sm:grid rounded-xl border border-border shadow-sm overflow-hidden bg-card"
                           style={{
                             gridTemplateColumns: `minmax(6rem, 10rem) repeat(${sortedBuckets.length}, minmax(8rem, 1fr))`,
                           }}
@@ -221,7 +224,7 @@ export function TrajectoryMap({
 
                         {/* Phone view (portrait + landscape, < lg) — vertical accordion grouped by
                             horizon; no horizontal scroll needed. The grid is reserved for lg+ screens. */}
-                        <div className="flex flex-col gap-2 lg:hidden">
+                        <div className="flex flex-col gap-2 sm:hidden">
                           {sortedLayers.map((layer, i) => {
                             const laneItems = layerMap.get(layer.key) ?? [];
                             return (
