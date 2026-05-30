@@ -81,7 +81,7 @@ export function TrajectoryMap({
         >
           {/* Desktop: uniform grid (1 col per driver). Mobile: wrapping flex. */}
           <TabsList
-            className="h-auto gap-2 flex flex-wrap items-stretch p-1 md:grid"
+            className="h-auto gap-2 flex flex-wrap items-stretch p-1 lg:grid"
             style={
               sortedDrivers.length > 0
                 ? { gridTemplateColumns: `repeat(${sortedDrivers.length}, 1fr)` }
@@ -95,7 +95,7 @@ export function TrajectoryMap({
                 <TabsTrigger
                   key={driver.key}
                   value={driver.key}
-                  className="h-full flex-1 basis-[7rem] md:basis-auto flex flex-col items-center justify-center gap-0.5 transition-all py-2 px-2 min-h-[3.25rem]"
+                  className="h-full flex-1 basis-[7rem] lg:basis-auto flex flex-col items-center justify-center gap-0.5 transition-all py-2 px-2 min-h-[3.25rem]"
                   style={
                     color
                       ? isActive
@@ -156,7 +156,7 @@ export function TrajectoryMap({
                         <div
                           role="grid"
                           aria-label={`Mapa de trayectoria — ${driver.label}`}
-                          className="hidden md:grid rounded-xl border border-border shadow-sm overflow-hidden bg-card"
+                          className="hidden lg:grid rounded-xl border border-border shadow-sm overflow-hidden bg-card"
                           style={{
                             gridTemplateColumns: `minmax(6rem, 10rem) repeat(${sortedBuckets.length}, minmax(8rem, 1fr))`,
                           }}
@@ -219,8 +219,9 @@ export function TrajectoryMap({
                           })}
                         </div>
 
-                        {/* Mobile accordion view — lanes are bordered cards, grouped by horizon inside */}
-                        <div className="flex flex-col gap-2 md:hidden">
+                        {/* Phone view (portrait + landscape, < lg) — vertical accordion grouped by
+                            horizon; no horizontal scroll needed. The grid is reserved for lg+ screens. */}
+                        <div className="flex flex-col gap-2 lg:hidden">
                           {sortedLayers.map((layer, i) => {
                             const laneItems = layerMap.get(layer.key) ?? [];
                             return (
@@ -239,11 +240,11 @@ export function TrajectoryMap({
                     )}
                   </div>
 
-                  {/* Legend sidebar (desktop only) */}
-                  <Separator orientation="vertical" className="hidden md:block" />
+                  {/* Legend sidebar (lg+ only — phones rely on inline layer/horizon labels) */}
+                  <Separator orientation="vertical" className="hidden lg:block" />
                   <TrajectoryLegend
                     config={config}
-                    className="hidden md:block w-40 shrink-0"
+                    className="hidden lg:block w-40 shrink-0"
                   />
                 </div>
               </TabsContent>

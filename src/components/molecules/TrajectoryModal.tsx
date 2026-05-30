@@ -138,7 +138,7 @@ export function TrajectoryModal({ open, onOpenChange }: TrajectoryModalProps) {
         </DialogHeader>
 
         {/* ── Body ─────────────────────────────────────────────────── */}
-        <div className="flex-1 overflow-hidden flex flex-col md:flex-row gap-0">
+        <div className="flex-1 overflow-hidden flex flex-col lg:flex-row gap-0">
           {/* Map area — ref wraps the entire frame so PDF export captures the panel */}
           <div
             ref={mapContainerRef}
@@ -211,12 +211,12 @@ export function TrajectoryModal({ open, onOpenChange }: TrajectoryModalProps) {
             <div
               data-testid="trajectory-detail-panel"
               className={[
-                "border-t md:border-t-0 md:border-l",
+                "border-t lg:border-t-0 lg:border-l",
                 "bg-muted/10",
-                // Mobile: fixed height, scrollable
+                // Phone (< lg): stacked below, fixed height, scrollable
                 "h-56 overflow-y-auto p-4",
-                // Desktop: fixed width sidebar, full height scroll
-                "md:h-auto md:w-80 md:shrink-0 md:overflow-y-auto md:p-4",
+                // lg+: fixed-width sidebar, full height scroll
+                "lg:h-auto lg:w-80 lg:shrink-0 lg:overflow-y-auto lg:p-4",
               ].join(" ")}
             >
               <TrajectoryDetail
