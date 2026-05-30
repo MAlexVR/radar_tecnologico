@@ -156,7 +156,7 @@ export function TrajectoryMap({
                         <div
                           role="grid"
                           aria-label={`Mapa de trayectoria — ${driver.label}`}
-                          className="hidden md:grid"
+                          className="hidden md:grid rounded-xl border border-border shadow-sm overflow-hidden bg-card"
                           style={{
                             gridTemplateColumns: `minmax(6rem, 10rem) repeat(${sortedBuckets.length}, minmax(8rem, 1fr))`,
                           }}
@@ -220,7 +220,7 @@ export function TrajectoryMap({
                         </div>
 
                         {/* Mobile accordion view */}
-                        <div className="flex flex-col gap-1 md:hidden">
+                        <div className="flex flex-col gap-1 md:hidden rounded-xl border border-border shadow-sm overflow-hidden bg-card p-2">
                           {sortedLayers.map((layer) => {
                             const laneItems = layerMap.get(layer.key) ?? [];
                             return (
