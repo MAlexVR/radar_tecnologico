@@ -150,6 +150,15 @@ export function TrajectoryModal({ open, onOpenChange }: TrajectoryModalProps) {
               <div className="h-1 w-full bg-sena-green" aria-hidden />
               {/* Inner content with generous padding */}
               <div className="p-3 md:p-5 bg-gradient-to-b from-muted/20 to-transparent">
+                {/* Contextual introduction — frames the map as a VCyT / prospectiva product */}
+                <div className="mb-4 rounded-lg border-l-4 border-sena-green bg-sena-green/5 px-4 py-3">
+                  <h3 className="text-sm font-bold text-sena-blue">
+                    {t("introTitle")}
+                  </h3>
+                  <p className="mt-1 text-xs leading-relaxed text-sena-gray-dark/90 md:text-[13px]">
+                    {t("introText")}
+                  </p>
+                </div>
                 <TrajectoryMap
                   config={telecomConfig}
                   dataset={dataset}

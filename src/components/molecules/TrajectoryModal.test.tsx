@@ -78,9 +78,10 @@ function renderModal(open: boolean) {
 describe("TrajectoryModal", () => {
   it("renders the dialog title when open=true", () => {
     renderModal(true);
-    // The modal title should appear in the document
+    // The modal title should appear in the document.
+    // Exact name match disambiguates the DialogTitle from the longer intro heading.
     expect(
-      screen.getByRole("heading", { name: /Mapa de Trayectoria Tecnológica/i })
+      screen.getByRole("heading", { name: "Mapa de Trayectoria Tecnológica" })
     ).toBeInTheDocument();
   });
 
@@ -100,7 +101,7 @@ describe("TrajectoryModal", () => {
     renderModal(false);
     // Radix Dialog unmounts content when closed
     expect(
-      screen.queryByRole("heading", { name: /Mapa de Trayectoria Tecnológica/i })
+      screen.queryByRole("heading", { name: "Mapa de Trayectoria Tecnológica" })
     ).toBeNull();
   });
 
