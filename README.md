@@ -1,12 +1,12 @@
 # Vigilancia Tecnológica CEET — Radar y Mapa de Trayectoria | Telecomunicaciones 2025-2035
 
-![Version](https://img.shields.io/badge/version-2.2.0-39A900?style=flat-square)
+![Version](https://img.shields.io/badge/version-2.3.0-39A900?style=flat-square)
 ![SENA](https://img.shields.io/badge/SENA-CEET-00324D?style=flat-square)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?style=flat-square&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?style=flat-square&logo=tailwindcss)
-![Tests](https://img.shields.io/badge/tests-144%2B%20passing-brightgreen?style=flat-square)
+![Tests](https://img.shields.io/badge/tests-160%2B%20passing-brightgreen?style=flat-square)
 
 Plataforma web de vigilancia científico-tecnológica para el área de telecomunicaciones del Centro de Electricidad, Electrónica y Telecomunicaciones (CEET) — SENA. Integra dos herramientas complementarias: el **Radar Tecnológico** (madurez y adopción de 24 tecnologías en un horizonte 2025-2035) y el **Mapa de Trayectoria Tecnológica** (evolución de capacidades del Centro en el tiempo, por direccionador estratégico). Diseñada para instructores, investigadores GICS y tomadores de decisión institucional que necesitan fundamentar la planeación curricular y la prospectiva tecnológica con datos trazables a fuentes colombianas primarias.
 
@@ -140,7 +140,7 @@ radar-data.ts ──► trajectory-data.telecom.ts ──► <TrajectoryMap conf
 `src/lib/trajectory-data.telecom.ts` es el adaptador que consume los datos institucionales y los conforma al contrato del motor:
 
 - **5 direccionadores** (D1–D5), derivados de `SECTORS` del radar para coherencia visual
-- **~66 ítems en total**: 24 tecnologías (L1) + 42 ítems de capacidad (L2/L3/L4)
+- **72 ítems en total**: 24 tecnologías (L1) + 48 ítems de capacidad (L2/L3/L4)
 - **Cobertura**: todos los direccionadores están poblados en las 4 capas
 - **Fuentes primarias colombianas**: GOR-F-012 V03 (MinTIC/CRC/SENNOVA/CCIT), Tablas 8, 9, 10 y 11
 - **Principio anti-fabricación**: cada ítem cita su fuente (`source: "GOR Tabla N"`); los juicios de mapeo están marcados explícitamente como `// JUICIO:`
@@ -223,7 +223,7 @@ npm run test:ui
 npx vitest run --coverage
 ```
 
-El suite cubre más de **144 tests** distribuidos en dos grandes módulos:
+El suite cubre más de **160 tests** distribuidos en dos grandes módulos:
 
 **Módulo Radar (core):**
 - `src/core/geometry.test.ts` — Geometría SVG pura
@@ -264,7 +264,7 @@ Tests en `e2e/radar.spec.ts`:
 
 Workflow en `.github/workflows/ci.yml`:
 - **Lint & TypeCheck**: ESLint + `tsc --noEmit`
-- **Test**: Vitest (144+ tests)
+- **Test**: Vitest (160+ tests)
 - **E2E**: Playwright
 - **Build**: Next.js production build
 
@@ -378,6 +378,19 @@ messages/
 ---
 
 ## Changelog
+
+### v2.3.0 — Cobertura completa del mapa (ítems del GOR + fuentes primarias colombianas) (2026)
+
+- **6 ítems nuevos (gaps ALTA + MEDIA del audit GOR)**: cierran las brechas identificadas en la auditoría de cobertura del Mapa de Trayectoria vs. GOR-F-012 V03 Tablas 9 y 11.
+- **`d1-l4-huawei`** — Huawei Technologies como aliado L4·D1 (gap Alta, horizonte medio1): GOR Tabla 9 explícita; Huawei ICT Academy y ICT Competition activas en Colombia con MinTIC (Presidencia.gov.co nov 2025, ACIS sep 2025); líder mundial en patentes 5G/6G.
+- **`d2-l3-actualizacion-curricular-fwa`** — Actualización curricular FWA L3·D2 (gap Alta): L09 ring adopt sin representación formativa; ANE Política Espectro 2029 incluye FWA para ruralidad; Decreto 1031 MinTIC 2024 facilita despliegue.
+- **`d3-l3-formacion-edge-mec`** — Formación Edge/MEC L3·D3 (gap Alta): GOR Tabla 11 fila 11 (6-18 meses); integrable en lab SDN/NFV sin infraestructura adicional.
+- **`d3-l3-formacion-network-slicing`** — Formación Network Slicing E2E L3·D3 (gap Alta): GOR Tabla 11 fila 12 (12-24 meses); Movistar Colombia avanza hacia 5G SA con capacidades de slicing (TeleSemana ene 2026).
+- **`d5-l2-lab-ciberseguridad-avanzado`** — Lab ciberseguridad avanzado L2·D5 (gap Alta): GOR Tabla 8 P2; laboratorio dedicado (Zero Trust, honeypots, threat hunting) para el programa nuevo P2 de ciberseguridad, posterior al kit mínimo P1 ya existente.
+- **`d5-l3-proyecto-gics-redes-verdes`** — Proyecto GICS Redes Verdes L3·D5 (gap Alta): GOR Tabla 11 fila 15 (12-24 meses); MinTIC Informe Gestión Ambiental 2024 (ISO 14001, reducción 20% consumo); convergencia con lab electricidad CEET.
+- **Actualizaciones menores**: Ericsson actualizado con URL educate.ericsson.com; portal SENNOVA (`http://sennova.senaedu.edu.co/`) añadido como URL de convocatoria en meta de todos los proyectos SENNOVA.
+- **Matriz de cobertura final**: L2-L4 = 48 ítems, total = 72 ítems (D1:9, D2:11, D3:12, D4:6, D5:10).
+- **Suite de tests ampliada**: 46 tests (+16 nuevos para los 6 ítems añadidos y la matriz de cobertura v2.3.0).
 
 ### v2.2.0 — Mapa de Trayectoria Tecnológica (2026)
 
