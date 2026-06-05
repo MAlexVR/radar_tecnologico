@@ -125,16 +125,19 @@ function driverKey(sectorIndex: number): string {
 /*
  * ────────────────────────────────────────────────────────────────────────────
  * MATRIZ DE COBERTURA (driver × capa → número de ítems L2/L3/L4)
+ * Actualizada v2.3.0: gaps ALTA+MEDIA del audit #352 completados.
  * ────────────────────────────────────────────────────────────────────────────
  *        L2    L3    L4   | total cap.
- * D1      1     4     3   |     8
- * D2      3     3     4   |    10
- * D3      3     3     4   |    10
+ * D1      1     4     4   |     9   (+1 L4: Huawei)
+ * D2      3     4     4   |    11   (+1 L3: FWA actualización curricular)
+ * D3      3     5     4   |    12   (+2 L3: Edge/MEC, Network Slicing)
  * D4      1     2     3   |     6
- * D5      2     3     3   |     8
+ * D5      3     4     3   |    10   (+1 L2: Lab ciber avanzado; +1 L3: GICS Redes Verdes)
  * ────────────────────────────────────────────────────────────────────────────
  * L1 (tecnologías): 24 ítems transversales derivados de TECHNOLOGIES.
- * Total ítems L2-L4: 42 ítems.  Total general: 66 ítems.
+ * Total ítems L2-L4: 48 ítems.  Total general: 72 ítems.
+ * Gaps ALTA añadidos: Huawei L4·D1, FWA L3·D2, Proyecto GICS L3·D5
+ * Gaps MEDIA añadidos: Edge/MEC L3·D3, Network Slicing L3·D3, Lab ciber avanzado L2·D5
  * ────────────────────────────────────────────────────────────────────────────
  */
 
@@ -274,6 +277,8 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Programa: "I+D Aplicada (SENNOVA)",
       Aliado: "Nokia / Ericsson Educate",
       Fundamento: "Ciclo SENNOVA 12 meses — SENA/SENNOVA convocatoria anual",
+      "Portal SENNOVA": "http://sennova.senaedu.edu.co/",
+      "Convocatoria CEET": "https://electricidadelectronicaytelecomu.blogspot.com/2025/05/convocatoria-sennova-fortalece-tu-etapa.html",
     },
   });
 
@@ -325,10 +330,14 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     id: "d1-l4-ericsson",
     layer: "L4",
     driver: "D1",
-    horizon: "medio2", // Fundamento: GOR Tabla 9 (sugerida); sin convenio SENA-Ericsson vigente confirmado
+    // JUICIO: Ericsson Educate tiene cursos gratuitos activos (educate.ericsson.com);
+    //   sin convenio formal SENA-Ericsson documentado en Colombia. La accesibilidad de los
+    //   cursos gratuitos acorta el plazo de uso, pero la formalización de convenio sigue en
+    //   medio2. Se mantiene medio2 hasta confirmar proceso de convenio SENA-Ericsson.
+    horizon: "medio2",
     title: "Ericsson",
     detail:
-      "IA agéntica para redes, cloud RAN. Ericsson Educate con cursos gratuitos. Tipo de alianza sugerida: Programa Ericsson Educate / Pasantías.",
+      "IA agéntica para redes, cloud RAN. Ericsson Educate con cursos gratuitos disponibles en educate.ericsson.com (sin convenio SENA formal requerido para acceso). Tipo de alianza sugerida: Programa Ericsson Educate / Pasantías.",
     source: `${FUENTE_GOR}, Tabla 9`,
     meta: {
       Tipo: "alianza",
@@ -336,6 +345,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       "Tipo de aliado": "Empresa",
       País: "Suecia / Col.",
       Procedencia: `${FUENTE_GOR}, Tabla 9 (sugerida, sin convenio vigente confirmado)`,
+      "Cursos gratuitos": "https://educate.ericsson.com (acceso sin convenio formal)",
     },
   });
 
@@ -357,6 +367,42 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       "Tipo de aliado": "Universidad",
       País: "EE.UU.",
       Procedencia: `${FUENTE_GOR}, Tabla 9 (sugerida, sin convenio vigente confirmado)`,
+    },
+  });
+
+  // GOR Tabla 9: "Huawei Technologies — Empresa — China/Col. — Líder mundial patentes 5G/6G
+  //   y redes autónomas (ADN). Presencia en Colombia. Tipo: Donación de equipos / Certificaciones
+  //   / Laboratorios." Huawei es el solicitante #1 de patentes globalmente (>18.000 familias 5G/6G).
+  // Fundamento Colombia: MinTIC lanzó la Huawei ICT Competition 2025 activamente, participan
+  //   universidades colombianas (U. del Cauca, U. Nacional, U. Norte, U. Javeriana, UNAD).
+  //   Programa Huawei ICT Academy activo en Colombia (técnicos, tecnólogos, profesionales).
+  //   Huawei Seeds for the Future: programa de formación activo en Colombia.
+  //   Sin convenio formal SENA-Huawei documentado; análogo a Nokia/Ericsson (mismo patrón).
+  //   (Presidencia.gov.co, noviembre 2025; ACIS, septiembre 2025)
+  // JUICIO: se asigna a D1 (IA nativa/redes autónomas) porque el GOR lo identifica bajo
+  //   "redes autónomas (ADN)" y es líder en L01/L04/L02. Horizonte medio1 — más cercano que
+  //   Nokia/Ericsson porque Huawei ya tiene actividad educativa confirmada en Colombia (ICT
+  //   Academy, ICT Competition con MinTIC), lo que reduce el plazo de formalización vs. medio2.
+  items.push({
+    id: "d1-l4-huawei",
+    layer: "L4",
+    driver: "D1",
+    // JUICIO: Huawei tiene actividad educativa activa en Colombia (ICT Academy + ICT Competition
+    //   con MinTIC 2025) → horizonte medio1 (1-3 años), más corto que Nokia/Ericsson (sin
+    //   presencia educativa colombiana documentada). Sin convenio formal SENA-Huawei aún.
+    horizon: "medio1",
+    title: "Huawei Technologies",
+    detail:
+      "Líder mundial en patentes 5G/6G y redes autónomas (ADN). Programas educativos activos en Colombia: Huawei ICT Academy (técnicos/tecnólogos), ICT Competition (lanzada con MinTIC 2025) y Seeds for the Future. Tipo de alianza sugerida: donación de equipos, certificaciones Huawei ICT y laboratorios.",
+    gap: "Alta", // GOR Tabla 9: aliado explícito sin representación en el mapa
+    source: `${FUENTE_GOR}, Tabla 9`,
+    meta: {
+      Tipo: "alianza",
+      Aliado: "Huawei Technologies",
+      "Tipo de aliado": "Empresa",
+      País: "China/Col.",
+      Fundamento:
+        "GOR Tabla 9 explícita; MinTIC lanzó Huawei ICT Competition 2025 con universidades colombianas — Presidencia.gov.co nov 2025; Huawei ICT Academy activa en Colombia — ACIS sep 2025 (sugerida, sin convenio SENA-Huawei formal confirmado)",
     },
   });
 
@@ -461,6 +507,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Programa: "Modernización de Ambientes",
       Aliado: "O-RAN Alliance / Red Hat",
       Fundamento: "SDN/NFV: tendencia central CRC Monitoreo Tendencias 2025; Open RAN 5G: sin piloto confirmado Colombia — CRC Sandbox 2024",
+      "Portal SENNOVA": "http://sennova.senaedu.edu.co/",
     },
   });
 
@@ -476,6 +523,69 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     gap: "Crítica", // Tabla 11: L12 brecha Crítica (conceptos básicos sin práctica)
     source: `${FUENTE_GOR}, Tabla 8`,
     meta: { Tipo: "talento", Prioridad: "P1" },
+  });
+
+  // Tabla 11, fila 11 (L13): "Incluir en formación de arquitecturas 5G B2B (6-18 meses);
+  //   integrable en lab SDN/NFV."
+  // Fundamento Colombia: CRC Monitoreo Tendencias 2025 menciona edge computing y redes privadas
+  //   5G; Colombia Inteligente identifica edge compute como tema central de investigación 2025
+  //   (https://colombiainteligente.org/tendencias/edge-compute-coming-to-a-place-near-you/).
+  //   L13 está en radar D3 / trial. Mercado MEC global en expansión; operadores colombianos
+  //   avanzan hacia arquitecturas de red distribuida habilitadas por 5G SA.
+  // JUICIO: Tabla 11 fila 11 propone acción formativa explícita ("incluir en formación de
+  //   arquitecturas 5G B2B"); se añade ítem L3·D3 para visibilidad en el mapa.
+  //   Horizonte medio1: integrable en lab SDN/NFV existente (no requiere infraestructura nueva).
+  items.push({
+    id: "d3-l3-formacion-edge-mec",
+    layer: "L3",
+    driver: "D3",
+    // JUICIO: GOR Tabla 11 fila 11: "6-18 meses" → medio1; integrable en lab SDN/NFV existente
+    horizon: "medio1",
+    title: "Formación en Edge Computing / MEC: arquitecturas 5G B2B (integrable en lab SDN/NFV)",
+    detail:
+      "Incorporar Edge Computing y Multi-Access Edge Computing (MEC) en la formación de arquitecturas 5G B2B. Integrable en el laboratorio SDN/NFV existente sin requerir infraestructura adicional. Cubre: latencia ultra-baja, procesamiento distribuido, casos de uso industria 4.0 y ciudad inteligente.",
+    gap: "Alta", // Tabla 11 fila 11: L13 brecha Alta (no incluido en programas actuales de redes)
+    source: `${FUENTE_GOR}, Tabla 11`,
+    meta: {
+      Tipo: "talento",
+      Prioridad: "P2",
+      Cierre: "Tabla 11 fila 11",
+      Línea: "L13",
+      Fundamento:
+        "GOR Tabla 11 fila 11: brecha Alta, 6-18 meses, integrable en lab SDN/NFV; CRC Monitoreo Tendencias 2025; Colombia Inteligente 2025 Research Themes",
+    },
+  });
+
+  // Tabla 11, fila 12 (L14): "Prácticas de slicing en entorno virtualizado (12-24 meses);
+  //   integrable en lab SDN/NFV."
+  // Fundamento Colombia: CRC Monitoreo Tendencias 2025 identifica Network Slicing y 5G SA como
+  //   próxima fase de operadores colombianos. Mercado network slicing USD 1,92B (2025) →
+  //   USD 13,49B (2030). Movistar Colombia avanza hacia 5G SA con capacidades de slicing
+  //   (TeleSemana enero 2026: https://www.telesemana.com/blog/2026/01/27/...).
+  //   Sin despliegue de slicing comercial confirmado en Colombia a 2026 → horizonte medio1-medio2.
+  // JUICIO: Tabla 11 fila 12 propone acción formativa explícita ("prácticas de slicing en
+  //   entorno virtualizado"); se añade ítem L3·D3 para visibilidad. Horizonte medio1 conservador
+  //   porque 5G SA aún no está plenamente desplegado en Colombia.
+  items.push({
+    id: "d3-l3-formacion-network-slicing",
+    layer: "L3",
+    driver: "D3",
+    // JUICIO: GOR Tabla 11 fila 12: "12-24 meses" → medio1-medio2; 5G SA sin despliegue
+    //   comercial pleno Colombia 2026 → conservador medio1 (prácticas en entorno virtualizado)
+    horizon: "medio1",
+    title: "Formación en Network Slicing E2E: prácticas en entorno virtualizado (integrable en lab SDN/NFV)",
+    detail:
+      "Incorporar prácticas de Network Slicing E2E (L14) en entorno virtualizado, integrándolas en el laboratorio SDN/NFV. Cubre: arquitectura de slices, orquestación MANO, casos de uso eMBB/uRLLC/mMTC. Mercado global de slicing: USD 1,92B (2025) → USD 13,49B (2030).",
+    gap: "Alta", // Tabla 11 fila 12: L14 brecha Alta (práctica de slicing no existe en programas)
+    source: `${FUENTE_GOR}, Tabla 11`,
+    meta: {
+      Tipo: "talento",
+      Prioridad: "P2",
+      Cierre: "Tabla 11 fila 12",
+      Línea: "L14",
+      Fundamento:
+        "GOR Tabla 11 fila 12: brecha Alta, 12-24 meses, integrable en lab SDN/NFV; CRC Monitoreo Tendencias 2025: network slicing como próxima fase 5G SA; Movistar Colombia avanza 5G SA — TeleSemana ene 2026",
+    },
   });
 
   // ── D3 / L4: Alianzas ────────────────────────────────────────────────────
@@ -704,6 +814,40 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Programa: "Modernización de Ambientes",
       Aliado: "Qualcomm / MinTIC",
       Fundamento: "5G comercial Colombia desde feb 2024; 3.063 estaciones/184 municipios dic-2025 — MinTIC/CRC 2025; ciclo SENNOVA 12 meses",
+      "Portal SENNOVA": "http://sennova.senaedu.edu.co/",
+    },
+  });
+
+  // GOR Tabla 7: L09 (Acceso Fijo Inalámbrico / FWA) en D2, ring "adopt" en el radar.
+  // Fundamento Colombia: ANE Política de Espectro 2029 menciona explícitamente FWA como caso
+  //   de uso 5G para zonas rurales y comunidades pequeñas ("FWA, IoT, Industry 4.0, mining,
+  //   smart cities, robotics"). Decreto 1031 (2024) establece nuevo reglamento de despliegue
+  //   para llegar a zonas rurales. Meta: 85% de la población colombiana con internet antes de
+  //   2026 (MinTIC); FWA es vehículo clave para municipios sin fibra.
+  //   (TeleSemana ago 2024: https://www.telesemana.com/blog/2024/08/28/...; MinTIC 2024)
+  // JUICIO: L09 está en radar como "adopt" (tecnología de despliegue activo) y el GOR la lista
+  //   en Tabla 7 D2, pero ningún ítem L3 la representa. Se añade actualización curricular para
+  //   que los aprendices conozcan FWA como solución de conectividad rural ya desplegada.
+  //   Sin brecha explícita en Tabla 11 para L09 → gap="Alta" por juicio (adopt sin formación
+  //   específica en CEET). Horizonte ahora-corto: tecnología ya adoptada y desplegada.
+  items.push({
+    id: "d2-l3-actualizacion-curricular-fwa",
+    layer: "L3",
+    driver: "D2",
+    // JUICIO: L09 ring "adopt" en radar; FWA activamente desplegado en Colombia para ruralidad
+    //   (Decreto 1031, ANE Política Espectro 2029); actualización curricular = ahora viable
+    horizon: "corto", // tecnología adopt; actualización curricular P1-P2 = 0-12 meses
+    title: "Actualización curricular: FWA (L09) como solución de conectividad rural en 5G",
+    detail:
+      "Incorporar Acceso Fijo Inalámbrico (FWA) como contenido curricular en los programas de telecomunicaciones del CEET. FWA es tecnología adopt activamente desplegada en Colombia para conectividad rural (Decreto 1031 MinTIC 2024; ANE incluye FWA en casos de uso 5G para zonas rurales). Cubre: arquitectura 5G NR FWA, CPE, bandas sub-6GHz/mmWave, casos de uso rurales.",
+    gap: "Alta", // JUICIO: ring "adopt" en radar sin ítem formativo en mapa = brecha Alta
+    source: `${FUENTE_GOR}, Tabla 7 (L09)`,
+    meta: {
+      Tipo: "talento",
+      Prioridad: "P1",
+      Línea: "L09",
+      Fundamento:
+        "L09 ring adopt en radar GOR; ANE Política Espectro 2029: FWA como caso de uso 5G rural; Decreto 1031 MinTIC 2024: nuevo reglamento despliegue redes rurales — TeleSemana ago 2024; meta 85% cobertura nacional antes 2026",
     },
   });
 
@@ -844,6 +988,7 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Programa: "I+D+i Aplicada (Semillero)",
       Aliado: "Operadores colombianos / GSMA",
       Fundamento: "NaaS emergente CRC Monitoreo Tendencias 2025; mercado slicing USD 1,92B→13,49B 2025-2030",
+      "Portal SENNOVA": "http://sennova.senaedu.edu.co/",
     },
   });
 
@@ -939,6 +1084,39 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
     },
   });
 
+  // Tabla 8: "Laboratorio de Redes — Adquisición de Tecnología — Programa nuevo P2:
+  //   Ciberseguridad en Telecomunicaciones." El kit básico (d5-l2-kit-ciberseguridad) cubre R-07
+  //   como mínimo viable. El programa P2 (Tabla 8) implica un laboratorio dedicado de
+  //   ciberseguridad avanzado (más allá del kit mínimo) con Zero Trust, honeypots, threat hunting.
+  // Fundamento Colombia: déficit de 5.000 profesionales en ciberseguridad (CCIT 2024);
+  //   36 millones de eventos maliciosos Colombia 2024 (25% LATAM). La brecha requiere un lab
+  //   dedicado para el nuevo Tecnólogo en Ciberseguridad de Redes (d5-l3-nuevo-programa-ciber).
+  //   Sin un laboratorio dedicado, el programa P2 no puede operarse con calidad adecuada.
+  //   (https://www.ccit.org.co/noticias/balance-de-ciberseguridad-2024-...)
+  // JUICIO: Tabla 8 distingue entre kit P1 (Wireshark/Snort/Suricata, ya incluido) y
+  //   programa nuevo P2 que requiere infraestructura propia. Se añade como L2 separado con
+  //   horizonte medio1 (requiere inversión adicional; va después del kit básico).
+  items.push({
+    id: "d5-l2-lab-ciberseguridad-avanzado",
+    layer: "L2",
+    driver: "D5",
+    // JUICIO: posterior al kit básico (ya en "ahora"); inversión adicional para lab dedicado
+    //   → horizonte medio1 (1-3 años); alineado a Tabla 8 P2 "6-24 meses"
+    horizon: "medio1",
+    title: "Lab ciberseguridad avanzado: Zero Trust, honeypots y threat hunting (Lab dedicado P2)",
+    detail:
+      "Laboratorio dedicado de ciberseguridad avanzada (más allá del kit Wireshark/Snort/Suricata): entorno Zero Trust, honeypots, threat hunting con IA, simulación de ataques avanzados (APT). Necesario para el Tecnólogo en Ciberseguridad de Redes Telecom (programa P2 Tabla 8). Déficit 5.000 profesionales Colombia (CCIT 2024).",
+    gap: "Alta", // Tabla 8 P2: laboratorio dedicado; más allá del kit mínimo P1 ya representado
+    source: `${FUENTE_GOR}, Tabla 8`,
+    meta: {
+      Tipo: "ambiente",
+      Prioridad: "P2",
+      Línea: "L21",
+      Fundamento:
+        "GOR Tabla 8 P2: programa nuevo Ciberseguridad en Telecomunicaciones requiere lab dedicado; CCIT 2024: 36M eventos maliciosos Colombia, déficit 5K profesionales; posterior al kit mínimo P1 (d5-l2-kit-ciberseguridad)",
+    },
+  });
+
   // Tabla 11, fila 14 (L22): "Módulo conceptual en todos los programas de redes (6-18 meses)"
   // Fundamento: PQC no requiere hardware especial (Tabla 11). Infraestructura = entorno conceptual/simulación.
   //   Horizonte medio1 conserva el rango GOR (6-18 meses). Sin fuente colombiana específica adicional;
@@ -1016,6 +1194,44 @@ export function buildTelecomTrajectory(): TrajectoryDataset {
       Programa: "Cursos complementarios",
       Aliado: "Cisco / Fortinet / Palo Alto",
       Fundamento: "36M eventos maliciosos Colombia 2024, déficit 5K profesionales — CCIT 2024; Cisco/Fortinet activos en SenaTIC 2025",
+      "Portal SENNOVA": "http://sennova.senaedu.edu.co/",
+    },
+  });
+
+  // Tabla 11, fila 15 (L23): "Línea investigativa GICS: IA + eficiencia energética (12-24 meses)"
+  // GOR Tabla 11 fila 15: brecha Alta. El GOR propone una línea investigativa GICS específica
+  //   para L23 (Redes Verdes / Eficiencia Energética). L23 es D5 / trial en el radar.
+  // Fundamento Colombia: MinTIC tiene Informe de Gestión Ambiental 2024 (reducción 20% consumo
+  //   energético vs 2023, certificación ISO 14001). Tendencia global confirmada: la industria
+  //   telecom redujo huella de carbono ~12M toneladas CO2e en 2024; virtualización de redes e
+  //   integración con energías renovables son las palancas clave (telmasur.com 2025; MinTIC 2024).
+  //   Colombia Inteligente 2025 Research Themes incluye sostenibilidad como prioridad de sector.
+  //   El CEET tiene laboratorio de electricidad existente — convergencia directa con redes verdes.
+  //   (https://www.mintic.gov.co/portal/715/articles-135683_Informe_de_Gestion_Ambiental_2024.pdf)
+  // JUICIO: Tabla 11 fila 15 propone acción estratégica concreta (línea GICS) con plazo 12-24
+  //   meses → horizonte medio1. Se asigna a L3·D5 (Talento & I+D+i) porque es investigación
+  //   aplicada, no infraestructura. La convergencia con el lab de electricidad del CEET es el
+  //   activo diferenciador para iniciar la línea sin inversión de infraestructura adicional.
+  items.push({
+    id: "d5-l3-proyecto-gics-redes-verdes",
+    layer: "L3",
+    driver: "D5",
+    // JUICIO: GOR Tabla 11 fila 15: "12-24 meses" → medio1; línea investigativa GICS
+    //   aprovecha lab electricidad CEET existente → factibilidad real en 1-3 años
+    horizon: "medio1",
+    title: "Proyecto GICS: línea investigativa Redes Verdes — IA + eficiencia energética en redes telecom",
+    detail:
+      "Línea investigativa GICS: aplicar IA para optimización de eficiencia energética en redes de telecomunicaciones. Convergencia con laboratorio de electricidad del CEET. Temas: virtualización de funciones de red para reducir consumo, energías renovables en infraestructura RAN, métricas de carbono en redes móviles. Tendencia confirmada por MinTIC Informe Ambiental 2024 y Colombia Inteligente 2025.",
+    gap: "Alta", // Tabla 11 fila 15: L23 brecha Alta (sin línea investigativa GICS en redes verdes)
+    source: `${FUENTE_GOR}, Tabla 11`,
+    meta: {
+      Tipo: "proyecto",
+      Programa: "I+D+i (GICS / SENNOVA)",
+      Cierre: "Tabla 11 fila 15",
+      Línea: "L23",
+      Fundamento:
+        "GOR Tabla 11 fila 15: brecha Alta, 12-24 meses, línea GICS IA+eficiencia energética; MinTIC Informe Gestión Ambiental 2024 (reducción 20% consumo, ISO 14001); Colombia Inteligente 2025 Research Themes; CEET: convergencia con lab electricidad existente",
+      "Portal SENNOVA": "http://sennova.senaedu.edu.co/",
     },
   });
 

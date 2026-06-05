@@ -4,11 +4,19 @@
  * Verifies:
  *   1. telecomConfig passes validateTrajectoryConfig without throwing.
  *   2. buildTelecomTrajectory() returns a non-empty items array.
- *   3. D1 and D3 have items in L2, L3, and L4.
+ *   3. All drivers (D1–D5) have items in L2, L3, and L4.
  *   4. All items have a valid horizon (within the 5 buckets defined in config).
  *   5. All items have a valid driver (within the drivers defined in config).
  *   6. L1 covers all 5 drivers (D1–D5).
- *   7. D2, D4, D5 have NO capacity items (L2/L3/L4 empty).
+ *   7. New items from v2.3.0 audit (ALTA+MEDIA gaps) are present.
+ *
+ * Coverage matrix v2.3.0:
+ *   D1: L2=1, L3=4, L4=4 (+ Huawei)
+ *   D2: L2=3, L3=4 (+ FWA), L4=4
+ *   D3: L2=3, L3=5 (+ Edge/MEC, Network Slicing), L4=4
+ *   D4: L2=1, L3=2, L4=3
+ *   D5: L2=3 (+ Lab ciber avanzado), L3=4 (+ GICS Redes Verdes), L4=3
+ *   L1: 24 | L2-L4: 48 | Total: 72
  */
 
 import { describe, it, expect } from "vitest";
@@ -295,5 +303,130 @@ describe("buildTelecomTrajectory()", () => {
     const ids = dataset.items.map((i) => i.id);
     const uniqueIds = new Set(ids);
     expect(uniqueIds.size).toBe(ids.length);
+  });
+
+  // ── v2.3.0: coverage matrix checks ────────────────────────────────────────
+
+  it("total items is 72 (24 L1 + 48 L2/L3/L4) — v2.3.0 full coverage", () => {
+    expect(dataset.items).toHaveLength(72);
+  });
+
+  it("L2/L3/L4 items total 48 — v2.3.0", () => {
+    const capacity = dataset.items.filter(
+      (i) => i.layer === "L2" || i.layer === "L3" || i.layer === "L4"
+    );
+    expect(capacity).toHaveLength(48);
+  });
+
+  it("D1 has 4 items in L4 (includes Huawei — gap ALTA v2.3.0)", () => {
+    const d1L4 = dataset.items.filter(
+      (i) => i.driver === "D1" && i.layer === "L4"
+    );
+    expect(d1L4.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("D1 L4 includes Huawei Technologies (d1-l4-huawei)", () => {
+    const huawei = dataset.items.find((i) => i.id === "d1-l4-huawei");
+    expect(huawei).toBeDefined();
+    expect(huawei?.layer).toBe("L4");
+    expect(huawei?.driver).toBe("D1");
+    expect(huawei?.gap).toBe("Alta");
+  });
+
+  it("D2 has 4 items in L3 (includes FWA actualización curricular — gap ALTA v2.3.0)", () => {
+    const d2L3 = dataset.items.filter(
+      (i) => i.driver === "D2" && i.layer === "L3"
+    );
+    expect(d2L3.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("D2 L3 includes FWA actualización curricular (d2-l3-actualizacion-curricular-fwa)", () => {
+    const fwa = dataset.items.find(
+      (i) => i.id === "d2-l3-actualizacion-curricular-fwa"
+    );
+    expect(fwa).toBeDefined();
+    expect(fwa?.layer).toBe("L3");
+    expect(fwa?.driver).toBe("D2");
+    expect(fwa?.gap).toBe("Alta");
+    expect(fwa?.meta?.Línea).toBe("L09");
+  });
+
+  it("D3 has 5 items in L3 (includes Edge/MEC and Network Slicing — gap ALTA v2.3.0)", () => {
+    const d3L3 = dataset.items.filter(
+      (i) => i.driver === "D3" && i.layer === "L3"
+    );
+    expect(d3L3.length).toBeGreaterThanOrEqual(5);
+  });
+
+  it("D3 L3 includes Edge/MEC formación (d3-l3-formacion-edge-mec)", () => {
+    const edge = dataset.items.find((i) => i.id === "d3-l3-formacion-edge-mec");
+    expect(edge).toBeDefined();
+    expect(edge?.layer).toBe("L3");
+    expect(edge?.driver).toBe("D3");
+    expect(edge?.gap).toBe("Alta");
+    expect(edge?.meta?.Línea).toBe("L13");
+  });
+
+  it("D3 L3 includes Network Slicing formación (d3-l3-formacion-network-slicing)", () => {
+    const slicing = dataset.items.find(
+      (i) => i.id === "d3-l3-formacion-network-slicing"
+    );
+    expect(slicing).toBeDefined();
+    expect(slicing?.layer).toBe("L3");
+    expect(slicing?.driver).toBe("D3");
+    expect(slicing?.gap).toBe("Alta");
+    expect(slicing?.meta?.Línea).toBe("L14");
+  });
+
+  it("D5 has 3 items in L2 (includes lab ciber avanzado — gap ALTA v2.3.0)", () => {
+    const d5L2 = dataset.items.filter(
+      (i) => i.driver === "D5" && i.layer === "L2"
+    );
+    expect(d5L2.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("D5 L2 includes lab ciberseguridad avanzado (d5-l2-lab-ciberseguridad-avanzado)", () => {
+    const labCiber = dataset.items.find(
+      (i) => i.id === "d5-l2-lab-ciberseguridad-avanzado"
+    );
+    expect(labCiber).toBeDefined();
+    expect(labCiber?.layer).toBe("L2");
+    expect(labCiber?.driver).toBe("D5");
+    expect(labCiber?.gap).toBe("Alta");
+  });
+
+  it("D5 has 4 items in L3 (includes GICS Redes Verdes — gap ALTA v2.3.0)", () => {
+    const d5L3 = dataset.items.filter(
+      (i) => i.driver === "D5" && i.layer === "L3"
+    );
+    expect(d5L3.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("D5 L3 includes proyecto GICS Redes Verdes (d5-l3-proyecto-gics-redes-verdes)", () => {
+    const gics = dataset.items.find(
+      (i) => i.id === "d5-l3-proyecto-gics-redes-verdes"
+    );
+    expect(gics).toBeDefined();
+    expect(gics?.layer).toBe("L3");
+    expect(gics?.driver).toBe("D5");
+    expect(gics?.gap).toBe("Alta");
+    expect(gics?.meta?.Línea).toBe("L23");
+  });
+
+  it("all new v2.3.0 items have a non-empty source field", () => {
+    const newIds = [
+      "d1-l4-huawei",
+      "d2-l3-actualizacion-curricular-fwa",
+      "d3-l3-formacion-edge-mec",
+      "d3-l3-formacion-network-slicing",
+      "d5-l2-lab-ciberseguridad-avanzado",
+      "d5-l3-proyecto-gics-redes-verdes",
+    ];
+    for (const id of newIds) {
+      const item = dataset.items.find((i) => i.id === id);
+      expect(item, `Expected item with id ${id}`).toBeDefined();
+      expect(item?.source).toBeDefined();
+      expect((item?.source as string).length).toBeGreaterThan(0);
+    }
   });
 });
