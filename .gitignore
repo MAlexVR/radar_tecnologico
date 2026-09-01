@@ -45,3 +45,5 @@ nul
 
 # SDD artifacts (local only)
 /.atl
+
+.env*
